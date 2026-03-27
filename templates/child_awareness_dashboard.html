@@ -1,0 +1,176 @@
+{% extends "base_child.html" %}
+{% block title %}Child Awareness Dashboard{% endblock %}
+
+{% block page_title %}Dashboard Overview{% endblock %}
+{% block page_subtitle %}View all sessions, statistics, and manage child awareness programs{% endblock %}
+
+{% block content %}
+<!-- Statistics Cards -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <!-- Total Sessions -->
+  <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-l-4 border-emerald-500 transform hover:scale-105 transition-all duration-300">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Total Sessions</p>
+        <p class="text-3xl font-bold text-gray-800 dark:text-white mt-2">{{ stats.total_sessions }}</p>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg">
+        <i class="fas fa-chalkboard-teacher text-white text-2xl"></i>
+      </div>
+    </div>
+    <div class="mt-4 flex items-center text-sm">
+      <i class="fas fa-arrow-up text-emerald-500 mr-1"></i>
+      <span class="text-emerald-500 font-semibold">Active</span>
+      <span class="text-gray-500 dark:text-gray-400 ml-2">awareness programs</span>
+    </div>
+  </div>
+
+  <!-- Total Present -->
+  <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-l-4 border-teal-500 transform hover:scale-105 transition-all duration-300">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Total Present</p>
+        <p class="text-3xl font-bold text-teal-600 dark:text-teal-400 mt-2">{{ stats.total_present }}</p>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg">
+        <i class="fas fa-user-check text-white text-2xl"></i>
+      </div>
+    </div>
+    <div class="mt-4 flex items-center text-sm">
+      <i class="fas fa-check-circle text-teal-500 mr-1"></i>
+      <span class="text-teal-500 font-semibold">Attended</span>
+      <span class="text-gray-500 dark:text-gray-400 ml-2">participants</span>
+    </div>
+  </div>
+
+  <!-- Total Absent -->
+  <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border-l-4 border-red-500 transform hover:scale-105 transition-all duration-300">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Total Absent</p>
+        <p class="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">{{ stats.total_absent }}</p>
+      </div>
+      <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center shadow-lg">
+        <i class="fas fa-user-times text-white text-2xl"></i>
+      </div>
+    </div>
+    <div class="mt-4 flex items-center text-sm">
+      <i class="fas fa-times-circle text-red-500 mr-1"></i>
+      <span class="text-red-500 font-semibold">Missed</span>
+      <span class="text-gray-500 dark:text-gray-400 ml-2">sessions</span>
+    </div>
+  </div>
+</section>
+
+<!-- Sessions Section -->
+<section class="space-y-4">
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+        <i class="fas fa-list text-white"></i>
+      </div>
+      All Sessions
+    </h2>
+    <a href="{{ url_for('child_awareness_create_session') }}" 
+       class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg transform hover:scale-105 transition-all">
+      <i class="fas fa-plus-circle"></i>
+      <span>Create New Session</span>
+    </a>
+  </div>
+
+
+  {% if sessions %}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {% for s in sessions %}
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300">
+          
+          <!-- Session Header -->
+          <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-4">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <h3 class="text-lg font-bold text-white mb-1">{{ s.title }}</h3>
+                <div class="flex items-center gap-2 text-emerald-100">
+                  <i class="fas fa-tag text-sm"></i>
+                  <span class="text-sm font-medium">{{ s.topic }}</span>
+                </div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <i class="fas fa-children text-white text-xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Session Body -->
+          <div class="p-5 space-y-4">
+            <!-- Date & Time -->
+            <div class="flex items-center gap-3 text-sm">
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400">
+                <i class="fas fa-calendar-day"></i>
+                <span class="font-medium">{{ s.date }}</span>
+              </div>
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400">
+                <i class="fas fa-clock"></i>
+                <span class="font-medium">{{ s.time }}</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+              {{ s.details }}
+            </p>
+
+            <!-- Stats Row -->
+            <div class="flex items-center gap-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700">
+                <i class="fas fa-users text-gray-600 dark:text-gray-400"></i>
+                <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ s.total_attendance }}</span>
+              </div>
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20">
+                <i class="fas fa-check text-emerald-600 dark:text-emerald-400"></i>
+                <span class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">{{ s.present_count }}</span>
+              </div>
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-900/20">
+                <i class="fas fa-xmark text-red-600 dark:text-red-400"></i>
+                <span class="text-sm font-semibold text-red-700 dark:text-red-400">{{ s.absent_count }}</span>
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="pt-2">
+              <a href="{{ url_for('child_awareness_session', session_id=s.session_id) }}" 
+                 class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-md transform hover:scale-105 transition-all">
+                <i class="fas fa-eye"></i>
+                <span>View Details & Attendance</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer Info -->
+          <div class="px-5 py-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700">
+            <p class="text-xs text-gray-500 dark:text-gray-500 flex items-center gap-2">
+              <i class="fas fa-clock"></i>
+              <span>Created: {{ s.created_at }}</span>
+            </p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Empty State -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
+      <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 flex items-center justify-center mb-4">
+        <i class="fas fa-chalkboard-teacher text-4xl text-emerald-600 dark:text-emerald-400"></i>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">No Sessions Yet</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+        Start creating child awareness sessions to help parents understand and support their children's mental health.
+      </p>
+      <a href="{{ url_for('child_awareness_create_session') }}" 
+         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold shadow-lg transform hover:scale-105 transition-all">
+        <i class="fas fa-plus-circle"></i>
+        <span>Create Your First Session</span>
+      </a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base_counseling.html" %}
+{% block title %}Start Test{% endblock %}
+{% block header %}Start Counseling Test{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+  <form method="POST">
+    <label class="block mb-2 text-sm font-semibold">Select Category</label>
+    <select name="category" class="w-full border px-3 py-2 rounded-lg mb-4" required>
+      <option value="Domestic Violence">Domestic Violence</option>
+      <option value="Sexual Abuse Support">Sexual Abuse Support</option>
+      <option value="Psychological Support">Psychological Support</option>
+      <option value="Self Awareness">Self Awareness</option>
+      <option value="Health Awareness">Health Awareness</option>
+    </select>
+
+    <button type="submit"
+            class="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-700 transition">
+      Generate Test
+    </button>
+  </form>
+</div>
+{% endblock %}

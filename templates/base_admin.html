@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - SahaaraX</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            dark: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #e0f2fe, #f0f9ff);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    body.dark {
+      background: linear-gradient(to right, #0f172a, #1e293b);
+    }
+
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(145deg, #3b82f6, #1e40af);
+      box-shadow:
+        inset -2px -2px 5px rgba(255, 255, 255, 0.1),
+        inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+        0 10px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 0 1rem 1rem 0;
+      padding: 0;
+      transition: all 0.4s ease;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        inset -2px -2px 5px rgba(255, 255, 255, 0.2),
+        inset 2px 2px 8px rgba(0, 0, 0, 0.25),
+        0 15px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar-header {
+      padding: 2rem 1rem 1rem 1rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px #1e3a8a;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 1rem;
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .nav-item {
+      padding: 0.75rem 1rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.25);
+      font-weight: bold;
+      border-left: 4px solid #ffffff;
+    }
+
+    /* Sidebar scrollbar styling */
+    .sidebar-nav::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .sidebar-nav::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin: 0.5rem 0;
+    }
+
+    .sidebar-nav::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar-nav::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .header {
+      background-color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    .dark .header {
+      background-color: #1e293b;
+    }
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fade-in 0.8s ease-out;
+    }
+
+    /* Custom scrollbar for notifications */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .dark .custom-scrollbar::-webkit-scrollbar-track {
+      background: #334155;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+<body class="flex h-screen bg-blue-50 overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="sidebar text-white w-64 flex-shrink-0 hidden md:flex flex-col">
+    <div class="sidebar-header">
+      <a href="/" class="flex items-center gap-4 group animate__animated animate__fadeIn animate__slow">
+        <div class="bg-white p-1 rounded-full shadow-lg transform transition-transform duration-300 group-hover:scale-110 animate__animated animate__bounceIn">
+          <img
+            src="{{ url_for('static', filename='logo.jpg') }}"
+            alt="SahaaraX Logo"
+            class="h-10 w-10 object-cover rounded-full border border-gray-300"
+            onerror="this.src='https://via.placeholder.com/40x40?text=Logo';"
+          >
+        </div>
+        <span class="text-2xl font-bold text-white heading-font tracking-wide transition-all duration-300 group-hover:text-yellow-300">
+          Sahaara<span class="text-yellow-300 group-hover:text-white transition">X</span>
+        </span>
+      </a>
+
+      <!-- Text -->
+      <div class="mt-4">
+        <p class="text-sm text-orange-200 tracking-wide font-medium">Admin Panel</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav space-y-2 mt-2">
+      <a href="{{ url_for('dashboard') }}" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200 active">
+        <i class="fas fa-gauge-high w-5 text-center"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="{{ url_for('view_users') }}" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-users w-5 text-center"></i>
+        <span>Manage Users</span>
+      </a>
+      <a href="/rom" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-house-user  w-5 text-center"></i>
+        <span>ADD Room</span>
+      </a>
+      <a href="/shelter" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-house-damage w-5 text-center"></i>
+        <span>Shelter</span>
+      </a>
+
+      <a href="/con" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-users w-5 text-center"></i>
+        <span>Conselors</span>
+      </a>
+      <a href="/mod" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-toolbox w-5 text-center"></i>
+        <span>Other Services</span>
+      </a>
+      <a href="/subscribers" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-toolbox w-5 text-center"></i>
+        <span>News Alerts</span>
+      </a>
+      <a href="{{ url_for('admin_results') }}" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-toolbox w-5 text-center"></i>
+        <span>Ai Results</span>
+      </a>
+      <a href="{{ url_for('attendance_report') }}" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-toolbox w-5 text-center"></i>
+        <span>Sessions Attendace</span>
+      </a>
+      <a href="{{ url_for('admin_user_reports') }}" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-toolbox w-5 text-center"></i>
+        <span>Overall Report</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="{{ url_for('logout') }}" class="flex items-center gap-3 text-red-400 hover:text-red-300 py-2">
+        <i class="fas fa-sign-out-alt w-5 text-center"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar backdrop -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-40 md:hidden hidden"></div>
+
+  <!-- Mobile sidebar -->
+  <aside id="mobileSidebar" class="sidebar text-white w-64 fixed inset-y-0 left-0 z-50 transform -translate-x-full md:hidden transition-transform duration-300 flex flex-col">
+    <div class="sidebar-header">
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-primary-600 flex items-center justify-center">
+            <i class="fas fa-globe text-white text-xl"></i>
+          </div>
+          <div>
+            <h2 class="font-bold text-lg">SahaaraX</h2>
+            <p class="text-xs text-primary-200">Admin Panel</p>
+          </div>
+        </div>
+        <button id="closeSidebar" class="text-white">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav space-y-2">
+      <a href="{{ url_for('dashboard') }}" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200 active">
+        <i class="fas fa-gauge-high w-5 text-center"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="{{ url_for('view_users') }}" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-users w-5 text-center"></i>
+        <span>Manage Users</span>
+      </a>
+      <a href="/rom" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-house-user  w-5 text-center"></i>
+        <span>ADD Room</span>
+      </a>
+      <a href="/shelter" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-house-damage w-5 text-center"></i>
+        <span>Shelter</span>
+      </a>
+
+      <a href="/con" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-users w-5 text-center"></i>
+        <span>Conselors</span>
+      </a>
+      <a href="/mod" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-toolbox w-5 text-center"></i>
+        <span>Other Services</span>
+      </a>
+      <a href="/subscribers" class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200">
+        <i class="fas fa-toolbox w-5 text-center"></i>
+        <span>News Alerts</span>
+      </a>
+      <a class="nav-item flex items-center gap-3 px-4 py-3 text-white hover:text-primary-200" href="{{ url_for('admin_results') }}">
+        <i class="fas fa-clipboard-check w-5 text-center"></i>
+        <span>Counseling Results</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="{{ url_for('logout') }}" class="flex items-center gap-3 text-red-400 hover:text-red-300 py-2">
+        <i class="fas fa-sign-out-alt w-5 text-center"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="header bg-white dark:bg-dark-800 shadow-sm z-30">
+      <div class="flex items-center justify-between px-6 py-3">
+        <div class="flex items-center">
+          <button id="openSidebar" class="md:hidden mr-4 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-5">
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors">
+            <i class="fas fa-moon text-gray-600 dark:text-yellow-400" id="theme-icon"></i>
+          </button>
+
+          <!-- Notifications -->
+          <div class="relative">
+            <button id="notif-btn" class="relative p-2 rounded-full bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors">
+              <i class="fas fa-bell text-gray-600 dark:text-gray-300"></i>
+              {% if unapproved %}
+              <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ unapproved }}</span>
+              {% endif %}
+            </button>
+
+            <!-- Notification Dropdown -->
+            <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-dark-800 shadow-xl rounded-lg overflow-hidden z-50 border border-gray-200 dark:border-dark-700">
+              <div class="p-4 font-semibold border-b dark:border-dark-700 flex justify-between items-center">
+                <span class="text-gray-900 dark:text-white">Pending Approvals</span>
+                <span class="text-xs bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 px-2 py-1 rounded-full">{{ unapproved }} pending</span>
+              </div>
+              <ul class="max-h-96 overflow-y-auto custom-scrollbar">
+                {% if pending_users %}
+                  {% for id, user in pending_users.items() %}
+                    <li class="flex items-center gap-3 p-4 border-b dark:border-dark-700 hover:bg-gray-50 dark:hover:bg-dark-700">
+                      <img src="{{ user.profile_image_path or url_for('static', filename='default.png') }}" class="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-dark-600">
+                      <div class="flex-1 min-w-0">
+                        <p class="font-medium truncate text-gray-900 dark:text-white">{{ user.username }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ user.email }}</p>
+                      </div>
+                     <a href="{{ url_for('view_users', email=user.email) }}"
+   class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 whitespace-nowrap">
+  Review
+</a>
+
+                    </li>
+                  {% endfor %}
+                {% else %}
+                  <li class="p-4 text-gray-500 dark:text-gray-400 text-center">
+                    <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+                    <p>No pending approvals</p>
+                  </li>
+                {% endif %}
+              </ul>
+              {% if pending_users %}
+              <div class="p-3 border-t dark:border-dark-700 bg-gray-50 dark:bg-dark-900 text-center">
+                <a href="{{ url_for('view_users') }}" class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300">View all users</a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Admin Profile -->
+          <div class="relative">
+            <button id="profile-btn" class="flex items-center gap-2 focus:outline-none">
+              <div class="w-9 h-9 rounded-full bg-gradient-to-r from-primary-600 to-primary-800 flex items-center justify-center text-white font-semibold text-sm">
+                {{ session.get("admin")[0] if session.get("admin") else "A" }}
+              </div>
+              <span class="hidden md:inline text-sm font-medium text-gray-700 dark:text-gray-200">{{ session.get("admin") }}</span>
+              <i class="fas fa-chevron-down text-xs hidden md:inline text-gray-700 dark:text-gray-200"></i>
+            </button>
+
+            <!-- Profile Dropdown -->
+            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-dark-800 shadow-lg rounded-md overflow-hidden z-50 border border-gray-200 dark:border-dark-700">
+              <div class="p-4 border-b dark:border-dark-700">
+                <p class="font-medium text-gray-900 dark:text-white">{{ session.get("admin") }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Administrator</p>
+              </div>
+              <div class="py-1">
+                <a href="/admin/edit-profile" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700">
+                  <i class="fas fa-users mr-2"></i>Edit Profile
+                </a>
+              </div>
+              <div class="py-1 border-t dark:border-dark-700">
+                <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/20">
+                  <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="flex-1 overflow-y-auto bg-blue-50 dark:bg-dark-900 p-6">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    const html = document.documentElement;
+    const body = document.body;
+
+    // Check for saved theme preference or respect OS preference
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.setAttribute("data-theme", "dark");
+      html.classList.add("dark");
+      body.classList.add("dark");
+      themeIcon.classList.remove("fa-moon");
+      themeIcon.classList.add("fa-sun");
+    } else {
+      html.setAttribute("data-theme", "light");
+      html.classList.remove("dark");
+      body.classList.remove("dark");
+      themeIcon.classList.remove("fa-sun");
+      themeIcon.classList.add("fa-moon");
+    }
+
+    themeToggle.addEventListener("click", () => {
+      if (html.getAttribute("data-theme") === "light") {
+        html.setAttribute("data-theme", "dark");
+        html.classList.add("dark");
+        body.classList.add("dark");
+        localStorage.theme = 'dark';
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
+      } else {
+        html.setAttribute("data-theme", "light");
+        html.classList.remove("dark");
+        body.classList.remove("dark");
+        localStorage.theme = 'light';
+        themeIcon.classList.remove("fa-sun");
+        themeIcon.classList.add("fa-moon");
+      }
+    });
+
+    // Notifications dropdown toggle
+    const notifBtn = document.getElementById("notif-btn");
+    const notifDropdown = document.getElementById("notif-dropdown");
+
+    notifBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      notifDropdown.classList.toggle("hidden");
+      profileDropdown.classList.add("hidden");
+    });
+
+    // Profile dropdown toggle
+    const profileBtn = document.getElementById("profile-btn");
+    const profileDropdown = document.getElementById("profile-dropdown");
+
+    profileBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle("hidden");
+      notifDropdown.classList.add("hidden");
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener("click", (e) => {
+      if (!notifBtn.contains(e.target) && !notifDropdown.contains(e.target)) {
+        notifDropdown.classList.add("hidden");
+      }
+      if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.add("hidden");
+      }
+    });
+
+    // Mobile sidebar functionality
+    const openSidebarBtn = document.getElementById("openSidebar");
+    const closeSidebarBtn = document.getElementById("closeSidebar");
+    const mobileSidebar = document.getElementById("mobileSidebar");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+    openSidebarBtn.addEventListener("click", () => {
+      mobileSidebar.classList.remove("-translate-x-full");
+      sidebarBackdrop.classList.remove("hidden");
+    });
+
+    function closeSidebar() {
+      mobileSidebar.classList.add("-translate-x-full");
+      sidebarBackdrop.classList.add("hidden");
+    }
+
+    closeSidebarBtn.addEventListener("click", closeSidebar);
+    sidebarBackdrop.addEventListener("click", closeSidebar);
+  </script>
+</body>
+</html>

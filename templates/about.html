@@ -1,0 +1,422 @@
+{% extends "base.html" %}
+{% block title %}About Us - SahaaraX{% endblock %}
+
+{% block content %}
+
+<!-- Enhanced Hero Section with Video Background -->
+<section class="relative bg-gradient-to-r from-blue-900 to-indigo-900 text-white overflow-hidden">
+  <!-- Video Background -->
+  <div class="absolute inset-0 z-0">
+    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-10">
+      <source src="{{ url_for('static', filename='uploads/3.mp4') }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="container mx-auto px-4 py-20 md:py-28 relative z-10">
+    <div class="max-w-5xl mx-auto text-center" data-aos="fade-up" data-aos-duration="1000">
+      <!-- Animated Logo/Badge -->
+      <div class="w-28 h-28 mx-auto mb-8 bg-white/10 backdrop-blur-lg rounded-3xl flex items-center justify-center border-2 border-white/20 shadow-2xl floating">
+        <i class="fas fa-hands-helping text-4xl text-yellow-300"></i>
+      </div>
+
+      <h1 class="text-5xl md:text-6xl font-bold mb-6 heading-font bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+        About SahaaraX
+      </h1>
+
+      <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed max-w-4xl mx-auto">
+        SahaaraX is a compassionate platform designed to provide
+        <span class="font-bold text-yellow-300 relative inline-block">
+          <span class="relative z-10">shelter, legal aid, and counseling</span>
+          <span class="absolute bottom-0 left-0 w-full h-2 bg-yellow-400/30 -z-0"></span>
+        </span>
+        for women and vulnerable groups. Our mission is to ensure safety, support, and empowerment by connecting individuals with life-changing resources.
+      </p>
+
+      <!-- Enhanced Tagline Cards -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 group">
+          <i class="fas fa-shield-alt text-blue-300 mr-3 group-hover:scale-110 transition-transform"></i>
+          <span class="font-semibold text-lg">Safe & Confidential</span>
+        </div>
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 group">
+          <i class="fas fa-heart text-pink-300 mr-3 group-hover:scale-110 transition-transform"></i>
+          <span class="font-semibold text-lg">Compassionate Care</span>
+        </div>
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl px-6 py-4 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 group">
+          <i class="fas fa-rocket text-green-300 mr-3 group-hover:scale-110 transition-transform"></i>
+          <span class="font-semibold text-lg">Transformative Impact</span>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="flex flex-col items-center text-white/70">
+        <span class="text-sm mb-2">Discover Our Story</span>
+        <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+          <div class="w-1 h-3 bg-white/70 rounded-full mt-2 animate-bounce"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Content -->
+<div class="container mx-auto px-4 py-16">
+  <!-- Mission & Vision with Enhanced Design -->
+  <div class="grid md:grid-cols-2 gap-10 mb-20">
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="fade-right">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20"></div>
+      <div class="absolute top-0 right-0 w-32 h-32 bg-blue-200 dark:bg-blue-700 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
+      <div class="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200 dark:bg-indigo-700 rounded-full translate-y-12 -translate-x-12 opacity-30"></div>
+
+      <div class="relative p-10 z-10">
+        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+          <i class="fas fa-bullseye text-white text-3xl"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white heading-font bg-gradient-to-r from-gray-800 to-blue-700 dark:from-white dark:to-blue-300 bg-clip-text text-transparent">
+          Our Mission
+        </h3>
+        <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+          To provide a safe and accessible platform where individuals in need can find shelter,
+          counseling, and legal help seamlessly, while ensuring dignity and compassion in every interaction.
+          We believe in creating a world where everyone has access to the support they need to thrive.
+        </p>
+        <div class="mt-6 flex items-center text-blue-600 dark:text-blue-400">
+          <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+          <span class="text-sm font-semibold">Driven by Compassion</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="fade-left">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20"></div>
+      <div class="absolute top-0 left-0 w-28 h-28 bg-purple-200 dark:bg-purple-700 rounded-full -translate-y-14 -translate-x-14 opacity-20"></div>
+      <div class="absolute bottom-0 right-0 w-20 h-20 bg-pink-200 dark:bg-pink-700 rounded-full translate-y-10 translate-x-10 opacity-30"></div>
+
+      <div class="relative p-10 z-10">
+        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+          <i class="fas fa-eye text-white text-3xl"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white heading-font bg-gradient-to-r from-gray-800 to-purple-700 dark:from-white dark:to-purple-300 bg-clip-text text-transparent">
+          Our Vision
+        </h3>
+        <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+          To create a future where no one is left without support during crises —
+          by integrating technology with humanity, ensuring equal access to essential services for all.
+          A world where every person can live with dignity, safety, and hope.
+        </p>
+        <div class="mt-6 flex items-center text-purple-600 dark:text-purple-400">
+          <div class="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+          <span class="text-sm font-semibold">Building a Better Tomorrow</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Core Values -->
+  <section class="mb-20 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-blue-900/10 p-12 rounded-3xl shadow-2xl relative overflow-hidden border border-blue-100 dark:border-blue-800" data-aos="fade-up">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute top-0 left-1/4 w-48 h-48 bg-blue-500 rounded-full floating" style="animation-delay: 0s;"></div>
+      <div class="absolute bottom-0 right-1/4 w-36 h-36 bg-purple-500 rounded-full floating" style="animation-delay: 1s;"></div>
+      <div class="absolute top-1/2 right-1/3 w-40 h-40 bg-indigo-400 rounded-full floating" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="relative z-10">
+      <h2 class="text-4xl font-bold text-center mb-16 text-gray-800 dark:text-white heading-font">
+        <i class="fas fa-star text-yellow-500 mr-4"></i>
+        Our Core Values
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="text-center group" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-red-500 to-pink-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+            <i class="fas fa-heart text-white text-3xl"></i>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white heading-font group-hover:text-red-500 transition-colors">Compassion</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">We approach every situation with deep empathy, understanding, and a genuine desire to help those in need.</p>
+        </div>
+
+        <div class="text-center group" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+            <i class="fas fa-shield-alt text-white text-3xl"></i>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white heading-font group-hover:text-blue-500 transition-colors">Safety</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Protecting our users' physical and emotional wellbeing is our highest priority and sacred responsibility.</p>
+        </div>
+
+        <div class="text-center group" data-aos="fade-up" data-aos-delay="300">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+            <i class="fas fa-users text-white text-3xl"></i>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white heading-font group-hover:text-green-500 transition-colors">Empowerment</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">We help individuals regain control, build confidence, and create sustainable positive change in their lives.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced What We Provide Section -->
+  <section class="mb-20">
+    <h2 class="text-4xl font-bold text-center mb-16 text-gray-800 dark:text-white heading-font" data-aos="fade-up">
+      <i class="fas fa-hand-holding-heart text-red-500 mr-4"></i>
+      What We Provide
+    </h2>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Shelter Management -->
+      <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="zoom-in">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-3xl border-2 border-blue-100 dark:border-blue-800 group-hover:border-blue-300 transition-colors duration-300">
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg">
+            <i class="fas fa-home text-white text-2xl"></i>
+          </div>
+          <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white group-hover:text-blue-600 transition-colors">Shelter Management</h4>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Safe housing with real-time bed availability tracking and automated expiry alerts for immediate assistance.</p>
+          <div class="mt-4 flex items-center text-blue-600 dark:text-blue-400 text-sm">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Instant Availability Updates</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Counseling Support -->
+      <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="zoom-in" data-aos-delay="100">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-purple-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-3xl border-2 border-purple-100 dark:border-purple-800 group-hover:border-purple-300 transition-colors duration-300">
+          <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg">
+            <i class="fas fa-hand-holding-heart text-white text-2xl"></i>
+          </div>
+          <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white group-hover:text-purple-600 transition-colors">Counseling Support</h4>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Expert counseling for Domestic Violence, Sexual Abuse, Mental Health, Self Awareness, and Health Awareness.</p>
+          <div class="mt-4 flex items-center text-purple-600 dark:text-purple-400 text-sm">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Professional Therapists</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legal Aid -->
+      <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="zoom-in" data-aos-delay="200">
+        <div class="absolute inset-0 bg-gradient-to-br from-amber-500 to-amber-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-3xl border-2 border-amber-100 dark:border-amber-800 group-hover:border-amber-300 transition-colors duration-300">
+          <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg">
+            <i class="fas fa-balance-scale text-white text-2xl"></i>
+          </div>
+          <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white group-hover:text-amber-600 transition-colors">Legal Aid</h4>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Connecting users with qualified legal professionals for advice, representation, and justice support.</p>
+          <div class="mt-4 flex items-center text-amber-600 dark:text-amber-400 text-sm">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Expert Legal Guidance</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Identity -->
+      <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="zoom-in" data-aos-delay="300">
+        <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-green-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-3xl border-2 border-green-100 dark:border-green-800 group-hover:border-green-300 transition-colors duration-300">
+          <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg">
+            <i class="fas fa-user-shield text-white text-2xl"></i>
+          </div>
+          <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white group-hover:text-green-600 transition-colors">Secure Identity</h4>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Strong data privacy protection and secure verification systems to ensure complete confidentiality.</p>
+          <div class="mt-4 flex items-center text-green-600 dark:text-green-400 text-sm">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Complete Privacy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Notifications -->
+      <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="zoom-in" data-aos-delay="400">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-indigo-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-3xl border-2 border-indigo-100 dark:border-indigo-800 group-hover:border-indigo-300 transition-colors duration-300">
+          <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg">
+            <i class="fas fa-bell text-white text-2xl"></i>
+          </div>
+          <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white group-hover:text-indigo-600 transition-colors">Smart Notifications</h4>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Automated alerts and reminders for approvals, expiries, counselor assignments, and important updates.</p>
+          <div class="mt-4 flex items-center text-indigo-600 dark:text-indigo-400 text-sm">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Timely Updates</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 24/7 Support -->
+      <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-3" data-aos="zoom-in" data-aos-delay="500">
+        <div class="absolute inset-0 bg-gradient-to-br from-red-500 to-red-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+        <div class="relative p-8 bg-white dark:bg-gray-800 rounded-3xl border-2 border-red-100 dark:border-red-800 group-hover:border-red-300 transition-colors duration-300">
+          <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg">
+            <i class="fas fa-clock text-white text-2xl"></i>
+          </div>
+          <h4 class="font-bold text-xl mb-4 text-gray-800 dark:text-white group-hover:text-red-600 transition-colors">24/7 Support</h4>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Round-the-clock assistance and emergency support for crisis situations whenever you need us.</p>
+          <div class="mt-4 flex items-center text-red-600 dark:text-red-400 text-sm">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span>Always Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Stats Section -->
+  <section class="mb-20 bg-gradient-to-r from-blue-800 via-purple-800 to-indigo-900 text-white p-12 rounded-3xl shadow-2xl relative overflow-hidden" data-aos="fade-up">
+    <!-- Animated Background -->
+    <div class="absolute inset-0">
+      <div class="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
+      <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full translate-x-1/2 translate-y-1/2"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/3 rounded-full"></div>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-8 text-center relative z-10">
+      <div class="group" data-aos="zoom-in" data-aos-delay="100">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">500+</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">Lives Impacted</div>
+        <div class="w-16 h-1 bg-blue-300 mx-auto mt-3 group-hover:w-24 transition-all duration-300"></div>
+      </div>
+      <div class="group" data-aos="zoom-in" data-aos-delay="200">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">50+</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">Safe Shelters</div>
+        <div class="w-16 h-1 bg-blue-300 mx-auto mt-3 group-hover:w-24 transition-all duration-300"></div>
+      </div>
+      <div class="group" data-aos="zoom-in" data-aos-delay="300">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">1000+</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">Counseling Sessions</div>
+        <div class="w-16 h-1 bg-blue-300 mx-auto mt-3 group-hover:w-24 transition-all duration-300"></div>
+      </div>
+      <div class="group" data-aos="zoom-in" data-aos-delay="400">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">24/7</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">Support Available</div>
+        <div class="w-16 h-1 bg-blue-300 mx-auto mt-3 group-hover:w-24 transition-all duration-300"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Call to Action -->
+  <section class="text-center bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-800 dark:to-blue-900/20 py-16 px-6 rounded-3xl shadow-2xl relative overflow-hidden border border-blue-100 dark:border-blue-800" data-aos="fade-up">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 right-10 w-40 h-40 bg-blue-500 rounded-full floating" style="animation-delay: 0s;"></div>
+      <div class="absolute bottom-10 left-10 w-32 h-32 bg-purple-500 rounded-full floating" style="animation-delay: 1s;"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-indigo-400 rounded-full floating" style="animation-delay: 0.5s;"></div>
+    </div>
+
+    <div class="relative z-10">
+      <h3 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white heading-font bg-gradient-to-r from-gray-800 to-blue-700 dark:from-white dark:to-blue-300 bg-clip-text text-transparent">
+        Together, We Can Make a Difference
+      </h3>
+      <p class="mb-8 text-gray-600 dark:text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
+        SahaaraX is more than a platform—it's a movement dedicated to empowering those in need with compassion, dignity, and life-changing support. Join us in creating a safer, more compassionate world.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <a href="{{ url_for('signup') }}" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-10 py-5 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 flex items-center gap-3 text-lg">
+          <i class="fas fa-hands-helping"></i>
+          Get Support Now
+        </a>
+        <a href="{{ url_for('contact') }}" class="bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold px-10 py-5 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 flex items-center gap-3 text-lg border-2 border-blue-200 dark:border-blue-700">
+          <i class="fas fa-info-circle text-blue-600 dark:text-blue-400"></i>
+          Learn More
+        </a>
+      </div>
+      <p class="mt-8 text-gray-500 dark:text-gray-400 text-sm flex items-center justify-center gap-2">
+        <i class="fas fa-lock"></i>
+        All communications are 100% confidential and secure
+      </p>
+    </div>
+  </section>
+</div>
+
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes floatElement {
+  0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+  33% { transform: translateY(-30px) translateX(20px) rotate(120deg); }
+  66% { transform: translateY(-15px) translateX(-15px) rotate(240deg); }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-element {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: floatElement 15s infinite linear;
+}
+
+.element-1 { width: 120px; height: 120px; top: 10%; left: 5%; animation-delay: 0s; }
+.element-2 { width: 80px; height: 80px; top: 70%; left: 80%; animation-delay: 5s; }
+.element-3 { width: 60px; height: 60px; top: 40%; left: 90%; animation-delay: 10s; }
+
+.heading-font {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+  border-radius: 6px;
+  border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #7c3aed);
+}
+
+/* Enhanced hover effects */
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
+
+.group:hover .group-hover\:rotate-6 {
+  transform: rotate(6deg);
+}
+
+.group:hover .group-hover\:rotate-12 {
+  transform: rotate(12deg);
+}
+
+/* Backdrop blur support */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+  }
+}
+
+/* Gradient text animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-gradient-animate {
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+</style>
+
+{% endblock %}

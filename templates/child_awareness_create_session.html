@@ -1,0 +1,185 @@
+{% extends "base_child.html" %}
+{% block title %}Create Child Awareness Session{% endblock %}
+
+{% block page_title %}Create New Session{% endblock %}
+{% block page_subtitle %}Set up a new child awareness session and invite eligible parents{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+  
+  <!-- Info Card -->
+  <div class="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-6 mb-6 shadow-lg">
+    <div class="flex items-start gap-4">
+      <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+        <i class="fas fa-info-circle text-white text-2xl"></i>
+      </div>
+      <div class="text-white">
+        <h3 class="font-bold text-lg mb-1">Session Information</h3>
+        <p class="text-emerald-100 text-sm">
+          Invitations will be sent only to approved users who have children (children = yes).
+        </p>
+        <p class="text-white font-semibold mt-2 flex items-center gap-2">
+          <i class="fas fa-users"></i>
+          <span>Eligible users with children: <span class="bg-white/20 px-2 py-0.5 rounded-lg">{{ eligible_count }}</span></span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+    
+    <!-- Form Header -->
+    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-gray-700 dark:to-gray-700 px-8 py-5 border-b border-gray-200 dark:border-gray-600">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+          <i class="fas fa-file-alt text-white"></i>
+        </div>
+        Session Details
+      </h2>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+      
+      <!-- Session Title -->
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <i class="fas fa-heading text-emerald-500"></i>
+          Session Title
+        </label>
+        <input type="text" 
+               name="title" 
+               required
+               placeholder="e.g., Understanding Trauma in Children"
+               class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+      </div>
+
+      <!-- Topic -->
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <i class="fas fa-tag text-teal-500"></i>
+          Topic
+        </label>
+        <div class="relative">
+          <select name="topic" 
+                  required
+                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all appearance-none">
+            <option value="" disabled selected>Select awareness topic</option>
+            <option value="Trauma">🧠 Trauma</option>
+            <option value="Stress">😰 Stress</option>
+            <option value="Behavioral Issues">🎭 Behavioral Issues</option>
+          </select>
+          <i class="fas fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+        </div>
+      </div>
+
+      <!-- Date & Time Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Date -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <i class="fas fa-calendar-day text-blue-500"></i>
+            Session Date
+          </label>
+          <input type="date" 
+                 name="date"
+                 class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+        </div>
+
+        <!-- Time -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <i class="fas fa-clock text-purple-500"></i>
+            Session Time
+          </label>
+          <input type="time" 
+                 name="time"
+                 class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+        </div>
+      </div>
+
+      <!-- Zoom Link -->
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <i class="fas fa-video text-blue-500"></i>
+          Zoom / Meeting Link
+        </label>
+        <input type="url" 
+               name="zoom_link" 
+               required
+               placeholder="https://zoom.us/j/..."
+               class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+      </div>
+
+      <!-- Details -->
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <i class="fas fa-align-left text-indigo-500"></i>
+          Session Description
+        </label>
+        <textarea name="details" 
+                  rows="5"
+                  placeholder="Describe what will be covered in this session, key topics, and what parents can expect to learn..."
+                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"></textarea>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="space-y-2">
+        <label class="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <i class="fas fa-image text-pink-500"></i>
+          Session Banner (Optional)
+        </label>
+        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-emerald-500 transition-all bg-gray-50 dark:bg-gray-700/50">
+          <input type="file" 
+                 name="image" 
+                 accept="image/*"
+                 id="imageUpload"
+                 class="hidden"
+                 onchange="previewImage(event)">
+          <label for="imageUpload" class="cursor-pointer">
+            <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 flex items-center justify-center mb-3">
+              <i class="fas fa-cloud-upload-alt text-3xl text-emerald-600 dark:text-emerald-400"></i>
+            </div>
+            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Click to upload session banner</p>
+            <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">PNG, JPG up to 5MB</p>
+          </label>
+          <div id="imagePreview" class="mt-4 hidden">
+            <img id="previewImg" src="" alt="Preview" class="max-w-xs mx-auto rounded-lg shadow-lg">
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-4 pt-4">
+        <button type="submit"
+                class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold shadow-lg transform hover:scale-105 transition-all">
+          <i class="fas fa-paper-plane"></i>
+          <span>Create Session & Send Invitations</span>
+        </button>
+        <a href="{{ url_for('child_awareness_dashboard') }}"
+           class="px-6 py-3.5 rounded-xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+        preview.classList.remove('hidden');
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
+{% endblock %}

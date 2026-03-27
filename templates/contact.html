@@ -1,0 +1,446 @@
+{% extends "base.html" %}
+{% block title %}Contact Us - SahaaraX{% endblock %}
+{% block header %}Contact Us{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-r from-blue-800 to-blue-900 text-white py-16 md:py-24 overflow-hidden">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-white rounded-full"></div>
+    <div class="absolute bottom-10 right-10 w-60 h-60 bg-white rounded-full"></div>
+  </div>
+
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="max-w-3xl mx-auto text-center" data-aos="fade-up">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3 heading-font">
+        <i class="fas fa-envelope-open-text text-blue-300"></i> Get In Touch
+      </h1>
+      <p class="text-lg md:text-xl mb-6 text-blue-100">
+        We're here to help. Reach out to <span class="font-bold text-yellow-300">SahaaraX</span> for support, inquiries, or partnership opportunities.
+      </p>
+      <div class="flex items-center justify-center text-sm md:text-base bg-blue-700 bg-opacity-50 rounded-lg p-3 inline-block">
+        <i class="fas fa-clock mr-2 text-blue-300"></i>
+        <span>Typically reply within 24 hours</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Content -->
+<div class="container mx-auto px-4 py-12">
+  <div class="grid lg:grid-cols-2 gap-8 md:gap-12">
+
+    <!-- Contact Form -->
+    <div class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl" data-aos="fade-right">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center heading-font">
+        <i class="fas fa-paper-plane mr-3 text-blue-600"></i> Send Us a Message
+      </h2>
+      <form method="POST" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+          <input type="text" name="name" required placeholder="Your full name"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition dark:bg-gray-900 dark:text-white">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+          <input type="email" name="email" required placeholder="your.email@example.com"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition dark:bg-gray-900 dark:text-white">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+          <input type="text" name="subject" required placeholder="What is this regarding?"
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition dark:bg-gray-900 dark:text-white">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your Message</label>
+          <textarea name="message" rows="5" required placeholder="Type your message here..."
+            class="w-full border border-gray-300 dark:border-gray-600 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition dark:bg-gray-900 dark:text-white"></textarea>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-xl font-bold shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center">
+          <i class="fas fa-paper-plane mr-2"></i> Send Message
+        </button>
+      </form>
+    </div>
+
+    <!-- Contact Info & Additional Content -->
+    <div class="space-y-8" data-aos="fade-left">
+      <!-- Contact Information -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center heading-font">
+          <i class="fas fa-info-circle mr-3 text-blue-600"></i> Contact Information
+        </h2>
+
+        <div class="space-y-6">
+          <div class="flex items-start gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl transition">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-800 rounded-xl">
+              <i class="fas fa-map-marker-alt text-blue-600 dark:text-blue-300 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white">Our Office</h3>
+              <p class="text-gray-600 dark:text-gray-400">123 Shelter Street, Islamabad, Pakistan</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl transition">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-800 rounded-xl">
+              <i class="fas fa-phone text-blue-600 dark:text-blue-300 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white">Call Us</h3>
+              <p class="text-gray-600 dark:text-gray-400">+92 300 1234567</p>
+              <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">Mon-Fri, 9:00 AM - 5:00 PM</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl transition">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-blue-800 rounded-xl">
+              <i class="fas fa-envelope text-blue-600 dark:text-blue-300 text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-white">Email Us</h3>
+              <p class="text-gray-600 dark:text-gray-400">support@sahaarax.org</p>
+              <p class="text-gray-500 dark:text-gray-500 text-sm mt-1">We'll respond within 24 hours</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Contact -->
+      <div class="bg-red-50 dark:bg-red-900 p-6 rounded-2xl shadow-xl border-l-4 border-red-500">
+        <h2 class="text-xl font-bold mb-4 text-red-800 dark:text-red-200 flex items-center">
+          <i class="fas fa-exclamation-triangle mr-3 text-red-500"></i> Emergency Contact
+        </h2>
+        <p class="text-red-700 dark:text-red-300 mb-4">
+          If you or someone you know is in immediate danger, please contact our 24/7 emergency helpline.
+        </p>
+        <div class="flex items-center justify-between bg-white dark:bg-red-800 p-3 rounded-lg">
+          <span class="font-bold text-red-600 dark:text-red-200">Emergency Hotline</span>
+          <span class="text-lg font-bold text-red-700 dark:text-white">+92 300 911 911</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Section -->
+  <div class="mt-12 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-xl" data-aos="fade-up">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white flex items-center heading-font">
+      <i class="fas fa-map-marked-alt mr-3 text-blue-600"></i> Find Our Office
+    </h2>
+    <div class="rounded-xl overflow-hidden shadow-lg">
+      <iframe class="w-full h-80 md:h-96"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13281.01826384966!2d73.0551!3d33.6844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38df953d7f2d7ad3%3A0x8fb5c0a0a0!2sIslamabad!5e0!3m2!1sen!2s!4v1670000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="mt-4 flex flex-col sm:flex-row gap-3">
+      <a href="https://www.google.com/maps/place/Islamabad,+Pakistan/@33.6162509,72.7564306,10z/data=!3m1!4b1!4m6!3m5!1s0x38dfbfd07891722f:0x6059515c3bdb02b6!8m2!3d33.699619!4d73.036187!16zL20vMGRoZDU?entry=ttu&g_ep=EgoyMDI1MDkyMS4wIKXMDSoASAFQAw%3D%3D"
+         class="flex items-center justify-center text-sm bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-700 text-blue-800 dark:text-blue-200 p-3 rounded-lg transition">
+        <i class="fas fa-directions mr-2"></i> Get Directions
+      </a>
+      <a href="#" class="flex items-center justify-center text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 p-3 rounded-lg transition">
+        <i class="fas fa-download mr-2"></i> Download Location Details
+      </a>
+    </div>
+  </div>
+
+<!-- Fixed Chatbot Button -->
+<div id="chatbot-button" onclick="toggleChatbox()" class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg cursor-pointer z-50">
+<i class="fas fa-comment-dots text-2xl"></i>
+</div>
+
+
+<!-- Chatbot Window -->
+<div id="chatbox" class="hidden fixed bottom-20 right-6 w-96 max-h-[85vh] bg-white dark:bg-gray-900 rounded-2xl shadow-xl flex flex-col overflow-hidden z-50 border border-blue-300 dark:border-blue-700">
+<!-- Header -->
+<div class="bg-blue-600 text-white p-4 flex justify-between items-center">
+<span class="font-bold"><i class="fas fa-robot mr-2"></i> SahaaraX Assistant</span>
+<button onclick="toggleChatbox()" class="text-white hover:text-gray-300">
+<i class="fas fa-times"></i>
+</button>
+</div>
+
+
+<!-- Chat Area -->
+<div id="chatArea" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm bg-blue-50 dark:bg-gray-800"></div>
+
+
+<!-- FAQ Buttons (Dynamic) -->
+<div id="faqButtons" class="p-3 border-t dark:border-gray-700 bg-white dark:bg-gray-900 overflow-y-auto max-h-52 space-y-2">
+<!-- Buttons will be loaded dynamically -->
+</div>
+
+
+</div>
+</div>
+
+  <!-- Footer (optional input) -->
+  <div class="p-3 border-t dark:border-gray-700">
+    <input type="text" placeholder="Type your question..." class="w-full p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-sm text-gray-900 dark:text-white outline-none" />
+  </div>
+</div>
+</div>
+
+
+
+<!-- JavaScript -->
+<script>
+  const faqs = [
+    {
+      q: "What is SahaaraX?",
+      a: "SahaaraX is an AI-powered support system for women and children providing centralized therapy, shelter, and rehabilitation tools."
+    },
+    {
+      q: "How does the AI monitor emotional progress?",
+      a: "AI tracks therapy outcomes using emotional wellness tests, session feedback, and mood assessments to guide further support."
+    },
+    {
+      q: "Who can use the SahaaraX platform?",
+      a: "The system is built for rehabilitation centers, shelter homes, and welfare organizations aiding women and children."
+    },
+    {
+      q: "How does registration work for survivors?",
+      a: "Women fill out a registration form with personal, legal, and support details which is reviewed and approved by an admin."
+    },
+    {
+      q: "What are the modules in the system?",
+      a: "Modules include therapy, shelter, child support, legal help, skill training, self-awareness, AI recovery, and reintegration."
+    },
+    {
+      q: "Can children of survivors receive help too?",
+      a: "Yes. The system provides educational, emotional, and health support for children linked to the mother's profile."
+    },
+    {
+      q: "How is shelter space managed?",
+      a: "Admins can assign rooms with live dashboards tracking occupancy, availability, and any medical requirements."
+    },
+    {
+      q: "How is domestic violence recovery handled?",
+      a: "Dedicated therapy sessions, stress-relief exercises, AI-based progress reviews, and trauma tracking aid healing."
+    },
+    {
+      q: "Is legal help included in the app?",
+      a: "Yes. Admins assign appropriate legal support for cases like harassment, domestic abuse, and marriage disputes."
+    },
+    {
+      q: "How does skill training work?",
+      a: "Courses include digital and home-based skills with quizzes, videos, certification, and job placement assistance."
+    },
+    {
+      q: "Is there support for survivors of sexual abuse?",
+      a: "Yes. It includes therapy, confidence rebuilding, legal readiness, and secure evidence upload tools."
+    },
+    {
+      q: "What does the reintegration module include?",
+      a: "It summarizes a survivor’s journey and creates a reintegration plan with evaluation and exit readiness."
+    },
+    {
+      q: "Can survivors attend live awareness sessions?",
+      a: "Yes. Weekly self-awareness and health sessions build emotional strength and promote healing."
+    },
+    {
+      q: "What technology stack is used?",
+      a: "The system uses Flutter, Django REST, Firebase, React.js, TensorFlow Lite, and Firestore."
+    },
+    {
+      q: "Is user data safe?",
+      a: "Yes. Data is stored securely using anonymized IDs and only accessible to authorized counselors/admins."
+    },
+    {
+      q: "Can the system be accessed on mobile?",
+      a: "Yes. It supports both mobile and web platforms for staff and survivors."
+    },
+    {
+      q: "What if someone has no smartphone?",
+      a: "Staff members can assist in account creation and progress tracking from admin or counselor dashboards."
+    },
+    {
+      q: "What is the counselor dashboard?",
+      a: "A workspace for therapists to manage assigned cases, schedule sessions, and submit real-time feedback."
+    },
+    {
+      q: "How are doctors assigned for medical aid?",
+      a: "Admins can book appointments, upload prescriptions, and track medical records for each survivor."
+    },
+    {
+      q: "Is there any AI-based learning for children?",
+      a: "Yes. AI recommends learning material based on educational level and tracks emotional development."
+    },
+    {
+      q: "Can survivors upload legal evidence?",
+      a: "Yes. The system allows encrypted uploads of documents, audio, and screenshots safely."
+    },
+    {
+      q: "Is session attendance tracked?",
+      a: "Yes. The system tracks attendance for therapy, awareness, and training sessions automatically."
+    },
+    {
+      q: "Can survivors request specific services?",
+      a: "Yes. During registration, they choose which support areas they need like legal aid, shelter, etc."
+    },
+    {
+      q: "Does the system support progress reports?",
+      a: "Yes. AI generates recovery progress summaries using tests and therapist input."
+    },
+    {
+      q: "What happens after training is complete?",
+      a: "Admins assist in job referrals, issuing completion certificates, and monitoring readiness for exit."
+    },
+    {
+      q: "Is the platform multilingual?",
+      a: "Currently, it's primarily in English/Urdu. Multilingual support is planned for future versions."
+    },
+    {
+      q: "What are the main project stakeholders?",
+      a: "Final year students, supervisor Dr. Faheem, FYP committee, and Air University Islamabad."
+    },
+    {
+      q: "Can session feedback be recorded?",
+      a: "Yes. Counselors log their notes directly into the system per session."
+    },
+    {
+      q: "What happens if someone fails therapy?",
+      a: "The AI recommends continued support or shifting modules as needed to avoid premature reintegration."
+    },
+    {
+      q: "Can admins monitor everything centrally?",
+      a: "Yes. The admin dashboard controls all features, users, sessions, reports, and feedback."
+    },
+    {
+      q: "How are children registered?",
+      a: "Each child is linked to the woman's case profile and managed with a unique child entry form."
+    },
+    {
+      q: "Can survivors rate the sessions?",
+      a: "Not currently. Session ratings will be added to gather quality feedback."
+    },
+    {
+      q: "Does the app support offline mode?",
+      a: "No. Stable internet is required for accessing features and syncing progress."
+    },
+    {
+      q: "Can survivors edit their info?",
+      a: "Only admins can update profile data for security and verification reasons."
+    },
+    {
+      q: "How are room allotments handled?",
+      a: "Rooms are assigned via shelter module based on availability, needs, and duration."
+    },
+    {
+      q: "Are women notified about approvals?",
+      a: "Yes. System sends status updates via in-app notifications after review."
+    },
+    {
+      q: "Is there password reset?",
+      a: "Yes. Password management with reset and timeout is included in login module."
+    },
+    {
+      q: "How often are AI tests conducted?",
+      a: "AI tests are done monthly or at end of a therapy phase to evaluate mental recovery."
+    },
+    {
+      q: "Can staff be assigned roles?",
+      a: "Yes. Admins assign roles to therapists, legal support, and system operators."
+    },
+    {
+      q: "How does mood tracking work?",
+      a: "Therapists select pre/post-session moods like anxious, calm, etc., for emotional mapping."
+    },
+    {
+      q: "Can I track course progress?",
+      a: "Yes. Each course module tracks video watch time, quiz results, and final completion."
+    },
+    {
+      q: "What if a child has trauma?",
+      a: "Child counseling is offered for trauma or behavioral support with psychologists."
+    },
+    {
+      q: "Is feedback collected anonymously?",
+      a: "Not currently. But feedback modules will be updated to ensure privacy."
+    },
+    {
+      q: "Does the system have mockups?",
+      a: "Yes. Screens include login page, dashboards, forms, and mobile interface previews."
+    },
+    {
+      q: "Are reports downloadable?",
+      a: "Admin can export survivor recovery summaries and medical records."
+    },
+    {
+      q: "Is the app secure?",
+      a: "Yes. Hosting is done on Firebase/Render with HTTPS, encryption, and access control."
+    },
+    {
+      q: "Does AI help in job matching?",
+      a: "Yes. Based on skill training, AI can suggest appropriate job referrals."
+    },
+    {
+      q: "What if sessions are missed?",
+      a: "System alerts counselors to follow-up and reschedule if needed."
+    },
+    {
+      q: "Are session types customizable?",
+      a: "Yes. Admins can create custom session types or therapy categories."
+    },
+    {
+      q: "Is the system scalable?",
+      a: "Yes. Designed to support multi-center operations across different regions."
+    },
+    {
+      q: "Who verifies user submissions?",
+      a: "Admins review each registration and case intake form before approval."
+    },
+    {
+      q: "Can platform handle emergency cases?",
+      a: "Yes. Emergency medical module is designed for fast response and doctor assignment."
+    }
+  ];
+
+  function toggleChatbox() {
+    document.getElementById("chatbox").classList.toggle("hidden");
+  }
+
+  function showTypingThenAnswer(question, answer) {
+    const chatArea = document.getElementById("chatArea");
+
+    const userMsg = document.createElement("div");
+    userMsg.className = "bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100 p-3 rounded-xl max-w-[90%] self-end ml-auto";
+    userMsg.textContent = "💬 " + question;
+    chatArea.appendChild(userMsg);
+    chatArea.scrollTop = chatArea.scrollHeight;
+
+    const typing = document.createElement("div");
+    typing.className = "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white p-3 rounded-xl max-w-[90%] typing-bubble";
+    typing.textContent = "🤖 Typing...";
+    chatArea.appendChild(typing);
+    chatArea.scrollTop = chatArea.scrollHeight;
+
+    setTimeout(() => {
+      typing.remove();
+      const botMsg = document.createElement("div");
+      botMsg.className = "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white p-3 rounded-xl max-w-[90%]";
+      botMsg.textContent = "🤖 " + answer;
+      chatArea.appendChild(botMsg);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }, 1000);
+  }
+
+  window.onload = function () {
+    const faqButtons = document.getElementById("faqButtons");
+    faqs.forEach((item) => {
+      const btn = document.createElement("button");
+      btn.className = "w-full text-left bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 px-3 py-2 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition";
+      btn.textContent = "❓ " + item.q;
+      btn.onclick = () => showTypingThenAnswer(item.q, item.a);
+      faqButtons.appendChild(btn);
+    });
+  };
+</script>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+{% endblock %}

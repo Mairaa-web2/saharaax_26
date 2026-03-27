@@ -1,0 +1,150 @@
+<div class="bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-gray-900 p-8 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 relative overflow-hidden">
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-10 dark:opacity-5">
+    <div class="absolute top-0 left-0 w-32 h-32 bg-blue-300 rounded-full -translate-x-16 -translate-y-16"></div>
+    <div class="absolute bottom-0 right-0 w-40 h-40 bg-purple-300 rounded-full translate-x-20 translate-y-20"></div>
+    <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-pink-300 rounded-full"></div>
+  </div>
+
+  <!-- Session Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 relative z-10">
+    <h4 class="text-3xl font-bold text-gray-800 dark:text-white mb-3 sm:mb-0 pr-4">{{ sess.title }}</h4>
+    <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold shadow-md
+                 {% if sess.category == 'Health Awareness' %}
+                   bg-gradient-to-r from-green-100 to-green-200 text-green-800 dark:from-green-800 dark:to-green-900 dark:text-green-200
+                 {% elif sess.category == 'Self Awareness' %}
+                   bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 dark:from-blue-800 dark:to-blue-900 dark:text-blue-200
+                 {% else %}
+                   bg-gradient-to-r from-pink-100 to-pink-200 text-pink-800 dark:from-pink-800 dark:to-pink-900 dark:text-pink-200
+                 {% endif %}">
+      <i class="fas
+        {% if sess.category == 'Health Awareness' %} fa-heartbeat
+        {% elif sess.category == 'Self Awareness' %} fa-brain
+        {% else %} fa-star {% endif %}
+        mr-2"></i>
+      {{ sess.category }}
+    </span>
+  </div>
+
+  <!-- Counselor Info -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600 dark:text-gray-300 mb-6 relative z-10">
+    <div class="flex items-center p-3 bg-white dark:bg-gray-700/50 rounded-xl shadow-sm">
+      <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3">
+        <i class="fas fa-user text-blue-500"></i>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Counselor</p>
+        <p class="font-medium text-gray-800 dark:text-white">{{ sess.counselor_email }}</p>
+      </div>
+    </div>
+
+    <div class="flex items-center p-3 bg-white dark:bg-gray-700/50 rounded-xl shadow-sm">
+      <div class="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mr-3">
+        <i class="fas fa-calendar text-purple-500"></i>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Created</p>
+        <p class="font-medium text-gray-800 dark:text-white">{{ sess.created_at }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Details -->
+  <div class="bg-white dark:bg-gray-700/30 p-5 rounded-2xl shadow-sm mb-6 relative z-10">
+    <div class="flex items-center mb-3">
+      <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mr-3">
+        <i class="fas fa-info-circle text-indigo-500"></i>
+      </div>
+      <h5 class="font-semibold text-gray-800 dark:text-white">Session Details</h5>
+    </div>
+    <p class="text-gray-700 dark:text-gray-300 leading-relaxed pl-11">
+      {{ sess.details }}
+    </p>
+  </div>
+
+  <!-- Zoom Link -->
+  {% if sess.zoom_link %}
+    <div class="mb-8 relative z-10">
+      <a href="{{ sess.zoom_link }}" target="_blank"
+         class="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105">
+        <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+          <i class="fas fa-video"></i>
+        </div>
+        <span>Join Zoom Meeting</span>
+        <i class="fas fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+      </a>
+    </div>
+  {% endif %}
+
+  <!-- Invited Users -->
+  <div class="relative z-10">
+    <h5 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+        <i class="fas fa-users text-pink-500"></i>
+      </div>
+      Invited Users
+    </h5>
+
+    {% if invited_users %}
+      <div class="space-y-4">
+        {% for uid, u in invited_users.items() %}
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-white dark:bg-gray-700 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            <div class="flex items-center gap-4 mb-3 sm:mb-0">
+              <div class="relative">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-700 dark:to-blue-800 flex items-center justify-center shadow-inner">
+                  <i class="fas fa-user text-blue-600 dark:text-white"></i>
+                </div>
+                {% if u.present %}
+                  <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800 flex items-center justify-center">
+                    <i class="fas fa-check text-white text-xs"></i>
+                  </div>
+                {% endif %}
+              </div>
+              <div>
+                <p class="font-medium text-gray-800 dark:text-white">{{ u.name }}</p>
+                <p class="text-xs text-gray-500">{{ u.email }}</p>
+              </div>
+            </div>
+            <span class="self-start sm:self-auto px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm
+                         {% if u.present %}
+                           bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-300
+                         {% else %}
+                           bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-300
+                         {% endif %}">
+              {% if u.present %}
+                <i class="fas fa-check-circle mr-1"></i> Present
+              {% else %}
+                <i class="fas fa-times-circle mr-1"></i> Not Present
+              {% endif %}
+            </span>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-8 bg-white dark:bg-gray-700/30 rounded-2xl shadow-sm">
+        <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 mx-auto flex items-center justify-center mb-4">
+          <i class="fas fa-user-plus text-gray-400"></i>
+        </div>
+        <p class="text-gray-500 dark:text-gray-400">No invited users yet.</p>
+        <p class="text-sm text-gray-400 mt-1">Invite users to join this session</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .relative.z-10 > * {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .relative.z-10 > *:nth-child(1) { animation-delay: 0.1s; }
+  .relative.z-10 > *:nth-child(2) { animation-delay: 0.2s; }
+  .relative.z-10 > *:nth-child(3) { animation-delay: 0.3s; }
+  .relative.z-10 > *:nth-child(4) { animation-delay: 0.4s; }
+  .relative.z-10 > *:nth-child(5) { animation-delay: 0.5s; }
+</style>

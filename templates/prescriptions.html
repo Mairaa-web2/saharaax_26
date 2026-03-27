@@ -1,0 +1,92 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+<div class="space-y-6 animate-fade-in">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Prescriptions</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        View and open all prescription images uploaded for medical appointments.
+      </p>
+    </div>
+  </div>
+
+  {% if prescriptions %}
+  <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-blue-100 dark:border-dark-700 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-blue-50 dark:bg-dark-800/90 border-b border-blue-100 dark:border-dark-700 text-left">
+        <tr>
+          <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">#</th>
+          <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">User</th>
+          <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Doctor</th>
+          <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Created At</th>
+          <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Preview</th>
+          <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 text-right">Action</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 dark:divide-dark-700">
+        {% for pres in prescriptions %}
+          <tr class="hover:bg-blue-50/40 dark:hover:bg-dark-800/60">
+            <td class="px-5 py-3 text-gray-700 dark:text-gray-200">{{ loop.index }}</td>
+
+            <td class="px-5 py-3">
+              <div class="font-medium text-gray-800 dark:text-gray-100">
+                {{ pres.user_name or 'Unknown User' }}
+              </div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">
+                {{ pres.user_email or '' }}
+              </div>
+            </td>
+
+            <td class="px-5 py-3 text-gray-700 dark:text-gray-200">
+              {{ pres.doctor_name or '—' }}
+            </td>
+
+            <td class="px-5 py-3 text-xs text-gray-600 dark:text-gray-300">
+              {{ pres.created_at or pres.timestamp or '—' }}
+            </td>
+
+            <td class="px-5 py-3">
+              {% if pres.image_base64 %}
+                <div class="w-20 h-16 rounded-md overflow-hidden border border-gray-200 dark:border-dark-600 bg-gray-900">
+                  <img
+                    src="{{ url_for('prescription_image', prescription_id=pres.id) }}"
+                    alt="Prescription"
+                    class="w-full h-full object-cover"
+                  >
+                </div>
+              {% else %}
+                <span class="text-xs text-amber-500">No image</span>
+              {% endif %}
+            </td>
+
+            <td class="px-5 py-3 text-right">
+              {% if pres.image_base64 %}
+                <a
+                  href="{{ url_for('prescription_image', prescription_id=pres.id) }}"
+                  target="_blank"
+                  class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold border border-primary-300 text-primary-700 bg-primary-50 hover:bg-primary-100"
+                >
+                  <i class="fa fa-up-right-from-square mr-1"></i> View Image
+                </a>
+              {% else %}
+                <span class="text-xs text-gray-400">—</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+    <div class="bg-white dark:bg-dark-800 border border-dashed border-gray-300 dark:border-dark-600 rounded-2xl p-6 text-center text-gray-500 dark:text-gray-400">
+      <i class="fa fa-file-circle-xmark text-2xl mb-2 text-gray-400"></i>
+      <p>No prescriptions found.</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

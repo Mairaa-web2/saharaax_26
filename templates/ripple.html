@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Ripple Grid Background</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+    :root {
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --accent: #ec4899;
+      --dark: #0a0a23;
+      --darker: #050518;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+      font-family: 'Rajdhani', sans-serif;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .universe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 5s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    .grid-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    .grid-plane {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background-image:
+        radial-gradient(circle at 25% 25%, var(--primary) 1px, transparent 3px),
+        radial-gradient(circle at 75% 75%, var(--secondary) 1px, transparent 3px);
+      background-size: 80px 80px;
+      transform: translate(-25%, -25%) perspective(500px) rotateX(65deg);
+      animation: gridMove 15s ease-in-out infinite alternate;
+      opacity: 0.2;
+    }
+
+    .grid-plane:nth-child(2) {
+      background-image:
+        radial-gradient(circle at 75% 25%, var(--accent) 1px, transparent 2px),
+        radial-gradient(circle at 25% 75%, var(--secondary) 1px, transparent 2px);
+      background-size: 60px 60px;
+      animation-delay: -5s;
+      opacity: 0.15;
+    }
+
+    .grid-plane:nth-child(3) {
+      background-image:
+        radial-gradient(circle at center, var(--primary) 1px, transparent 1px);
+      background-size: 100px 100px;
+      animation-delay: -10s;
+      opacity: 0.1;
+    }
+
+    @keyframes gridMove {
+      0% {
+        transform: translate(-25%, -25%) perspective(500px) rotateX(65deg) scale(1) rotate(0deg);
+      }
+      33% {
+        transform: translate(-30%, -20%) perspective(500px) rotateX(65deg) scale(1.1) rotate(1deg);
+      }
+      66% {
+        transform: translate(-20%, -30%) perspective(500px) rotateX(65deg) scale(1.05) rotate(-1deg);
+      }
+      100% {
+        transform: translate(-25%, -25%) perspective(500px) rotateX(65deg) scale(1.2) rotate(0deg);
+      }
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid rgba(99, 102, 241, 0.5);
+      transform: translate(-50%, -50%) scale(0);
+      animation: rippleEffect 6s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rippleEffect {
+      to {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+      }
+    }
+
+    .pulse {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      animation: pulseEffect 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseEffect {
+      0% {
+        width: 0;
+        height: 0;
+        opacity: 0.7;
+      }
+      100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+      }
+    }
+
+    .content {
+      position: relative;
+      z-index: 20;
+      text-align: center;
+      padding: 3rem;
+      background: rgba(10, 10, 35, 0.4);
+      backdrop-filter: blur(12px);
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      max-width: 90%;
+      width: 800px;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #fff 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .button {
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      margin: 0 0.5rem;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      border: none;
+      color: white;
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 35px rgba(99, 102, 241, 0.7);
+    }
+
+    .secondary-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(10px);
+    }
+
+    .secondary-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: rgba(236, 72, 153, 0.2);
+      border: 1px solid rgba(236, 72, 153, 0.3);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(5px);
+    }
+
+    .controls {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 30;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .control-btn {
+      padding: 0.7rem 1.2rem;
+      background: rgba(10, 10, 35, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+      background: rgba(99, 102, 241, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        margin: 0.3rem;
+      }
+
+      .content {
+        padding: 2rem;
+      }
+
+      .controls {
+        bottom: 1rem;
+        right: 1rem;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Universe with stars -->
+  <div class="universe" id="universe"></div>
+
+  <!-- Grid Container -->
+  <div class="grid-container">
+    <div class="grid-plane"></div>
+    <div class="grid-plane"></div>
+    <div class="grid-plane"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="badge">🌟 Premium Ripple Grid Experience</div>
+    <h1>IMMERSIVE RIFFLE GRID</h1>
+    <p class="tagline">A mesmerizing fusion of retro aesthetics and futuristic design with dynamic ripple effects</p>
+    <div>
+      <button class="button primary-btn">EXPLORE NOW</button>
+      <button class="button secondary-btn">VIEW DEMOS</button>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="control-btn" id="modeToggle">DARK MODE</button>
+    <button class="control-btn" id="effectToggle">REDUCE EFFECTS</button>
+  </div>
+
+  <script>
+    // Create stars
+    const universe = document.getElementById('universe');
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.width = Math.random() * 3 + 'px';
+      star.style.height = star.style.width;
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 5 + 's';
+      universe.appendChild(star);
+    }
+
+    // Create ripples on click
+    document.addEventListener('click', function(e) {
+      createRipple(e.clientX, e.clientY);
+      createPulse(e.clientX, e.clientY);
+    });
+
+    // Auto-generate ripples
+    setInterval(() => {
+      const x = 50 + Math.random() * 50;
+      const y = 50 + Math.random() * 50;
+      createRipple(x + '%', y + '%');
+    }, 2000);
+
+    setInterval(() => {
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      createPulse(x + '%', y + '%');
+    }, 1500);
+
+    function createRipple(x, y) {
+      const ripple = document.createElement('div');
+      ripple.classList.add('ripple');
+      ripple.style.left = x;
+      ripple.style.top = y;
+      ripple.style.width = (50 + Math.random() * 100) + 'px';
+      ripple.style.height = ripple.style.width;
+      document.body.appendChild(ripple);
+
+      setTimeout(() => {
+        ripple.remove();
+      }, 6000);
+    }
+
+    function createPulse(x, y) {
+      const pulse = document.createElement('div');
+      pulse.classList.add('pulse');
+      pulse.style.left = x;
+      pulse.style.top = y;
+      document.body.appendChild(pulse);
+
+      setTimeout(() => {
+        pulse.remove();
+      }, 4000);
+    }
+
+    // Mode toggle
+    const modeToggle = document.getElementById('modeToggle');
+    let isDarkMode = true;
+
+    modeToggle.addEventListener('click', function() {
+      isDarkMode = !isDarkMode;
+
+      if (isDarkMode) {
+        document.body.style.background = 'linear-gradient(135deg, #050518 0%, #0a0a23 100%)';
+        modeToggle.textContent = 'DARK MODE';
+      } else {
+        document.body.style.background = 'linear-gradient(135deg, #2a2a4a 0%, #4a4a7a 100%)';
+        modeToggle.textContent = 'LIGHT MODE';
+      }
+    });
+
+    // Effects toggle
+    const effectToggle = document.getElementById('effectToggle');
+    let reducedMotion = false;
+
+    effectToggle.addEventListener('click', function() {
+      reducedMotion = !reducedMotion;
+
+      if (reducedMotion) {
+        document.querySelectorAll('.grid-plane').forEach(plane => {
+          plane.style.animation = 'none';
+        });
+        effectToggle.textContent = 'MORE EFFECTS';
+      } else {
+        document.querySelectorAll('.grid-plane').forEach(plane => {
+          plane.style.animation = '';
+        });
+        effectToggle.textContent = 'REDUCE EFFECTS';
+      }
+    });
+  </script>
+
+</body>
+</html>

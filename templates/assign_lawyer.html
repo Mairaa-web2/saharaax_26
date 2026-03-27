@@ -1,0 +1,36 @@
+{% extends "base_admin.html" %}
+{% block title %}Assign Lawyer{% endblock %}
+{% block header %}Assign Lawyer{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+  <h2 class="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-800 dark:text-white">
+    <i class="fas fa-user-tie text-blue-600"></i> Assign Lawyer to: {{ user.name }}
+  </h2>
+
+  <div class="mb-6 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-sm">
+    <p><strong>👤 CNIC:</strong> {{ user.cnic }}</p>
+    <p><strong>📧 Email:</strong> {{ user.email }}</p>
+    <p><strong>📄 Case Details:</strong> {{ user.description }}</p>
+  </div>
+
+  <form method="POST" class="space-y-4">
+    <div>
+      <label class="block text-sm font-semibold mb-1">Lawyer Name</label>
+      <input type="text" name="lawyer_name"
+             class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+    </div>
+
+    <div>
+      <label class="block text-sm font-semibold mb-1">Lawyer Email</label>
+      <input type="email" name="lawyer_email"
+             class="w-full border p-2 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+    </div>
+
+    <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow transition">
+      <i class="fas fa-paper-plane mr-1"></i> Assign Lawyer
+    </button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends "base_counseling.html" %}
+
+{% block title %}User Test Results{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 py-10">
+    <div class="max-w-6xl mx-auto px-4 space-y-8">
+
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="{{ url_for('counseling_dashboard') }}"
+                   class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-sky-500/20 text-sky-200 text-sm hover:bg-sky-500/30 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-white">
+                        {{ user.name }} – Test Results
+                    </h1>
+                    <p class="text-sky-300 text-sm flex items-center gap-2">
+                        <i class="fas fa-envelope"></i> {{ user.email }}
+                        {% if assignment %}
+                            <span class="mx-2 text-slate-500">|</span>
+                            <span class="inline-flex items-center gap-1 text-xs bg-sky-500/20 text-sky-200 px-2.5 py-1 rounded-full border border-sky-400/50">
+                                <i class="fas fa-hand-holding-heart"></i>
+                                {{ assignment.counseling }}
+                            </span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Small stats badges -->
+            <div class="flex flex-wrap gap-2 justify-start md:justify-end">
+                <div class="px-3 py-2 rounded-xl bg-slate-800/80 border border-sky-500/40 text-sky-100 text-xs">
+                    Classes: <span class="font-semibold">{{ completed_classes }}/{{ total_classes }}</span>
+                </div>
+                <div class="px-3 py-2 rounded-xl bg-slate-800/80 border border-emerald-500/40 text-emerald-100 text-xs">
+                    Tests uploaded: <span class="font-semibold">{{ tests_count }}</span>
+                </div>
+                <div class="px-3 py-2 rounded-xl bg-slate-800/80 border border-emerald-500/40 text-emerald-100 text-xs">
+                    Cleared: <span class="font-semibold">{{ completed_tests }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2 columns -->
+        <div class="grid gap-6 lg:grid-cols-3">
+            <!-- LEFT: Classes history -->
+            <div class="lg:col-span-1 space-y-4">
+                <div class="rounded-3xl bg-slate-900/80 border border-sky-500/30 shadow-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <span class="w-9 h-9 rounded-xl bg-sky-500/30 flex items-center justify-center">
+                                <i class="fas fa-chalkboard-user text-sky-200"></i>
+                            </span>
+                            Class History
+                        </h2>
+                        <span class="text-xs text-sky-300">
+                            {{ total_classes }} total · {{ completed_classes }} completed
+                        </span>
+                    </div>
+
+                    {% if classes %}
+                    <div class="max-h-[380px] overflow-y-auto space-y-3 pr-1">
+                        {% for c in classes %}
+                        <div class="rounded-2xl bg-slate-800/70 border border-slate-600/60 px-4 py-3 text-xs text-slate-100 flex flex-col gap-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="font-semibold">
+                                    Class {{ loop.length - loop.index0 }}
+                                </span>
+                                {% set st = c.status | default('Scheduled') | lower %}
+                                {% if st == 'completed' %}
+                                    <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-500/40 text-[11px]">
+                                        ✅ Completed
+                                    </span>
+                                {% elif st == 'ongoing' %}
+                                    <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-500/40 text-[11px]">
+                                        ⏱ Ongoing
+                                    </span>
+                                {% else %}
+                                    <span class="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-200 border border-sky-500/40 text-[11px]">
+                                        📅 Scheduled
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-300">
+                                <span><i class="far fa-calendar"></i> {{ c.date or '—' }}</span>
+                                <span><i class="far fa-clock"></i> {{ c.time or '—' }}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-slate-400">
+                                <span>Start: {{ c.start_time or '—' }}</span>
+                                <span>End: {{ c.end_time or '—' }}</span>
+                                <span>Attendance: {{ c.attendance_count or 0 }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="rounded-2xl bg-slate-800/70 border border-slate-700/60 px-4 py-6 text-center text-slate-400 text-sm">
+                        No classes found yet for this user with you.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- RIGHT: Tests upload + history -->
+            <div class="lg:col-span-2 space-y-4">
+                <!-- NEW TEST UPLOAD -->
+                <div class="rounded-3xl bg-slate-900/80 border border-emerald-500/40 shadow-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <span class="w-9 h-9 rounded-xl bg-emerald-500/30 flex items-center justify-center">
+                                <i class="fas fa-file-medical text-emerald-100"></i>
+                            </span>
+                            Upload New Test Result
+                        </h2>
+                        <span class="text-xs text-slate-400">
+                            Today: {{ datetime.utcnow().strftime("%Y-%m-%d") if false else "" }}
+                        </span>
+                    </div>
+
+                    <form action="{{ url_for('counseling_user_tests', user_id=user_id) }}"
+                          method="post"
+                          enctype="multipart/form-data"
+                          class="space-y-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[11px] text-slate-300 mb-1">
+                                    Select status
+                                </label>
+                                <select name="result_status"
+                                        class="w-full rounded-xl bg-slate-900/80 border border-slate-600/70 px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-500">
+                                    <option value="clear">✅ Cleared</option>
+                                    <option value="not_clear">⚠️ Not Cleared</option>
+                                    <option value="continue">🔁 Continue Sessions</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-300 mb-1">
+                                    Test file (PDF / CSV / Image / Doc)
+                                </label>
+                                <input type="file" name="result_file"
+                                       class="block w-full text-[11px] text-slate-200 file:text-xs file:px-2 file:py-1 file:rounded-lg file:border-0 file:bg-emerald-500/80 file:text-white file:cursor-pointer bg-slate-900/80 border border-slate-600/70 rounded-xl cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] text-slate-300 mb-1">
+                                Counselor comments / observation
+                            </label>
+                            <textarea name="comment" rows="3"
+                                      class="w-full rounded-xl bg-slate-900/80 border border-slate-600/70 px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-500"
+                                      placeholder="Write your professional observation about this test result..."></textarea>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit"
+                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-sky-500 text-white text-xs font-semibold shadow-lg hover:from-emerald-400 hover:to-sky-400 transition-transform transform hover:-translate-y-0.5">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Save result
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TESTS HISTORY -->
+                <div class="rounded-3xl bg-slate-900/80 border border-sky-500/30 shadow-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                            <span class="w-9 h-9 rounded-xl bg-sky-500/30 flex items-center justify-center">
+                                <i class="fas fa-history text-sky-100"></i>
+                            </span>
+                            Previous Test Results
+                        </h2>
+                        <span class="text-xs text-slate-400">
+                            {{ tests_count }} record{{ '' if tests_count == 1 else 's' }}
+                        </span>
+                    </div>
+
+                    {% if tests %}
+                    <div class="space-y-4 max-h-[420px] overflow-y-auto pr-1">
+                        {% for t in tests %}
+                        <div class="rounded-2xl bg-slate-800/80 border border-slate-600/70 p-4 text-sm text-slate-100">
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900/80 text-slate-100 border border-slate-600/60">
+                                    {{ t.created_at or 'Date unknown' }}
+                                </span>
+
+                                {% set st = t.status | default('continue') | lower %}
+                                {% if st == 'clear' %}
+                                    <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-100 border border-emerald-400/50">
+                                        ✅ Cleared
+                                    </span>
+                                {% elif st == 'not_clear' %}
+                                    <span class="text-xs px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-100 border border-rose-400/50">
+                                        ⚠️ Not Cleared
+                                    </span>
+                                {% else %}
+                                    <span class="text-xs px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-100 border border-amber-400/50">
+                                        🔁 Continue Sessions
+                                    </span>
+                                {% endif %}
+
+                                <span class="text-[11px] text-slate-400 ml-auto">
+                                    {{ t.counselor_name }}
+                                </span>
+                            </div>
+
+                            {% if t.comment %}
+                            <div class="mb-3 text-xs">
+                                <p class="text-slate-400 mb-1">Comment:</p>
+                                <div class="rounded-xl bg-slate-900/70 border border-slate-600/60 px-3 py-2 text-[11px] text-slate-200 whitespace-pre-wrap">
+                                    {{ t.comment }}
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% if t.file_path %}
+                            <div class="mb-1 text-xs">
+                                <p class="text-slate-400 mb-1">Attached file:</p>
+                                {% set att = t.file_path %}
+                                {% set att_lower = att.lower() %}
+                                <div class="rounded-xl bg-slate-900/70 border border-slate-600/60 px-3 py-2">
+                                    <a href="{{ url_for('static', filename=att) }}" target="_blank"
+                                       class="inline-flex items-center gap-2 text-sky-300 hover:text-sky-200 text-xs">
+                                        <i class="fas fa-paperclip"></i>
+                                        {{ t.file_original_name or 'Download file' }}
+                                    </a>
+
+                                    {% if att_lower.endswith('.png') or att_lower.endswith('.jpg') or att_lower.endswith('.jpeg') or att_lower.endswith('.gif') or att_lower.endswith('.webp') %}
+                                        <div class="mt-2">
+                                            <img src="{{ url_for('static', filename=att) }}"
+                                                 alt="Attachment preview"
+                                                 class="max-h-40 rounded-lg border border-slate-700 object-contain">
+                                        </div>
+                                    {% elif att_lower.endswith('.pdf') %}
+                                        <div class="mt-2">
+                                            <embed src="{{ url_for('static', filename=att) }}" type="application/pdf"
+                                                   class="w-full h-40 rounded-lg border border-slate-700" />
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="rounded-2xl bg-slate-800/80 border border-slate-700/70 px-4 py-10 text-center text-slate-400 text-sm">
+                        No test results uploaded yet for this user.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if saved %}
+    <!-- Success overlay + redirect -->
+    <div id="successOverlay"
+         class="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+        <div class="bg-slate-900/90 border border-emerald-500/60 rounded-3xl px-10 py-8 text-center shadow-2xl animate-[scale_0.3s_ease-out]">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center">
+                <i class="fas fa-check text-3xl text-emerald-300"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-emerald-100 mb-1">Saved successfully</h3>
+            <p class="text-xs text-slate-300 mb-4">
+                Test result & comment saved. Redirecting back to dashboard...
+            </p>
+            <div class="w-32 h-1 rounded-full bg-slate-800 overflow-hidden mx-auto">
+                <div class="h-full bg-emerald-400 animate-[loadingBar_1.8s_linear_forwards]"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes loadingBar {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        @keyframes scale {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <script>
+        setTimeout(function () {
+            window.location.href = "{{ url_for('counseling_dashboard') }}";
+        }, 2000);
+    </script>
+    {% endif %}
+</div>
+{% endblock %}

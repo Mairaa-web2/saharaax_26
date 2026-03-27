@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin · SahaaraX</title>
+  <!-- Tailwind + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- subtle google font for extra polish -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .bg-image {
+  background-image: url('/static/sup/sup.jpg');
+  background-size: cover;
+  background-position: center -10%;
+  background-repeat: no-repeat;
+}
+    /* soft gradient overlay for depth & readability */
+    .overlay-glow {
+      background: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.2) 0%, rgba(0,40,80,0.3) 100%);
+    }
+    .input-ring {
+      transition: all 0.15s ease;
+    }
+    .input-ring:focus {
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2), 0 2px 6px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-image relative m-0 p-0">
+
+  <!-- darker overlay to make the white card pop, but still show image texture -->
+  <div class="absolute inset-0 bg-black/20 overlay-glow"></div>
+
+  <!-- main card – extra refined, floating glass -->
+  <div class="relative z-10 w-full max-w-md mx-4">
+    <div class="glass-effect rounded-3xl shadow-2xl p-8 md:p-9 text-gray-800">
+
+      <!-- top emblem / shield with modern gradient -->
+      <div class="text-center mb-7">
+        <div class="mx-auto w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-700 to-indigo-600 flex items-center justify-center shadow-xl mb-4 ring-4 ring-white/30">
+          <i class="fa-solid fa-shield-halved text-white text-3xl drop-shadow-md"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Super Admin</h1>
+        <p class="text-gray-500/90 text-[0.95rem] font-medium mt-1.5">SahaaraX · master control</p>
+        <div class="w-12 h-1 bg-gradient-to-r from-blue-500/60 to-indigo-400/60 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <!-- flash messages (elegant) -->
+      <!-- using static demo (no backend) — but keeping flask syntax for your context.
+           for static preview I'll show a clean info hint. you can replace with real flashed messages -->
+      <div class="space-y-3 mb-6">
+
+        <!-- this block will be replaced by real flashed messages in your actual template
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="rounded-xl px-5 py-3.5 text-sm font-medium
+                {% if category == 'success' %}bg-emerald-50/90 text-emerald-800 border border-emerald-200/80
+                {% elif category == 'danger' %}bg-rose-50/90 text-rose-800 border border-rose-200/80
+                {% else %}bg-blue-50/90 text-blue-800 border border-blue-200/80{% endif %}
+                backdrop-blur-sm flex items-center gap-3 shadow-sm">
+                <i class="fa-regular {% if category == 'success' %}fa-circle-check text-emerald-600{% elif category == 'danger' %}fa-circle-exclamation text-rose-600{% else %}fa-info-circle text-blue-600{% endif %}"></i>
+                <span>{{ message }}</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        -->
+      </div>
+
+      <!-- login form -->
+      <form method="POST" class="space-y-5">
+        <div class="space-y-4">
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"><i class="fa-regular fa-envelope"></i></span>
+            <input type="email" name="email" required placeholder="Official email"
+                   class="w-full pl-11 pr-5 py-4 rounded-xl border-0 bg-white/70 backdrop-blur-sm shadow-inner ring-1 ring-gray-200/80 input-ring focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400/80 text-gray-700">
+          </div>
+          <div class="relative">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"><i class="fa-regular fa-lock"></i></span>
+            <input type="password" name="password" required placeholder="Master password"
+                   class="w-full pl-11 pr-5 py-4 rounded-xl border-0 bg-white/70 backdrop-blur-sm shadow-inner ring-1 ring-gray-200/80 input-ring focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400/80 text-gray-700">
+          </div>
+        </div>
+
+        <button type="submit"
+                class="group relative w-full py-4 rounded-xl bg-gradient-to-r from-blue-800 to-indigo-800 text-white font-semibold text-base shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99] transition-all duration-200 overflow-hidden">
+          <span class="absolute inset-0 bg-white/10 group-hover:bg-white/5 transition-all"></span>
+          <span class="relative flex items-center justify-center gap-3">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            Access secure dashboard
+          </span>
+        </button>
+      </form>
+
+      <!-- subtle footer credibility mark -->
+      <div class="mt-8 text-center text-xs text-gray-400/80 font-medium flex items-center justify-center gap-3">
+        <i class="fa-regular fa-clock"></i> 256‑bit encryption
+        <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+        <i class="fa-regular fa-building"></i> SahaaraX internal
+      </div>
+    </div>
+    <!-- tiny note: bg image credit unsplash (wheat field) for luxury/clean feel -->
+    <p class="text-center text-xs text-white/40 mt-6 tracking-wide">© SahaaraX · secure gateway</p>
+  </div>
+
+  <!-- optional extra polish: floating glass layer behind card? already glass, fine -->
+</body>
+</html>

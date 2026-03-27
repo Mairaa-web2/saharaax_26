@@ -1,0 +1,613 @@
+{% extends "base_admin.html" %}
+{% block title %}User Overall Report - {{ user.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-8 px-4 space-y-8">
+
+  <!-- Top Header -->
+  <div class="flex items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <i class="fas fa-user-circle text-blue-500"></i>
+        Overall Report – {{ user.name }}
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        User ID: <span class="font-mono">{{ user_id }}</span>
+      </p>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Email: <span class="font-semibold">{{ user.email }}</span> | Contact: {{ user.contact_number }}
+      </p>
+    </div>
+
+    <div class="flex flex-col items-end gap-2">
+      <a href="{{ url_for('dashboard') }}"
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-semibold">
+        <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+      </a>
+      <button onclick="window.print()"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold">
+        <i class="fas fa-print"></i> Print Report
+      </button>
+    </div>
+  </div>
+
+  <!-- Basic & Shelter Info -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Basic Profile -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 space-y-3">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2 border-b pb-2">
+        <i class="fas fa-id-card-alt text-blue-500"></i> Basic Profile
+      </h2>
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-2 text-sm">
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Name</dt>
+          <dd class="font-medium text-gray-900 dark:text-gray-100">{{ user.name }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Father Name</dt>
+          <dd class="font-medium text-gray-900 dark:text-gray-100">{{ user.father_name }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Gender</dt>
+          <dd class="font-medium text-gray-900 dark:text-gray-100">{{ user.gender }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Age</dt>
+          <dd class="font-medium text-gray-900 dark:text-gray-100">{{ user.age }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Marital Status</dt>
+          <dd class="font-medium text-gray-900 dark:text-gray-100">{{ user.marital_status }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Current Location</dt>
+          <dd class="font-medium text-gray-900 dark:text-gray-100 text-right">{{ user.current_location }}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Shelter / Room Info -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 space-y-3">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2 border-b pb-2">
+        <i class="fas fa-home text-purple-500"></i> Shelter & Room
+      </h2>
+
+      {% if room %}
+      <dl class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Room Number</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">
+            {{ room.room_number }} (Floor {{ room.floor }})
+          </dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Beds (Available / Total)</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">
+            {{ room.available_beds }} / {{ room.bed_count }}
+          </dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Shelter Status</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">
+            {{ user.shelter_status|default('N/A')|title }}
+          </dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Start Date</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">{{ user.shelter_start_date }}</dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Expiry Date</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">{{ user.shelter_expiry_date }}</dd>
+        </div>
+      </dl>
+      {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        No room assigned to this user.
+      </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Counseling Assignments -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+        <i class="fas fa-hand-holding-heart text-pink-500"></i> Counseling Assignments
+      </h2>
+      <span class="text-xs px-3 py-1 rounded-full bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-blue-300 font-semibold">
+        {{ assignments|length }} assignment(s)
+      </span>
+    </div>
+
+    {% if assignments %}
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+          <tr>
+            <th class="px-3 py-2 text-left">Counselor</th>
+            <th class="px-3 py-2 text-left">Counseling Type</th>
+            <th class="px-3 py-2 text-left">Assigned At</th>
+            <th class="px-3 py-2 text-left">Assignment ID</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          {% for a in assignments %}
+          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+            <td class="px-3 py-2">
+              <div class="font-semibold text-gray-900 dark:text-gray-100">{{ a.counselor_name }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ a.counselor_email }}</div>
+            </td>
+            <td class="px-3 py-2 text-gray-800 dark:text-gray-100">
+              {{ a.counseling }}
+            </td>
+            <td class="px-3 py-2 text-gray-700 dark:text-gray-200">
+              {{ a.timestamp }}
+            </td>
+            <td class="px-3 py-2 text-xs font-mono text-gray-500 dark:text-gray-400">
+              {{ a.assignment_id }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-sm text-gray-500 dark:text-gray-400">No counselor assignments found for this user.</p>
+    {% endif %}
+  </div>
+
+  <!-- Counseling Classes History -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+        <i class="fas fa-chalkboard-teacher text-green-500"></i> Counseling Classes History
+      </h2>
+      <span class="text-xs px-3 py-1 rounded-full bg-green-50 dark:bg-gray-700 text-green-600 dark:text-green-300 font-semibold">
+        {{ counseling_classes|length }} class(es)
+      </span>
+    </div>
+
+    {% if counseling_classes %}
+    <div class="overflow-x-auto max-h-80 border rounded-lg">
+      <table class="min-w-full text-xs md:text-sm">
+        <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+          <tr>
+            <th class="px-3 py-2 text-left">Date</th>
+            <th class="px-3 py-2 text-left">Time</th>
+            <th class="px-3 py-2 text-left">Counselor</th>
+            <th class="px-3 py-2 text-left">Status</th>
+            <th class="px-3 py-2 text-left">Attendance</th>
+            <th class="px-3 py-2 text-left">Class ID</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          {% for c in counseling_classes %}
+          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+            <td class="px-3 py-2 text-gray-800 dark:text-gray-100">{{ c.date }}</td>
+            <td class="px-3 py-2 text-gray-800 dark:text-gray-100">{{ c.time }}</td>
+            <td class="px-3 py-2">
+              <div class="font-semibold text-gray-900 dark:text-gray-100">{{ c.counselor_name }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ c.counselor_email }}</div>
+            </td>
+            <td class="px-3 py-2">
+              <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold
+                {% if c.status|lower == 'completed' %}
+                  bg-green-100 text-green-700
+                {% elif c.status|lower == 'scheduled' %}
+                  bg-yellow-100 text-yellow-800
+                {% else %}
+                  bg-gray-100 text-gray-700
+                {% endif %}">
+                {{ c.status }}
+              </span>
+            </td>
+            <td class="px-3 py-2 text-gray-800 dark:text-gray-100">
+              {{ c.attendance_count|default(0) }}
+            </td>
+            <td class="px-3 py-2 text-[10px] font-mono text-gray-500 dark:text-gray-400">
+              {{ c.class_id }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-sm text-gray-500 dark:text-gray-400">No counseling classes found.</p>
+    {% endif %}
+  </div>
+
+  <!-- Manual Tests + Final Results -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Manual Tests -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+          <i class="fas fa-file-medical text-indigo-500"></i> Manual Tests (Counselor Side)
+        </h2>
+        <span class="text-xs px-3 py-1 rounded-full bg-indigo-50 dark:bg-gray-700 text-indigo-600 dark:text-indigo-300 font-semibold">
+          {{ manual_tests|length }} test(s)
+        </span>
+      </div>
+
+      {% if manual_tests %}
+      <div class="overflow-x-auto max-h-72 border rounded-lg">
+        <table class="min-w-full text-xs">
+          <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+            <tr>
+              <th class="px-3 py-2 text-left">Counselor</th>
+              <th class="px-3 py-2 text-left">Status</th>
+              <th class="px-3 py-2 text-left">Comment</th>
+              <th class="px-3 py-2 text-left">File</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            {% for t in manual_tests %}
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+              <td class="px-3 py-2">
+                <div class="font-semibold text-gray-900 dark:text-gray-100">{{ t.counselor_name }}</div>
+              </td>
+              <td class="px-3 py-2">
+                <span class="inline-flex px-2 py-1 rounded-full text-[10px] font-semibold
+                  {% if t.status|lower == 'clear' %}
+                    bg-green-100 text-green-700
+                  {% else %}
+                    bg-yellow-100 text-yellow-800
+                  {% endif %}">
+                  {{ t.status|capitalize }}
+                </span>
+              </td>
+              <td class="px-3 py-2 text-gray-800 dark:text-gray-100 truncate max-w-[150px]">
+                {{ t.comment }}
+              </td>
+              <td class="px-3 py-2">
+                {% if t.file_path %}
+                  <a href="{{ url_for('static', filename=t.file_path) }}"
+                     target="_blank"
+                     class="inline-flex items-center gap-1 text-blue-600 dark:text-blue-300 hover:underline">
+                    <i class="fas fa-file-pdf"></i>
+                    <span class="truncate max-w-[140px]">{{ t.file_original_name }}</span>
+                  </a>
+                {% else %}
+                  <span class="text-xs text-gray-400">No file</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">No manual tests recorded.</p>
+      {% endif %}
+    </div>
+
+    <!-- Final Results (Admin Side) -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+          <i class="fas fa-check-circle text-emerald-500"></i> Final Results (Admin)
+        </h2>
+        <span class="text-xs px-3 py-1 rounded-full bg-emerald-50 dark:bg-gray-700 text-emerald-700 dark:text-emerald-300 font-semibold">
+          {{ final_results|length }} record(s)
+        </span>
+      </div>
+
+      {% if final_results %}
+      <div class="space-y-3 max-h-72 overflow-y-auto pr-1">
+        {% for r in final_results %}
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 text-xs space-y-1">
+          <div class="flex justify-between">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">
+              Counselor: {{ r.counselor_name }} ({{ r.counselor_email }})
+            </div>
+            <span class="inline-flex px-2 py-1 rounded-full font-semibold
+              {% if r.admin_final_status == 'approve' %}
+                bg-green-100 text-green-700
+              {% elif r.admin_final_status == 'reject' %}
+                bg-red-100 text-red-700
+              {% else %}
+                bg-gray-100 text-gray-700
+              {% endif %}">
+              {{ r.admin_final_status|default('pending')|capitalize }}
+            </span>
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Manual Status: <span class="font-semibold">{{ r.manual_status }}</span>
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Counselor Comment:
+            <span class="font-medium">{{ r.manual_comment }}</span>
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Admin Comment:
+            <span class="font-medium">{{ r.admin_comment }}</span>
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400 mt-1">
+            <div>Created: {{ r.created_at }}</div>
+            <div>Finalized: {{ r.finalized_at }}</div>
+          </div>
+          {% if r.file_path %}
+          <div class="mt-1">
+            <a href="{{ url_for('static', filename=r.file_path) }}"
+               target="_blank"
+               class="inline-flex items-center gap-1 text-blue-600 dark:text-blue-300 hover:underline">
+              <i class="fas fa-file-pdf"></i>
+              {{ r.file_original_name }}
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">No final result records for this user yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Legal Aid -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2 mb-3">
+      <i class="fas fa-balance-scale text-red-500"></i> Legal Aid
+    </h2>
+    {% if legal_case %}
+      <dl class="space-y-1 text-sm">
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Title</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">
+            {{ legal_case.title }}
+          </dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Category</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">
+            {{ legal_case.category }}
+          </dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Lawyer</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">
+            {{ legal_case.lawyer_name }} ({{ legal_case.lawyer_email }})
+          </dd>
+        </div>
+        <div class="flex justify-between">
+          <dt class="text-gray-500 dark:text-gray-400">Status</dt>
+          <dd class="font-semibold text-gray-900 dark:text-gray-100">
+            {{ legal_case.status|capitalize }}
+          </dd>
+        </div>
+        <div class="mt-2 text-gray-700 dark:text-gray-200">
+          <span class="font-semibold">Details:</span> {{ legal_case.details }}
+        </div>
+      </dl>
+    {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">No legal aid case found for this user.</p>
+    {% endif %}
+  </div>
+
+  <!-- Training Applications -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+        <i class="fas fa-laptop-code text-sky-500"></i> Training & Skills
+      </h2>
+      <span class="text-xs px-3 py-1 rounded-full bg-sky-50 dark:bg-gray-700 text-sky-700 dark:text-sky-300 font-semibold">
+        {{ training_apps|length }} application(s)
+      </span>
+    </div>
+
+    {% if training_apps %}
+      <div class="space-y-3">
+        {% for app in training_apps %}
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 text-xs space-y-1">
+          <div class="flex justify-between">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">
+              Track: {{ app.track|capitalize }} ({{ app.applied_status }})
+            </div>
+            <div class="text-gray-500 dark:text-gray-400">
+              Applied At: {{ app.created_at }}
+            </div>
+          </div>
+
+          {% if app.selected_courses %}
+          <div class="mt-1">
+            <span class="font-semibold text-gray-800 dark:text-gray-100">Selected Courses:</span>
+            <ul class="list-disc ml-5 mt-1 space-y-1">
+              {% for cid, course in app.selected_courses.items() %}
+              <li class="text-gray-700 dark:text-gray-200">
+                <span class="font-semibold">Course ID:</span> {{ cid }},
+                <span class="font-semibold">Track:</span> {{ course.track }}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          {% if app.watch_history %}
+          <div class="mt-1">
+            <span class="font-semibold text-gray-800 dark:text-gray-100">Watch History ({{ app.watch_history|length }} lectures):</span>
+            <div class="max-h-24 overflow-y-auto mt-1 space-y-1">
+              {% for wid, w in app.watch_history.items() %}
+              <div class="flex justify-between text-gray-700 dark:text-gray-200">
+                <span>Course {{ w.course_id }} | Lecture {{ w.lecture_key }}</span>
+                <span class="font-mono">{{ w.watched_at }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">No training applications found.</p>
+    {% endif %}
+  </div>
+
+  <!-- Children Education -->
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+        <i class="fas fa-child text-orange-500"></i> Children Education
+      </h2>
+      <span class="text-xs px-3 py-1 rounded-full bg-orange-50 dark:bg-gray-700 text-orange-700 dark:text-orange-300 font-semibold">
+        {{ children_edu|length }} child application(s)
+      </span>
+    </div>
+
+    {% if children_edu %}
+      <div class="space-y-3">
+        {% for ch in children_edu %}
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 text-xs space-y-1">
+          <div class="flex justify-between">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">
+              {{ ch.child_name }} ({{ ch.child_relation }}) – Level: {{ ch.level }}
+            </div>
+            <div class="text-gray-500 dark:text-gray-400">
+              Status: {{ ch.applied_status }}
+            </div>
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Age: {{ ch.child_age }}
+          </div>
+
+          {% if ch.selected_courses %}
+          <div class="mt-1">
+            <span class="font-semibold text-gray-800 dark:text-gray-100">Selected Courses:</span>
+            <ul class="list-disc ml-5 mt-1 space-y-1">
+              {% for cat, courses in ch.selected_courses.items() %}
+              <li class="text-gray-700 dark:text-gray-200">
+                Category: <span class="font-semibold">{{ cat }}</span>
+                <ul class="ml-4 list-disc">
+                  {% for key, c in courses.items() %}
+                  <li>
+                    {{ key }} – {{ c.lectures_url }}
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          {% if ch.watch_history %}
+          <div class="mt-1">
+            <span class="font-semibold text-gray-800 dark:text-gray-100">
+              Watch History ({{ ch.watch_history|length }} entries):
+            </span>
+            <div class="max-h-24 overflow-y-auto mt-1 space-y-1">
+              {% for wid, w in ch.watch_history.items() %}
+              <div class="flex justify-between text-gray-700 dark:text-gray-200">
+                <span>{{ w.category }} / {{ w.course_key }} – {{ w.url }}</span>
+                <span class="font-mono">{{ w.watched_at }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">No children education record for this user.</p>
+    {% endif %}
+  </div>
+
+  <!-- Child Awareness + Self/Health Awareness Sessions -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Child Awareness Sessions -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+          <i class="fas fa-users text-teal-500"></i> Child Awareness Sessions
+        </h2>
+        <span class="text-xs px-3 py-1 rounded-full bg-teal-50 dark:bg-gray-700 text-teal-700 dark:text-teal-300 font-semibold">
+          {{ child_awareness_sessions|length }} session(s)
+        </span>
+      </div>
+
+      {% if child_awareness_sessions %}
+      <div class="space-y-3 max-h-80 overflow-y-auto">
+        {% for s in child_awareness_sessions %}
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 text-xs space-y-1">
+          <div class="flex justify-between">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">
+              {{ s.title }} – Topic: {{ s.topic }}
+            </div>
+            <span class="inline-flex px-2 py-1 rounded-full text-[10px] font-semibold
+              {% if s.attendance_status == 'Present' %}
+                bg-green-100 text-green-700
+              {% else %}
+                bg-red-100 text-red-700
+              {% endif %}">
+              {{ s.attendance_status }}
+            </span>
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Counselor: {{ s.counselor_name }} ({{ s.counselor_email }})
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Date: {{ s.date }} | Time: {{ s.time }}
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Zoom: <span class="text-blue-600 dark:text-blue-300 break-all">{{ s.zoom_link }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">No child awareness session record.</p>
+      {% endif %}
+    </div>
+
+    <!-- Self / Health Awareness Sessions -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+          <i class="fas fa-brain text-yellow-500"></i> Self & Health Awareness Sessions
+        </h2>
+        <span class="text-xs px-3 py-1 rounded-full bg-yellow-50 dark:bg-gray-700 text-yellow-700 dark:text-yellow-300 font-semibold">
+          {{ awareness_sessions|length }} session(s)
+        </span>
+      </div>
+
+      {% if awareness_sessions %}
+      <div class="space-y-3 max-h-80 overflow-y-auto">
+        {% for s in awareness_sessions %}
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 text-xs space-y-1">
+          <div class="flex justify-between">
+            <div class="font-semibold text-gray-900 dark:text-gray-100">
+              {{ s.title }} – Category: {{ s.category }}
+            </div>
+            <span class="inline-flex px-2 py-1 rounded-full text-[10px] font-semibold
+              {% if s.attendance_status == 'Present' %}
+                bg-green-100 text-green-700
+              {% else %}
+                bg-red-100 text-red-700
+              {% endif %}">
+              {{ s.attendance_status }}
+            </span>
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Counselor: {{ s.counselor_name }} ({{ s.counselor_email }})
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Created: {{ s.created_at }}
+          </div>
+          <div class="text-gray-700 dark:text-gray-200">
+            Zoom: <span class="text-blue-600 dark:text-blue-300 break-all">{{ s.zoom_link }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-sm text-gray-500 dark:text-gray-400">No self/health awareness sessions for this user.</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

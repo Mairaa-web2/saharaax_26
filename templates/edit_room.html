@@ -1,0 +1,51 @@
+{% extends "base_admin.html" %}
+{% block title %}Edit Room{% endblock %}
+{% block header %}Edit Room{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+  <h2 class="text-2xl font-bold mb-6">Edit Room</h2>
+
+  <form method="POST" enctype="multipart/form-data" class="space-y-4">
+
+    <!-- Floor (Read-only) -->
+    <div>
+      <label class="block mb-1 font-semibold">Floor Number</label>
+      <input type="text" name="floor" value="{{ room.floor }}"
+             class="w-full border p-2 rounded bg-gray-100 dark:bg-gray-700 cursor-not-allowed" readonly>
+    </div>
+
+    <!-- Room Number (Read-only) -->
+    <div>
+      <label class="block mb-1 font-semibold">Room Number</label>
+      <input type="text" name="room_number" value="{{ room.room_number }}"
+             class="w-full border p-2 rounded bg-gray-100 dark:bg-gray-700 cursor-not-allowed" readonly>
+    </div>
+
+    <!-- Bed Count (Editable) -->
+    <div>
+      <label class="block mb-1 font-semibold">Number of Beds</label>
+      <input type="number" name="bed_count" value="{{ room.bed_count }}"
+             class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-400" required>
+    </div>
+
+    <!-- Images (Disabled - Just Preview) -->
+    <div>
+      <label class="block mb-1 font-semibold">Room Images</label>
+      <div class="flex gap-2 mt-2">
+        {% for img in room.images %}
+          <img src="{{ url_for('static', filename=img) }}"
+               class="w-20 h-20 object-cover rounded border shadow">
+        {% endfor %}
+      </div>
+      <p class="text-xs text-gray-500 mt-1">Images cannot be changed.</p>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit"
+            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition w-full">
+      Update Room
+    </button>
+  </form>
+</div>
+{% endblock %}

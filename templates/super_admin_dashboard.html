@@ -1,0 +1,92 @@
+{% extends "super_admin_base.html" %}
+
+{% block title %}Super Admin Dashboard{% endblock %}
+{% block page_title %}Super Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white rounded-2xl p-5 shadow-md border border-blue-100">
+    <p class="text-sm text-gray-500">Total Users</p>
+    <h3 class="text-3xl font-bold text-blue-700 mt-2">{{ total_users }}</h3>
+  </div>
+  <div class="bg-white rounded-2xl p-5 shadow-md border border-blue-100">
+    <p class="text-sm text-gray-500">Approved Users</p>
+    <h3 class="text-3xl font-bold text-green-700 mt-2">{{ approved }}</h3>
+  </div>
+  <div class="bg-white rounded-2xl p-5 shadow-md border border-blue-100">
+    <p class="text-sm text-gray-500">Pending Users</p>
+    <h3 class="text-3xl font-bold text-yellow-600 mt-2">{{ unapproved }}</h3>
+  </div>
+  <div class="bg-white rounded-2xl p-5 shadow-md border border-blue-100">
+    <p class="text-sm text-gray-500">Rooms</p>
+    <h3 class="text-3xl font-bold text-blue-700 mt-2">{{ total_rooms }}</h3>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
+  <div class="xl:col-span-2 bg-white rounded-2xl shadow-md border border-blue-100 p-6">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Database Overview</h2>
+        <p class="text-gray-500 text-sm">Har section ko alag cards aur views me open karein</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for node in node_cards %}
+        <a href="{{ url_for(node.endpoint) }}"
+           class="block rounded-2xl border border-gray-200 bg-blue-50 hover:bg-blue-100 transition p-5 shadow-sm">
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">{{ node.title }}</h3>
+              <p class="text-3xl font-bold text-blue-700 mt-2">{{ node.count }}</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl">
+              <i class="fas {{ node.icon }}"></i>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="space-y-8">
+    <div class="bg-white rounded-2xl shadow-md border border-blue-100 p-6">
+      <div class="flex items-center gap-4 mb-4">
+        <img src="{% if admin_data.image %}{{ url_for('static', filename=admin_data.image) }}{% else %}https://via.placeholder.com/80x80?text=Admin{% endif %}"
+             class="w-20 h-20 rounded-2xl object-cover border border-gray-200">
+        <div>
+          <h2 class="text-xl font-bold text-gray-800">{{ admin_data.name or 'Main Admin' }}</h2>
+          <p class="text-sm text-gray-500">{{ admin_data.designation or 'Admin' }}</p>
+        </div>
+      </div>
+
+      <div class="space-y-2 text-sm text-gray-700">
+        <p><strong>Login Email:</strong> {{ admin_data.email or '-' }}</p>
+        <p><strong>Personal Email:</strong> {{ admin_data.personal_email or '-' }}</p>
+        <p><strong>Phone:</strong> {{ admin_data.phone or '-' }}</p>
+      </div>
+
+      <a href="{{ url_for('super_admin.supper_admin_admin_control') }}"
+         class="mt-5 inline-block w-full text-center px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-800 text-white font-semibold">
+        Manage Admin Profile
+      </a>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-md border border-blue-100 p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Shelter Stats</h2>
+      <div class="space-y-3 text-sm text-gray-700">
+        <p><strong>Total Floors:</strong> {{ total_floors }}</p>
+        <p><strong>Total Beds:</strong> {{ total_beds }}</p>
+        <p><strong>Available Beds:</strong> {{ total_available_beds }}</p>
+        <p><strong>Total Counselors:</strong> {{ total_counselors }}</p>
+        <p><strong>Awareness Counselors:</strong> {{ total_awareness_counselors }}</p>
+        <p><strong>Appointments:</strong> {{ total_appointments }}</p>
+        <p><strong>Prescriptions:</strong> {{ total_prescriptions }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

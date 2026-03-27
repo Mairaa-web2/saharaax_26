@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}Home - SahaaraX{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Carousel -->
+<section class="relative overflow-hidden">
+  <div class="swiper-container h-96 md:h-[32rem]">
+    <div class="swiper-wrapper">
+      <!-- Slide 1 -->
+      <div class="swiper-slide relative">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+             alt="Women supporting each other"
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div class="text-center px-4 max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Empowering Survivors with Compassion</h1>
+            <p class="text-lg text-gray-100 mb-6">A safe haven for women and children to heal, grow, and reclaim their lives</p>
+            <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 inline-flex items-center">
+              Get Help Now
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="swiper-slide relative">
+        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+             alt="Skill development workshop"
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div class="text-center px-4 max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Building Brighter Futures</h1>
+            <p class="text-lg text-gray-100 mb-6">Skill development programs to help survivors achieve financial independence</p>
+            <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 inline-flex items-center">
+              Learn Skills
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z" />
+                <path d="M3.31 9.397L5 10.436v3.528c0 .327.13.64.36.871l3.14 3.14a1.25 1.25 0 001.768 0l3.14-3.14c.23-.23.36-.544.36-.871v-3.528l1.69-1.039a1 1 0 00.5-.864V6.3a1 1 0 00-.5-.864L10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 00-.5.864v2.233a1 1 0 00.5.864z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="swiper-slide relative">
+        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+             alt="Legal support"
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div class="text-center px-4 max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Your Rights, Protected</h1>
+            <p class="text-lg text-gray-100 mb-6">Access to legal aid and justice for all survivors</p>
+            <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300 inline-flex items-center">
+              Legal Support
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Add Navigation -->
+    <div class="swiper-button-next text-white"></div>
+    <div class="swiper-button-prev text-white"></div>
+  </div>
+</section>
+
+<!-- Trust Indicators -->
+<section class="bg-white py-12">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-blue-800 mb-4">Trusted by Thousands</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Our platform has helped over 5,000 women and children rebuild their lives with dignity and hope</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div class="p-4">
+        <div class="text-4xl font-bold text-blue-600 mb-2">5,000+</div>
+        <p class="text-gray-700">Survivors Helped</p>
+      </div>
+      <div class="p-4">
+        <div class="text-4xl font-bold text-blue-600 mb-2">98%</div>
+        <p class="text-gray-700">Safety Rate</p>
+      </div>
+      <div class="p-4">
+        <div class="text-4xl font-bold text-blue-600 mb-2">200+</div>
+        <p class="text-gray-700">Trained Experts</p>
+      </div>
+      <div class="p-4">
+        <div class="text-4xl font-bold text-blue-600 mb-2">24/7</div>
+        <p class="text-gray-700">Support Available</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feature Cards -->
+<section class="bg-blue-50 py-16">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-blue-800 mb-4">How We Help</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Comprehensive support system designed for complete recovery and empowerment</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+        <div class="p-6">
+          <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">AI Progress Tracking</h3>
+          <p class="text-gray-600">Our intelligent system analyzes emotional health, recovery speed, and provides personalized support suggestions.</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+        <div class="p-6">
+          <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Skill Development</h3>
+          <p class="text-gray-600">Practical skill-based learning programs to help women and children build independent futures.</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+        <div class="p-6">
+          <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Medical & Legal Aid</h3>
+          <p class="text-gray-600">Immediate access to emergency medical support and case-specific legal guidance when you need it most.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-blue-800 mb-4">Success Stories</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Hear from women who have transformed their lives with our support</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Testimonial 1 -->
+      <div class="bg-blue-50 p-6 rounded-lg">
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center text-blue-600 font-bold mr-4">A</div>
+          <div>
+            <h4 class="font-semibold">Amina K.</h4>
+            <p class="text-sm text-gray-600">Survivor since 2023</p>
+          </div>
+        </div>
+        <p class="text-gray-700 italic">"SahaaraX gave me the courage to start over. The counseling and skill training helped me stand on my own feet and provide for my children."</p>
+        <div class="flex mt-4 text-yellow-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="bg-blue-50 p-6 rounded-lg">
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center text-blue-600 font-bold mr-4">S</div>
+          <div>
+            <h4 class="font-semibold">Sadia R.</h4>
+            <p class="text-sm text-gray-600">Survivor since 2024</p>
+          </div>
+        </div>
+        <p class="text-gray-700 italic">"The legal team helped me navigate the complex court system and get justice for what happened to me. I couldn't have done it alone."</p>
+        <div class="flex mt-4 text-yellow-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="bg-blue-50 p-6 rounded-lg">
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center text-blue-600 font-bold mr-4">F</div>
+          <div>
+            <h4 class="font-semibold">Fatima A.</h4>
+            <p class="text-sm text-gray-600">Survivor since 2022</p>
+          </div>
+        </div>
+        <p class="text-gray-700 italic">"My children received counseling and education support while I rebuilt my life. Today we're all thriving thanks to SahaaraX."</p>
+        <div class="flex mt-4 text-yellow-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modules Overview -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-blue-800 mb-4">Our Comprehensive Support System</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Every aspect of recovery and empowerment covered in one platform</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Module 1 -->
+      <div class="group relative bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:border-blue-200 transition-all duration-300">
+        <div class="absolute -top-4 -left-4 bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.025-3.5 4 4 0 011.09-3.167A4 4 0 0119 8a4 4 0 01-1.293 2.961A6.97 6.97 0 0014 16c0 .34.024.673.07 1h-1.14zM6 8a4 4 0 118 0 4 4 0 01-8 0zM3 15a6.98 6.98 0 014-6.164A6.98 6.98 0 0117 15h-1.071A6.979 6.979 0 0010 11a6.979 6.979 0 00-5.929 4H3z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-blue-600 mb-2">Case Intake System</h3>
+        <p class="text-sm text-gray-700">Secure and confidential initial case documentation with admin verification for your protection.</p>
+      </div>
+
+      <!-- Module 2 -->
+      <div class="group relative bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:border-blue-200 transition-all duration-300">
+        <div class="absolute -top-4 -left-4 bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-blue-600 mb-2">Shelter Management</h3>
+        <p class="text-sm text-gray-700">Real-time availability with safe, comfortable accommodations for you and your children.</p>
+      </div>
+
+      <!-- Module 3 -->
+      <div class="group relative bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:border-blue-200 transition-all duration-300">
+        <div class="absolute -top-4 -left-4 bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm-5-3a1 1 0 100-2 1 1 0 000 2zm0 4a1 1 0 100-2 1 1 0 000 2zm0-8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-blue-600 mb-2">Psychological Support</h3>
+        <p class="text-sm text-gray-700">Professional therapy sessions with AI-powered emotional progress tracking.</p>
+      </div>
+
+      <!-- Module 4 -->
+      <div class="group relative bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:border-blue-200 transition-all duration-300">
+        <div class="absolute -top-4 -left-4 bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-blue-600 mb-2">Child Support & Education</h3>
+        <p class="text-sm text-gray-700">Age-appropriate learning and counseling to help children heal and grow.</p>
+      </div>
+
+      <!-- Module 5 -->
+      <div class="group relative bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:border-blue-200 transition-all duration-300">
+        <div class="absolute -top-4 -left-4 bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-blue-600 mb-2">Sexual Abuse Recovery</h3>
+        <p class="text-sm text-gray-700">Specialized support for legal processes, emotional healing, and secure evidence handling.</p>
+      </div>
+
+      <!-- Module 6 -->
+      <div class="group relative bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:border-blue-200 transition-all duration-300">
+        <div class="absolute -top-4 -left-4 bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-blue-600 mb-2">Self & Health Awareness</h3>
+        <p class="text-sm text-gray-700">Workshops on personal care, wellness, and building self-worth and confidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-blue-700 text-white py-16">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6">Ready to Begin Your Journey to Healing?</h2>
+    <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">Take the first step towards a brighter future today. Our team is here to support you every step of the way.</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href="/register" class="bg-white text-blue-700 px-8 py-3 rounded-lg font-medium hover:bg-blue-50 transition duration-300">
+        Get Started Now
+      </a>
+      <a href="/contact" class="border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white hover:text-blue-700 transition duration-300">
+        Contact Our Team
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Swiper JS for Carousel -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const swiper = new Swiper('.swiper-container', {
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  });
+</script>
+{% endblock %}

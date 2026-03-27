@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Verify Code{% endblock %}
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-cover bg-center"
+     style="background-image: url('{{ url_for('static', filename='verify.jpg') }}');">
+
+
+
+  <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <h2 class="text-2xl font-bold text-center text-green-600 mb-6">
+      <i class="fas fa-key"></i> Verify Code
+    </h2>
+    <p class="text-sm text-gray-600 mb-4 text-center">We sent a code to <b>{{ email }}</b></p>
+    <form method="POST" class="space-y-5">
+      <input type="text" name="otp" placeholder="Enter 6-digit code"
+             class="w-full border rounded-lg px-3 py-2" required>
+      <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+        <i class="fas fa-check"></i> Verify
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

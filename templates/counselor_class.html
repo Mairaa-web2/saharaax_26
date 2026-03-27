@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Classes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Custom styling for date and time inputs */
+        input[type="date"],
+        input[type="time"] {
+            position: relative;
+            cursor: pointer;
+            color-scheme: dark;
+        }
+
+        /* Style the calendar picker */
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            filter: invert(1);
+        }
+
+        input[type="date"]:hover::-webkit-calendar-picker-indicator,
+        input[type="time"]:hover::-webkit-calendar-picker-indicator {
+            opacity: 1;
+        }
+
+        /* Accordion animation */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-content.active {
+            max-height: 1500px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        /* Button hover effects */
+        .btn-hover-scale {
+            transition: transform 0.2s ease;
+        }
+
+        .btn-hover-scale:hover {
+            transform: scale(1.02);
+        }
+
+        /* Status badge animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .status-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+        }
+
+        /* Alert styling */
+        .custom-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 min-h-screen">
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- User Info Header -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-6 border border-sky-400/30">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                    <i class="fas fa-user text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">{{ user.name }}</h2>
+                    <p class="text-sky-300 flex items-center gap-2">
+                        <i class="fas fa-envelope text-sm"></i>
+                        {{ user.email }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule New Class Card -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden mb-6 border border-sky-400/30">
+            <div class="bg-gradient-to-r from-sky-500 to-sky-600 px-6 py-4 flex items-center">
+                <i class="fas fa-calendar-plus text-white text-xl mr-3"></i>
+                <h2 class="text-white text-xl font-semibold">Schedule New Class</h2>
+            </div>
+            <div class="p-6">
+                <form method="POST" action="{{ url_for('add_class', user_id=user_id) }}" id="classForm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Date Input -->
+                        <div>
+                            <label class="block text-white font-medium mb-2 flex items-center gap-2">
+                                <i class="fas fa-calendar-alt text-sky-400"></i>
+                                Select Date
+                            </label>
+                            <input type="date"
+                                   name="date"
+                                   id="dateInput"
+                                   class="w-full px-4 py-3 bg-white/20 border border-sky-400/50 rounded-xl text-white placeholder-sky-200 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 outline-none transition"
+                                   required>
+                            <p class="text-xs text-sky-300 mt-2 flex items-center gap-1">
+                                <i class="fas fa-info-circle"></i>
+                                Only today and future dates are selectable
+                            </p>
+                        </div>
+
+                        <!-- Time Input -->
+                        <div>
+                            <label class="block text-white font-medium mb-2 flex items-center gap-2">
+                                <i class="fas fa-clock text-sky-400"></i>
+                                Select Time
+                            </label>
+                            <input type="time"
+                                   name="time"
+                                   id="timeInput"
+                                   class="w-full px-4 py-3 bg-white/20 border border-sky-400/50 rounded-xl text-white placeholder-sky-200 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 outline-none transition"
+                                   required>
+                            <p class="text-xs text-sky-300 mt-2 flex items-center gap-1">
+                                <i class="fas fa-info-circle"></i>
+                                For today, select a time after current time
+                            </p>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                            id="submitBtn"
+                            class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-4 px-6 rounded-xl transition duration-300 flex items-center justify-center shadow-lg btn-hover-scale">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Schedule Class
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Class History Card -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden border border-sky-400/30">
+            <div class="bg-gradient-to-r from-slate-700 to-slate-800 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-history text-white text-xl mr-3"></i>
+                    <h2 class="text-white text-xl font-semibold">Class History</h2>
+                </div>
+                <span class="bg-sky-500/30 text-sky-200 px-4 py-1 rounded-full text-sm font-semibold border border-sky-400/50">
+                    {{ classes|length }} Classes
+                </span>
+            </div>
+            <div class="p-6">
+                {% if classes %}
+                <div class="space-y-4">
+                    {% for c in classes %}
+                    <div class="bg-white/5 backdrop-blur-sm border border-sky-400/20 rounded-xl overflow-hidden hover:border-sky-400/40 transition">
+                        <button type="button"
+                                class="w-full flex justify-between items-center p-5 hover:bg-white/5 transition"
+                                onclick="toggleAccordion('class-{{ loop.index }}')">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center
+                                    {% if c.status == 'Completed' %} bg-green-500/20 border border-green-400/50
+                                    {% elif c.status == 'In Progress' %} bg-yellow-500/20 border border-yellow-400/50
+                                    {% else %} bg-sky-500/20 border border-sky-400/50 {% endif %}">
+                                    <i class="fas fa-chalkboard-teacher
+                                        {% if c.status == 'Completed' %} text-green-400
+                                        {% elif c.status == 'In Progress' %} text-yellow-400
+                                        {% else %} text-sky-400 {% endif %}"></i>
+                                </div>
+                                <div class="text-left">
+                                    <p class="font-semibold text-white">{{ c.date }}</p>
+                                    <p class="text-sm text-sky-300">{{ c.time }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="px-4 py-1.5 rounded-full text-xs font-semibold
+                                    {% if c.status == 'Completed' %} bg-green-500/20 text-green-300 border border-green-400/50
+                                    {% elif c.status == 'In Progress' %} bg-yellow-500/20 text-yellow-300 border border-yellow-400/50 status-pulse
+                                    {% else %} bg-sky-500/20 text-sky-300 border border-sky-400/50 {% endif %}">
+                                    {% if c.status == 'Completed' %}
+                                        <i class="fas fa-check-circle mr-1"></i>
+                                    {% elif c.status == 'In Progress' %}
+                                        <i class="fas fa-spinner fa-pulse mr-1"></i>
+                                    {% else %}
+                                        <i class="fas fa-clock mr-1"></i>
+                                    {% endif %}
+                                    {{ c.status }}
+                                </span>
+                                <i class="fas fa-chevron-down text-sky-400 transition-transform duration-300"
+                                   id="icon-class-{{ loop.index }}"></i>
+                            </div>
+                        </button>
+
+                        <div id="class-{{ loop.index }}" class="accordion-content">
+                            <div class="px-5 pb-5 border-t border-sky-400/20">
+                                <div class="pt-4 mb-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <!-- Attendance -->
+                                        <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-sky-400/20">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center border border-green-400/50">
+                                                    <i class="fas fa-check-circle text-green-400"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs text-sky-300">Attendance</p>
+                                                    <p class="text-lg font-bold text-white">{{ c.attendance_count }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Created At -->
+                                        <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-sky-400/20">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-lg bg-sky-500/20 flex items-center justify-center border border-sky-400/50">
+                                                    <i class="fas fa-clock text-sky-400"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs text-sky-300">Created</p>
+                                                    <p class="text-sm font-semibold text-white">{{ c.created_at }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {% if c.start_time %}
+                                        <!-- Start Time -->
+                                        <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-sky-400/20">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center border border-green-400/50">
+                                                    <i class="fas fa-play text-green-400"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs text-sky-300">Started</p>
+                                                    <p class="text-sm font-semibold text-white">{{ c.start_time }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+
+                                        {% if c.end_time %}
+                                        <!-- End Time -->
+                                        <div class="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-sky-400/20">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center border border-red-400/50">
+                                                    <i class="fas fa-stop text-red-400"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs text-sky-300">Ended</p>
+                                                    <p class="text-sm font-semibold text-white">{{ c.end_time }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex gap-3">
+                                    {% if not c.start_time %}
+                                    <form method="POST" action="{{ url_for('start_class', user_id=user_id, class_id=c.class_id) }}" class="flex-1">
+                                        <button type="submit"
+                                                class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center shadow-md btn-hover-scale">
+                                            <i class="fas fa-play mr-2"></i>
+                                            Start Class
+                                        </button>
+                                    </form>
+                                    {% elif not c.end_time %}
+                                    <form method="POST" action="{{ url_for('end_class', user_id=user_id, class_id=c.class_id) }}" class="flex-1">
+                                        <button type="submit"
+                                                class="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-3 px-4 rounded-xl transition duration-300 flex items-center justify-center shadow-md btn-hover-scale">
+                                            <i class="fas fa-stop mr-2"></i>
+                                            End Class
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    <button class="flex-1 bg-gray-600/50 text-gray-300 font-semibold py-3 px-4 rounded-xl flex items-center justify-center cursor-not-allowed" disabled>
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        Completed
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-12">
+                    <div class="w-20 h-20 mx-auto rounded-2xl bg-sky-500/20 flex items-center justify-center mb-4 border border-sky-400/50">
+                        <i class="fas fa-info-circle text-sky-400 text-3xl"></i>
+                    </div>
+                    <p class="text-sky-200 font-medium text-lg">No classes scheduled yet</p>
+                    <p class="text-sky-300 text-sm mt-2">Create your first class using the form above</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // ============================================
+        // FOOLPROOF DATE & TIME VALIDATION SYSTEM
+        // ============================================
+
+        (function() {
+            'use strict';
+
+            // Get form elements
+            const dateInput = document.getElementById('dateInput');
+            const timeInput = document.getElementById('timeInput');
+            const form = document.getElementById('classForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (!dateInput || !timeInput || !form) {
+                console.error('Required form elements not found');
+                return;
+            }
+
+            // ==========================================
+            // UTILITY FUNCTIONS
+            // ==========================================
+
+            // Pad numbers with leading zero
+            function pad(num) {
+                return num.toString().padStart(2, '0');
+            }
+
+            // Get current date and time in proper format
+            function getCurrentDateTime() {
+                const now = new Date();
+
+                return {
+                    year: now.getFullYear(),
+                    month: pad(now.getMonth() + 1),
+                    day: pad(now.getDate()),
+                    hours: pad(now.getHours()),
+                    minutes: pad(now.getMinutes()),
+                    dateString: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+                    timeString: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
+                    timestamp: now.getTime()
+                };
+            }
+
+            // Show custom alert
+            function showAlert(message, type = 'error') {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `custom-alert px-6 py-4 rounded-xl shadow-2xl border ${
+                    type === 'error'
+                        ? 'bg-red-500/90 border-red-400 text-white'
+                        : 'bg-green-500/90 border-green-400 text-white'
+                }`;
+                alertDiv.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'} text-xl"></i>
+                        <p class="font-medium">${message}</p>
+                    </div>
+                `;
+                document.body.appendChild(alertDiv);
+
+                setTimeout(() => {
+                    alertDiv.style.animation = 'slideInRight 0.3s ease-out reverse';
+                    setTimeout(() => alertDiv.remove(), 300);
+                }, 3000);
+            }
+
+            // ==========================================
+            // DATE INPUT INITIALIZATION & VALIDATION
+            // ==========================================
+
+            function initializeDateInput() {
+                const current = getCurrentDateTime();
+                const todayDate = current.dateString;
+
+                // ✅ SET MINIMUM DATE TO TODAY (This blocks all past dates in calendar)
+                dateInput.setAttribute('min', todayDate);
+
+                // Set max to 1 year in future (optional but good practice)
+                const nextYear = new Date();
+                nextYear.setFullYear(nextYear.getFullYear() + 1);
+                const maxDate = `${nextYear.getFullYear()}-${pad(nextYear.getMonth() + 1)}-${pad(nextYear.getDate())}`;
+                dateInput.setAttribute('max', maxDate);
+
+                // Set default value to today
+                if (!dateInput.value) {
+                    dateInput.value = todayDate;
+                }
+
+                console.log('✅ Date input initialized:', {
+                    min: todayDate,
+                    max: maxDate,
+                    current: dateInput.value
+                });
+            }
+
+            // ==========================================
+            // TIME INPUT VALIDATION
+            // ==========================================
+
+            function updateTimeConstraints() {
+                const current = getCurrentDateTime();
+                const selectedDate = dateInput.value;
+                const todayDate = current.dateString;
+
+                if (!selectedDate) {
+                    return;
+                }
+
+                if (selectedDate === todayDate) {
+                    // ✅ TODAY: Set minimum time to current time
+                    const minTime = current.timeString;
+                    timeInput.setAttribute('min', minTime);
+
+                    // Clear time if it's less than current time
+                    if (timeInput.value && timeInput.value < minTime) {
+                        timeInput.value = '';
+                        showAlert('⏰ Please select a time after ' + minTime, 'error');
+                    }
+
+                    console.log('⏰ Time constraint for TODAY:', minTime);
+                } else if (selectedDate > todayDate) {
+                    // ✅ FUTURE DATE: Remove time restrictions
+                    timeInput.removeAttribute('min');
+                    timeInput.removeAttribute('max');
+                    console.log('✅ Future date selected, all times available');
+                } else {
+                    // ❌ PAST DATE: This should never happen due to min attribute
+                    console.error('⚠️ Past date detected, resetting to today');
+                    dateInput.value = todayDate;
+                    updateTimeConstraints();
+                }
+            }
+
+            // ==========================================
+            // EVENT LISTENERS
+            // ==========================================
+
+            // Date change event
+            dateInput.addEventListener('change', function() {
+                const current = getCurrentDateTime();
+                const selectedDate = this.value;
+                const todayDate = current.dateString;
+
+                if (!selectedDate) {
+                    this.value = todayDate;
+                    showAlert('❌ Please select a valid date', 'error');
+                    return;
+                }
+
+                // Double-check: Prevent past date (safety net)
+                if (selectedDate < todayDate) {
+                    this.value = todayDate;
+                    showAlert('❌ You cannot select a past date!', 'error');
+                    console.error('Past date blocked:', selectedDate);
+                    return;
+                }
+
+                console.log('📅 Date changed to:', selectedDate);
+                updateTimeConstraints();
+            });
+
+            // Date input event (triggers on manual typing)
+            dateInput.addEventListener('input', function() {
+                const current = getCurrentDateTime();
+                const selectedDate = this.value;
+                const todayDate = current.dateString;
+
+                if (selectedDate && selectedDate < todayDate) {
+                    this.value = todayDate;
+                    showAlert('❌ Past dates are not allowed!', 'error');
+                }
+            });
+
+            // Time change event
+            timeInput.addEventListener('change', function() {
+                const current = getCurrentDateTime();
+                const selectedDate = dateInput.value;
+                const selectedTime = this.value;
+                const todayDate = current.dateString;
+
+                if (selectedDate === todayDate && selectedTime) {
+                    const currentTime = current.timeString;
+
+                    if (selectedTime < currentTime) {
+                        this.value = '';
+                        showAlert(`❌ Time must be after ${currentTime}`, 'error');
+                        return;
+                    }
+                }
+
+                console.log('⏰ Time changed to:', selectedTime);
+            });
+
+            // Time input event
+            timeInput.addEventListener('input', function() {
+                const current = getCurrentDateTime();
+                const selectedDate = dateInput.value;
+                const todayDate = current.dateString;
+
+                if (selectedDate === todayDate && this.value) {
+                    const currentTime = current.timeString;
+
+                    if (this.value < currentTime) {
+                        this.setCustomValidity('Time must be after current time');
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                }
+            });
+
+            // ==========================================
+            // FORM SUBMISSION VALIDATION
+            // ==========================================
+
+            form.addEventListener('submit', function(e) {
+                const current = getCurrentDateTime();
+                const selectedDate = dateInput.value;
+                const selectedTime = timeInput.value;
+                const todayDate = current.dateString;
+
+                console.log('📝 Form submission attempted:', {
+                    date: selectedDate,
+                    time: selectedTime,
+                    today: todayDate
+                });
+
+                // Check if fields are filled
+                if (!selectedDate || !selectedTime) {
+                    e.preventDefault();
+                    showAlert('⚠️ Please fill in both date and time fields', 'error');
+                    return;
+                }
+
+                // Create datetime objects for comparison
+                const selectedDateTime = new Date(`${selectedDate}T${selectedTime}`);
+                const now = new Date();
+
+                // ✅ FINAL VALIDATION: Check if datetime is in the past
+                if (selectedDateTime < now) {
+                    e.preventDefault();
+                    showAlert('❌ You cannot schedule a class in the past!', 'error');
+                    console.error('❌ Past datetime rejected:', selectedDateTime);
+                    return;
+                }
+
+                // Check if it's within 5 minutes (warning)
+                const fiveMinutesFromNow = new Date(now.getTime() + 5 * 60000);
+                if (selectedDateTime < fiveMinutesFromNow) {
+                    e.preventDefault();
+
+                    const confirmMsg = '⚠️ The selected time is less than 5 minutes from now.\n\n' +
+                                      'Selected: ' + selectedDate + ' at ' + selectedTime + '\n\n' +
+                                      'Do you want to proceed?';
+
+                    if (confirm(confirmMsg)) {
+                        // Remove the event listener temporarily and submit
+                        form.removeEventListener('submit', arguments.callee);
+                        form.submit();
+                    } else {
+                        showAlert('Class scheduling cancelled', 'error');
+                    }
+                    return;
+                }
+
+                // ✅ All validations passed
+                console.log('✅ Form validation passed');
+                showAlert('✅ Scheduling class...', 'success');
+            });
+
+            // ==========================================
+            // REAL-TIME UPDATES
+            // ==========================================
+
+            // Update time constraints every minute
+            setInterval(function() {
+                updateTimeConstraints();
+                console.log('🔄 Time constraints updated');
+            }, 60000); // 60 seconds
+
+            // Update constraints every 10 seconds for better accuracy
+            setInterval(function() {
+                const current = getCurrentDateTime();
+                const selectedDate = dateInput.value;
+                const todayDate = current.dateString;
+
+                if (selectedDate === todayDate) {
+                    const minTime = current.timeString;
+                    const currentMin = timeInput.getAttribute('min');
+
+                    if (currentMin !== minTime) {
+                        timeInput.setAttribute('min', minTime);
+                        console.log('⚡ Quick update: min time =', minTime);
+                    }
+                }
+            }, 10000); // 10 seconds
+
+            // ==========================================
+            // INITIALIZE ON PAGE LOAD
+            // ==========================================
+
+            console.log('🚀 Initializing date/time validation system...');
+            initializeDateInput();
+            updateTimeConstraints();
+            console.log('✅ Validation system ready!');
+
+            // Prevent form manipulation via devtools
+            Object.freeze(dateInput);
+            Object.freeze(timeInput);
+
+        })();
+
+        // ==========================================
+        // ACCORDION FUNCTIONALITY
+        // ==========================================
+
+        function toggleAccordion(id) {
+            const element = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+
+            if (!element || !icon) return;
+
+            const isActive = element.classList.contains('active');
+
+            // Close all accordions
+            document.querySelectorAll('.accordion-content').forEach(acc => {
+                acc.classList.remove('active');
+            });
+            document.querySelectorAll('[id^="icon-class-"]').forEach(ic => {
+                ic.classList.remove('rotate-180');
+            });
+
+            // Toggle clicked accordion
+            if (!isActive) {
+                element.classList.add('active');
+                icon.classList.add('rotate-180');
+            }
+        }
+
+        // ==========================================
+        // SMOOTH SCROLL
+        // ==========================================
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ==========================================
+        // PREVENT BROWSER BACK BUTTON ISSUES
+        // ==========================================
+
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // Page was loaded from cache, reinitialize
+                location.reload();
+            }
+        });
+
+        // Log system info for debugging
+        console.log('📊 System Info:', {
+            browser: navigator.userAgent,
+            dateInputSupport: dateInput.type === 'date',
+            timeInputSupport: timeInput.type === 'time',
+            currentDate: new Date().toISOString()
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base_admin.html" %}
+{% block title %}Shelter Management{% endblock %}
+
+{% block content %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Awareness Panel{% endblock %}</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in {
+      animation: fade-in 0.6s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <nav class="mx-2 mt-2 rounded-l-3xl bg-gradient-to-r from-indigo-700 via-blue-700 to-purple-700 shadow-xl px-6 py-4 flex justify-between items-center animate-fade-in">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-white/10 shadow-inner backdrop-blur-md flex items-center justify-center overflow-hidden ring-2 ring-indigo-300">
+        <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" class="w-full h-full object-cover rounded-2xl">
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-white drop-shadow">SahaaraX</h1>
+        <p class="text-sm text-indigo-200">Awareness Panel</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-6">
+      <a href="/logout" class="text-red-300 hover:text-red-500 font-semibold flex items-center gap-1"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 animate-fade-in">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-indigo-700 via-blue-800 to-purple-800 text-center py-4 shadow-inner mt-4 rounded-t-3xl mx-2 animate-fade-in">
+    <p class="text-sm text-indigo-200">&copy; {{ year }} SahaaraX. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+<div class="space-y-6 animate-fade-in">
+
+  <!-- Header + filter -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Medical Appointments</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400">
+        Review, approve, and open detailed view for each appointment.
+      </p>
+    </div>
+
+    <form method="get" action="{{ url_for('medical_appointments_view') }}" class="flex items-center gap-2">
+      <select
+        name="status"
+        class="px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-dark-600 bg-white dark:bg-dark-800 text-gray-700 dark:text-gray-200"
+      >
+        <option value="all"     {% if status_filter == 'all' %}selected{% endif %}>All</option>
+        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+        <option value="approved"{% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
+      </select>
+      <button
+        type="submit"
+        class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg bg-primary-600 text-white hover:bg-primary-700 shadow-sm"
+      >
+        <i class="fa fa-filter"></i>
+        Filter
+      </button>
+    </form>
+  </div>
+
+  {% if appointments %}
+    <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-blue-100 dark:border-dark-700 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-blue-50 dark:bg-dark-800/90 border-b border-blue-100 dark:border-dark-700 text-left">
+          <tr>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">#</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Patient</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Contact</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Doctor</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Specialization</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Date</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Time</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">Status</th>
+            <th class="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 text-right">Actions</th>
+          </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 dark:divide-dark-700">
+          {% for appt in appointments %}
+            <tr class="hover:bg-blue-50/40 dark:hover:bg-dark-800/60">
+              <td class="px-5 py-3 text-gray-700 dark:text-gray-200">
+                {{ loop.index }}
+              </td>
+
+              <td class="px-5 py-3">
+                <div class="font-medium text-gray-800 dark:text-gray-100">
+                  {{ appt.user.name if appt.user is defined and appt.user.name else appt.user_name }}
+                </div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">
+                  CNIC: {{ appt.user.cnic if appt.user is defined and appt.user.cnic else appt.user_cnic }}
+                </div>
+              </td>
+
+              <td class="px-5 py-3 text-xs text-gray-600 dark:text-gray-300">
+                {% set u = appt.user if appt.user is defined else appt %}
+                {% if u.email %}
+                  <div><i class="fa fa-envelope mr-1"></i>{{ u.email }}</div>
+                {% endif %}
+                {% if u.contact_number or u.phone %}
+                  <div><i class="fa fa-phone mr-1"></i>{{ u.contact_number or u.phone }}</div>
+                {% endif %}
+              </td>
+
+              <td class="px-5 py-3 text-gray-700 dark:text-gray-200">
+                {{ appt.doctor_name }}
+              </td>
+
+              <td class="px-5 py-3 text-gray-600 dark:text-gray-300">
+                {{ appt.specialization }}
+              </td>
+
+              <td class="px-5 py-3 text-gray-600 dark:text-gray-300">
+                {{ appt.appointment_date }}
+              </td>
+
+              <td class="px-5 py-3 text-gray-600 dark:text-gray-300">
+                {{ appt.appointment_time }}
+              </td>
+
+              <td class="px-5 py-3">
+                {% set st = appt.status_norm or appt.status|lower %}
+                {% if st == 'pending' %}
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                    Pending
+                  </span>
+                {% elif st == 'approved' %}
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                    Approved
+                  </span>
+                {% else %}
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                    {{ appt.status }}
+                  </span>
+                {% endif %}
+              </td>
+
+              <td class="px-5 py-3 text-right">
+                <div class="flex justify-end gap-2">
+                  <a
+                    href="{{ url_for('medical_appointment_detail', appointment_id=appt.id) }}"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold border border-primary-300 text-primary-700 bg-primary-50 hover:bg-primary-100"
+                  >
+                    <i class="fa fa-eye mr-1"></i> View
+                  </a>
+
+                  {% if st == 'pending' %}
+                    <a
+                      href="{{ url_for('approve_appointment', appointment_id=appt.id) }}"
+                      class="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm"
+                      onclick="return confirm('Approve this appointment?');"
+                    >
+                      <i class="fa fa-check mr-1"></i> Approve
+                    </a>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="bg-white dark:bg-dark-800 border border-dashed border-gray-300 dark:border-dark-600 rounded-2xl p-6 text-center text-gray-500 dark:text-gray-400">
+      <i class="fa fa-calendar-xmark text-2xl mb-2 text-gray-400"></i>
+      <p>No medical appointments found.</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

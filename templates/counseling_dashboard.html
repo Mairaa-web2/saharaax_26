@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counseling Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Galaxy Background */
+        .galaxy-bg {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .galaxy-bg::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+                radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+            animation: galaxyMove 200s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes galaxyMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+
+        /* Glassmorphism 3D Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 8px 32px 0 rgba(31, 38, 135, 0.37),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) rotateX(2deg);
+            box-shadow:
+                0 20px 60px 0 rgba(14, 165, 233, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            background: rgba(15, 12, 41, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 1000;
+            transform: translateX(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            box-shadow: 5px 0 30px rgba(14, 165, 233, 0.2);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(14, 165, 233, 0.5);
+            border-radius: 10px;
+        }
+
+        .sidebar.closed {
+            transform: translateX(-280px);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 280px;
+            height: 70px;
+            background: rgba(15, 12, 41, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(14, 165, 233, 0.3);
+            z-index: 999;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
+        }
+
+        .navbar.full-width {
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                left: 0;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            margin-top: 70px;
+            padding: 30px;
+            min-height: calc(100vh - 70px);
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content.full-width {
+            margin-left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 20px 15px;
+            }
+        }
+
+        /* Sidebar Menu Items */
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            margin: 8px 15px;
+            border-radius: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(14, 165, 233, 0.2);
+            color: #0ea5e9;
+            transform: translateX(5px);
+        }
+
+        .menu-item:hover::before, .menu-item.active::before {
+            transform: scaleY(1);
+        }
+
+        /* 3D Profile Card */
+        .profile-3d {
+            perspective: 1000px;
+        }
+
+        .profile-content {
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .profile-3d:hover .profile-content {
+            transform: rotateY(5deg) rotateX(5deg);
+        }
+
+        /* Neon Glow Effect */
+        .neon-glow {
+            animation: neonGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from {
+                box-shadow:
+                    0 0 10px rgba(14, 165, 233, 0.5),
+                    0 0 20px rgba(14, 165, 233, 0.3),
+                    0 0 30px rgba(14, 165, 233, 0.2);
+            }
+            to {
+                box-shadow:
+                    0 0 20px rgba(14, 165, 233, 0.8),
+                    0 0 40px rgba(14, 165, 233, 0.5),
+                    0 0 60px rgba(14, 165, 233, 0.3);
+            }
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Particles Effect */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: rgba(14, 165, 233, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 6s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* Button Styles */
+        .btn-3d {
+            position: relative;
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            border: none;
+            box-shadow:
+                0 6px 20px rgba(14, 165, 233, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 10px 30px rgba(14, 165, 233, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-3d:active {
+            transform: translateY(0);
+            box-shadow:
+                0 3px 10px rgba(14, 165, 233, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        /* Stats Card Animation */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in-up {
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 12, 41, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        /* Badge Styles */
+        .badge-success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #22c55e;
+        }
+
+        .badge-warning {
+            background: rgba(251, 191, 36, 0.2);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fbbf24;
+        }
+
+        .badge-info {
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.4);
+            color: #0ea5e9;
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        /* User Card Hover Effect */
+        .user-card {
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .status-active {
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .status-pending {
+            background: #fbbf24;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+        }
+    </style>
+</head>
+
+<body class="galaxy-bg">
+
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="p-6">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center neon-glow">
+                    <i class="fas fa-brain text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-white font-bold text-xl">Counseling</h2>
+                    <p class="text-sky-300 text-xs">Dashboard</p>
+                </div>
+            </div>
+
+            <!-- Menu Items -->
+            <nav class="space-y-2">
+                <div class="menu-item active">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="font-medium">Dashboard</span>
+                </div>
+            </nav>
+
+            <!-- Logout Button -->
+            <div class="mt-10">
+                <a href="/logout" class="menu-item bg-red-500/20 hover:bg-red-500/30 text-red-400">
+                    <i class="fas fa-sign-out-alt text-xl"></i>
+                    <span class="font-medium">Logout</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="h-full px-6 flex items-center justify-between">
+            <!-- Menu Toggle & Title -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="w-10 h-10 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 flex items-center justify-center text-sky-400 transition-all">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div>
+                    <h1 class="text-white font-bold text-lg md:text-xl">Counseling Dashboard</h1>
+                    <p class="text-sky-300 text-xs hidden sm:block">Welcome back!</p>
+                </div>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-3">
+
+
+
+
+                <!-- Profile Dropdown -->
+                <div class="hidden sm:flex items-center gap-3 pl-3 border-l border-sky-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                        {% if user.profile_image %}
+                        <img src="{{ url_for('static', filename=user.profile_image) }}" class="w-full h-full rounded-xl object-cover" alt="Profile">
+                        {% else %}
+                        <i class="fas fa-user text-white"></i>
+                        {% endif %}
+                    </div>
+                    <div class="hidden lg:block">
+                        <p class="text-white font-medium text-sm">{{ user.name }}</p>
+                        <p class="text-sky-300 text-xs">{{ user.counseling }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="max-w-7xl mx-auto space-y-6">
+
+            <!-- Profile Card -->
+            <div class="glass-card rounded-3xl p-6 md:p-8 profile-3d slide-in-up" style="animation-delay: 0.1s;">
+                <div class="profile-content">
+                    <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                        <!-- Profile Image -->
+                        <div class="flex justify-center lg:justify-start">
+                            <div class="relative float-animation">
+                                {% if user.profile_image %}
+                                <img src="{{ url_for('static', filename=user.profile_image) }}"
+                                     class="w-32 h-32 md:w-40 md:h-40 rounded-3xl object-cover neon-glow border-4 border-sky-400/50" alt="Profile">
+                                {% else %}
+                                <div class="w-32 h-32 md:w-40 md:h-40 rounded-3xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center neon-glow border-4 border-sky-400/50">
+                                    <i class="fas fa-user text-white text-5xl"></i>
+                                </div>
+                                {% endif %}
+                                <div class="absolute -bottom-2 -right-2 w-12 h-12 bg-green-500 rounded-2xl border-4 border-sky-900 flex items-center justify-center neon-glow">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Info -->
+                        <div class="flex-1">
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
+                                <div>
+                                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">{{ user.name }}</h2>
+                                    <p class="text-sky-300 flex items-center gap-2 mb-3">
+                                        <i class="fas fa-envelope"></i>
+                                        {{ user.email }}
+                                    </p>
+                                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/30 text-sky-200 font-semibold text-sm border border-sky-400/50">
+                                        <i class="fas fa-user-tie"></i>
+                                        {{ user.counseling }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Info Grid -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-sky-400/30 hover:border-sky-400/50 transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                                            <i class="fas fa-user text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sky-300 text-xs">Father's Name</p>
+                                            <p class="text-white font-semibold">{{ user.father_name }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-sky-400/30 hover:border-sky-400/50 transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                                            <i class="fas fa-venus-mars text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sky-300 text-xs">Gender</p>
+                                            <p class="text-white font-semibold">{{ user.gender }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-sky-400/30 hover:border-sky-400/50 transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                                            <i class="fas fa-birthday-cake text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sky-300 text-xs">Date of Birth</p>
+                                            <p class="text-white font-semibold">{{ user.dob }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-sky-400/30 hover:border-sky-400/50 transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                                            <i class="fas fa-phone text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sky-300 text-xs">Phone</p>
+                                            <p class="text-white font-semibold">{{ user.phone }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-sky-400/30 hover:border-sky-400/50 transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                                            <i class="fas fa-map-marker-alt text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sky-300 text-xs">Location</p>
+                                            <p class="text-white font-semibold">{{ user.location }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-sky-400/30 hover:border-sky-400/50 transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center">
+                                            <i class="fas fa-clock text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sky-300 text-xs">Availability</p>
+                                            <p class="text-white font-semibold">{{ user.availability }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 slide-in-up" style="animation-delay: 0.15s;">
+                <!-- Total Users -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center neon-glow">
+                            <i class="fas fa-users text-white text-2xl"></i>
+                        </div>
+                        <span class="status-indicator status-active"></span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-1">{{ assigned_users|length }}</h3>
+                    <p class="text-sky-300 text-sm">Total Assigned Users</p>
+                </div>
+
+                <!-- Active Classes -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center neon-glow">
+                            <i class="fas fa-chalkboard-teacher text-white text-2xl"></i>
+                        </div>
+                        <span class="status-indicator status-active"></span>
+                    </div>
+                    {% set total_classes = assigned_users|sum(attribute='total_classes') %}
+                    <h3 class="text-2xl font-bold text-white mb-1">{{ total_classes }}</h3>
+                    <p class="text-sky-300 text-sm">Total Classes</p>
+                </div>
+
+                <!-- Completed Sessions -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center neon-glow">
+                            <i class="fas fa-check-circle text-white text-2xl"></i>
+                        </div>
+                        <span class="status-indicator status-active"></span>
+                    </div>
+                    {% set completed_classes = assigned_users|sum(attribute='completed_classes') %}
+                    <h3 class="text-2xl font-bold text-white mb-1">{{ completed_classes }}</h3>
+                    <p class="text-sky-300 text-sm">Completed Sessions</p>
+                </div>
+
+                <!-- Tests Completed -->
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center neon-glow">
+                            <i class="fas fa-clipboard-check text-white text-2xl"></i>
+                        </div>
+                        <span class="status-indicator status-active"></span>
+                    </div>
+                    {% set completed_tests = assigned_users|sum(attribute='completed_tests') %}
+                    <h3 class="text-2xl font-bold text-white mb-1">{{ completed_tests }}</h3>
+                    <p class="text-sky-300 text-sm">Tests Completed</p>
+                </div>
+            </div>
+
+            <!-- Assigned Users Section -->
+            <div class="slide-in-up" style="animation-delay: 0.2s;">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center neon-glow">
+                            <i class="fas fa-users text-white text-xl"></i>
+                        </div>
+                        Assigned Users
+                    </h3>
+                    <span class="px-5 py-2 rounded-full bg-sky-500/30 text-sky-200 font-semibold text-sm border border-sky-400/50">
+                        {{ assigned_users|length }} user{{ '' if assigned_users|length == 1 else 's' }} assigned
+                    </span>
+                </div>
+
+                {% if assigned_users %}
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                    {% for item in assigned_users %}
+                    <div class="glass-card rounded-3xl p-6 slide-in-up user-card" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                        <!-- User Header -->
+                        <div class="flex items-start gap-4 mb-5">
+                            <div class="relative">
+                                {% if item.user.profile_image_path %}
+                                <img src="{{ url_for('static', filename=item.user.profile_image_path) }}"
+                                     class="w-16 h-16 rounded-2xl object-cover border-2 border-sky-400/50"
+                                     alt="{{ item.user.name }}">
+                                {% else %}
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center border-2 border-sky-400/50">
+                                    <i class="fas fa-user text-white text-xl"></i>
+                                </div>
+                                {% endif %}
+                                <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-sky-900 flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-xs"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-lg font-bold text-white mb-1 truncate">{{ item.user.name }}</h4>
+                                <p class="text-sky-300 text-sm truncate flex items-center gap-1">
+                                    <i class="fas fa-envelope text-xs"></i>
+                                    {{ item.user.email }}
+                                </p>
+                                <p class="text-sky-400 text-xs mt-1 flex items-center gap-1">
+                                    <i class="fas fa-phone text-xs"></i>
+                                    {{ item.user.contact_number }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- User Details -->
+                        <div class="space-y-3 mb-5">
+                            <!-- Counseling Type -->
+                            <div class="flex items-center gap-2">
+                                <span class="px-3 py-1.5 rounded-lg bg-sky-500/30 text-sky-200 text-xs font-semibold border border-sky-400/50 inline-flex items-center gap-1.5">
+                                    <i class="fas fa-hand-holding-heart"></i>
+                                    {{ item.assignment.counseling }}
+                                </span>
+                            </div>
+
+                            <!-- User Info Grid -->
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-3 border border-sky-400/20">
+                                    <p class="text-sky-300 text-xs mb-1 flex items-center gap-1">
+                                        <i class="fas fa-venus-mars"></i>
+                                        Gender
+                                    </p>
+                                    <p class="text-white font-semibold text-sm">{{ item.user.gender|title }}</p>
+                                </div>
+                                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-3 border border-sky-400/20">
+                                    <p class="text-sky-300 text-xs mb-1 flex items-center gap-1">
+                                        <i class="fas fa-calendar"></i>
+                                        Age
+                                    </p>
+                                    <p class="text-white font-semibold text-sm">{{ item.user.age }} years</p>
+                                </div>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="bg-white/5 backdrop-blur-sm rounded-xl p-3 border border-sky-400/20">
+                                <p class="text-sky-300 text-xs mb-1 flex items-center gap-1">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Location
+                                </p>
+                                <p class="text-white font-semibold text-sm truncate">{{ item.user.current_location }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Progress Stats -->
+                        <div class="grid grid-cols-3 gap-3 mb-5">
+                            <div class="bg-blue-500/10 backdrop-blur-sm rounded-xl p-3 border border-blue-400/30 text-center">
+                                <div class="text-2xl font-bold text-blue-400 mb-1">{{ item.total_classes }}</div>
+                                <div class="text-xs text-blue-300 flex items-center justify-center gap-1">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    Classes
+                                </div>
+                            </div>
+                            <div class="bg-green-500/10 backdrop-blur-sm rounded-xl p-3 border border-green-400/30 text-center">
+                                <div class="text-2xl font-bold text-green-400 mb-1">{{ item.completed_classes }}</div>
+                                <div class="text-xs text-green-300 flex items-center justify-center gap-1">
+                                    <i class="fas fa-check-circle"></i>
+                                    Done
+                                </div>
+                            </div>
+                            <div class="bg-purple-500/10 backdrop-blur-sm rounded-xl p-3 border border-purple-400/30 text-center">
+                                <div class="text-2xl font-bold text-purple-400 mb-1">{{ item.tests_count }}</div>
+                                <div class="text-xs text-purple-300 flex items-center justify-center gap-1">
+                                    <i class="fas fa-clipboard-list"></i>
+                                    Tests
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mb-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-sky-300">Session Progress</span>
+                                {% if item.total_classes > 0 %}
+                                    {% set progress_percent = (item.completed_classes / item.total_classes * 100)|int %}
+                                {% else %}
+                                    {% set progress_percent = 0 %}
+                                {% endif %}
+                                <span class="text-xs font-semibold text-sky-400">{{ progress_percent }}%</span>
+                            </div>
+                            <div class="w-full bg-sky-900/30 rounded-full h-2 overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-sky-400 to-sky-600 rounded-full transition-all duration-500"
+                                     style="width: {{ progress_percent }}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Test Status Badge -->
+                        <div class="mb-5">
+                            {% if item.test_unlocked %}
+                            <div class="badge-success px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2">
+                                <i class="fas fa-unlock"></i>
+                                Tests Unlocked ({{ item.completed_classes }}/3 sessions completed)
+                            </div>
+                            {% else %}
+                            <div class="badge-warning px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2">
+                                <i class="fas fa-lock"></i>
+                                Complete {{ 3 - item.completed_classes }} more session(s) to unlock tests
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Assignment Date -->
+                        <div class="text-xs text-sky-400 mb-4 flex items-center gap-1">
+                            <i class="fas fa-clock"></i>
+                            Assigned on {{ item.assignment.timestamp }}
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col gap-3">
+                            <button onclick="openClassModal('{{ item.user_id }}')"
+                                    class="w-full btn-3d text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Manage Class
+                            </button>
+                            <a href="{{ url_for('attendance', user_id=item.user_id) }}"
+                               class="w-full btn-3d text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
+                                <i class="fas fa-calendar-check"></i>
+                                View Attendance
+                            </a>
+                            <a href="{{ url_for('counseling_user_tests', user_id=item.user_id) }}"
+                               class="w-full btn-3d text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
+                                <i class="fas fa-notes-medical"></i>
+                                Tests & Comments
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="glass-card rounded-3xl p-12 text-center">
+                    <div class="w-24 h-24 mx-auto rounded-3xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center mb-6 neon-glow float-animation">
+                        <i class="fas fa-info-circle text-white text-4xl"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-3">No users assigned yet</h4>
+                    <p class="text-sky-300">Users assigned to you will appear here</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="classModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[1001] p-4">
+        <div class="glass-card w-full max-w-4xl max-h-[90vh] rounded-3xl relative overflow-hidden slide-in-up">
+            <button onclick="closeClassModal()"
+                    class="absolute top-4 right-4 z-10 w-12 h-12 rounded-xl bg-red-500/30 hover:bg-red-500/50 flex items-center justify-center text-white transition-all border border-red-400/50">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div id="classContent" class="p-8 overflow-y-auto max-h-[90vh]" style="scrollbar-width: thin;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const navbar = document.getElementById('navbar');
+            const mainContent = document.getElementById('mainContent');
+            const overlay = document.getElementById('mobileOverlay');
+
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('closed');
+                navbar.classList.toggle('full-width');
+                mainContent.classList.toggle('full-width');
+            }
+        }
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+
+            if (document.documentElement.classList.contains('dark')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+
+        // Modal Functions
+        function openClassModal(userId) {
+            fetch(`/counselor_class/${userId}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("classContent").innerHTML = html;
+                    document.getElementById("classModal").classList.remove("hidden");
+                    document.body.style.overflow = 'hidden';
+                })
+                .catch(err => console.error('Error:', err));
+        }
+
+        function closeClassModal() {
+            document.getElementById("classModal").classList.add("hidden");
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on background click
+        document.getElementById('classModal').addEventListener('click', function(e) {
+            if (e.target.id === 'classModal') {
+                closeClassModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeClassModal();
+            }
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                const menuToggle = e.target.closest('button');
+
+                if (!sidebar.contains(e.target) && !menuToggle && sidebar.classList.contains('open')) {
+                    toggleSidebar();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

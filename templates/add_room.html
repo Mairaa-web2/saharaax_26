@@ -1,0 +1,235 @@
+{% extends "base_admin.html" %}
+{% block title %}Add Room{% endblock %}
+{% block header %}Add Room{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-sky-400 to-sky-600 text-white p-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold mb-2">Room Management</h1>
+        <p class="opacity-90">Manage rooms and accommodations for each floor.</p>
+        <p class="opacity-80 text-sm mt-2">
+          First create floors (Ground Floor, 1st Floor, Basement, etc.), then add rooms to them here.
+        </p>
+      </div>
+      <div class="text-5xl opacity-80">
+        🏨
+      </div>
+    </div>
+  </div>
+
+  <!-- Flash Messages -->
+  <div class="px-8 pt-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="mb-4 px-4 py-3 rounded-lg text-sm animate-fade-in
+            {% if category == 'success' %} bg-green-100 text-green-700 border border-green-300 {% endif %}
+            {% if category == 'danger' %} bg-red-100 text-red-700 border border-red-300 {% endif %}
+            {% if category == 'warning' %} bg-yellow-100 text-yellow-700 border border-yellow-300 {% endif %}">
+            <div class="flex items-center">
+              <span class="mr-2">
+                {% if category == 'success' %} ✅
+                {% elif category == 'danger' %} ❌
+                {% elif category == 'warning' %} ⚠️
+                {% endif %}
+              </span>
+              {{ message }}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <div class="p-8">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold flex items-center text-gray-700 dark:text-white">
+        <span class="mr-2">➕</span> Add New Room
+      </h2>
+
+      <a href="{{ url_for('add_floor') }}"
+         class="inline-flex items-center px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-all duration-200">
+        🏢 Manage Floors
+      </a>
+    </div>
+
+    {% if not floor_options %}
+      <div class="mb-6 px-4 py-3 rounded-lg bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm">
+        ⚠️ No floors found yet. Please go to the
+        <a href="{{ url_for('add_floor') }}" class="underline font-semibold">Add Floor</a>
+        page and create at least one floor (for example: Ground Floor, 1st Floor).
+      </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+
+      <!-- Floor (Dropdown) -->
+      <div class="form-group animate-fade-in-up" style="animation-delay: 0.1s">
+        <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+          <span class="mr-2">🏢</span> Select Floor
+        </label>
+        <select name="floor"
+                class="w-full border border-gray-300 rounded-lg p-3 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all duration-200"
+                required {% if not floor_options %} disabled {% endif %}>
+          <option value="" disabled selected>-- Select a floor --</option>
+          {% for f in floor_options %}
+            <option value="{{ f }}">{{ f }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Room Number -->
+      <div class="form-group animate-fade-in-up" style="animation-delay: 0.2s">
+        <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+          <span class="mr-2">🔢</span> Room Number
+        </label>
+        <input type="text" name="room_number"
+               class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all duration-200"
+               placeholder="e.g. 101, A-1, B-2" required>
+      </div>
+
+      <!-- Beds -->
+      <div class="form-group animate-fade-in-up" style="animation-delay: 0.3s">
+        <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+          <span class="mr-2">🛏️</span> Number of Beds
+        </label>
+        <input type="number" name="bed_count"
+               class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-all duration-200"
+               min="1" required>
+      </div>
+
+      <!-- Room Images -->
+      <div class="form-group animate-fade-in-up" style="animation-delay: 0.4s">
+        <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+          <span class="mr-2">📸</span> Upload Room Images (Max 3)
+        </label>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="border-2 border-dashed border-sky-200 rounded-xl p-4 transition-all duration-300 hover:border-sky-400 hover:bg-sky-50">
+            <label class="block text-sm text-gray-600 mb-2 text-center">Image 1</label>
+            <div class="relative">
+              <input type="file" name="image1" accept="image/*"
+                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                     onchange="previewSingleImage(event, 'preview1')">
+              <div class="py-3 px-4 bg-sky-100 text-sky-700 rounded-lg text-center cursor-pointer transition-all duration-200 hover:bg-sky-200">
+                <span class="text-lg">📁</span>
+                <p class="text-xs mt-1">Choose File</p>
+              </div>
+            </div>
+            <div id="preview1" class="mt-3 flex justify-center"></div>
+          </div>
+
+          <div class="border-2 border-dashed border-sky-200 rounded-xl p-4 transition-all duration-300 hover:border-sky-400 hover:bg-sky-50">
+            <label class="block text-sm text-gray-600 mb-2 text-center">Image 2</label>
+            <div class="relative">
+              <input type="file" name="image2" accept="image/*"
+                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                     onchange="previewSingleImage(event, 'preview2')">
+              <div class="py-3 px-4 bg-sky-100 text-sky-700 rounded-lg text-center cursor-pointer transition-all duration-200 hover:bg-sky-200">
+                <span class="text-lg">📁</span>
+                <p class="text-xs mt-1">Choose File</p>
+              </div>
+            </div>
+            <div id="preview2" class="mt-3 flex justify-center"></div>
+          </div>
+
+          <div class="border-2 border-dashed border-sky-200 rounded-xl p-4 transition-all duration-300 hover:border-sky-400 hover:bg-sky-50">
+            <label class="block text-sm text-gray-600 mb-2 text-center">Image 3</label>
+            <div class="relative">
+              <input type="file" name="image3" accept="image/*"
+                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                     onchange="previewSingleImage(event, 'preview3')">
+              <div class="py-3 px-4 bg-sky-100 text-sky-700 rounded-lg text-center cursor-pointer transition-all duration-200 hover:bg-sky-200">
+                <span class="text-lg">📁</span>
+                <p class="text-xs mt-1">Choose File</p>
+              </div>
+            </div>
+            <div id="preview3" class="mt-3 flex justify-center"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="animate-fade-in-up" style="animation-delay: 0.5s">
+        <button type="submit"
+                {% if not floor_options %}
+                  disabled
+                  class="w-full bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg cursor-not-allowed"
+                {% else %}
+                  class="w-full bg-gradient-to-r from-sky-500 to-sky-600 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:from-sky-600 hover:to-sky-700 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center"
+                {% endif %}>
+          <span class="mr-2">➕</span> Add Room
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
+    animation-fill-mode: both;
+  }
+  .form-group:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+  }
+</style>
+
+<script>
+  function previewSingleImage(event, previewId) {
+    const preview = document.getElementById(previewId);
+    preview.innerHTML = "";
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        img.className = "w-24 h-24 object-cover rounded-lg shadow border";
+        preview.appendChild(img);
+
+        img.style.opacity = "0";
+        img.style.transform = "scale(0.8)";
+        setTimeout(() => {
+          img.style.transition = "all 0.3s ease";
+          img.style.opacity = "1";
+          img.style.transform = "scale(1)";
+        }, 10);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('focus', () => {
+        el.parentElement.classList.add('ring-2', 'ring-sky-200');
+      });
+      el.addEventListener('blur', () => {
+        el.parentElement.classList.remove('ring-2', 'ring-sky-200');
+      });
+    });
+  });
+</script>
+{% endblock %}

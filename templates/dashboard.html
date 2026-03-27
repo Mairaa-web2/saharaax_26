@@ -1,0 +1,153 @@
+{% extends "base_admin.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block header %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+  <!-- Stats Cards -->
+  {% for label, value, icon, color in [
+    ('Approved Users', approved, 'user-check', 'green'),
+    ('Rejected Users', rejected, 'user-times', 'red'),
+    ('Pending Approval', unapproved, 'hourglass-half', 'yellow'),
+    ('Total Rooms', total_rooms, 'door-open', 'blue'),
+    ('Total Beds', total_beds, 'bed', 'purple')
+  ] %}
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 flex items-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <div class="flex-shrink-0">
+      <div class="p-3 rounded-lg bg-{{ color }}-100 dark:bg-{{ color }}-900">
+        <i class="fas fa-{{ icon }} text-{{ color }}-600 dark:text-{{ color }}-300 text-xl"></i>
+      </div>
+    </div>
+    <div class="ml-4">
+      <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ label }}</p>
+      <p class="text-2xl font-semibold text-{{ color }}-600 dark:text-{{ color }}-300">{{ value }}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Support Categories Section -->
+<div class="mb-8">
+  <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Support Categories</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+    <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900 dark:to-red-800 rounded-xl p-5 shadow-md transition-all duration-300 hover:shadow-lg">
+      <div class="flex items-center justify-between mb-3">
+        <i class="fas fa-exclamation-circle text-red-500 text-2xl"></i>
+        <span class="text-xs font-medium px-2 py-1 rounded-full bg-red-100 dark:bg-red-700 text-red-700 dark:text-red-100">Domestic Violence</span>
+      </div>
+      <h3 class="text-3xl font-bold text-red-600 dark:text-red-300">{{ stats['Domestic Violence'] }}</h3>
+      <p class="text-sm text-red-500 dark:text-red-400 mt-1">Cases registered</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900 dark:to-pink-800 rounded-xl p-5 shadow-md transition-all duration-300 hover:shadow-lg">
+      <div class="flex items-center justify-between mb-3">
+        <i class="fas fa-hand-holding-heart text-pink-500 text-2xl"></i>
+        <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 dark:bg-pink-700 text-pink-700 dark:text-pink-100">Sexual Abuse</span>
+      </div>
+      <h3 class="text-3xl font-bold text-pink-600 dark:text-pink-300">{{ stats['Sexual Abuse Support'] }}</h3>
+      <p class="text-sm text-pink-500 dark:text-pink-400 mt-1">Support cases</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-xl p-5 shadow-md transition-all duration-300 hover:shadow-lg">
+      <div class="flex items-center justify-between mb-3">
+        <i class="fas fa-brain text-purple-500 text-2xl"></i>
+        <span class="text-xs font-medium px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-700 text-purple-700 dark:text-purple-100">Psychological</span>
+      </div>
+      <h3 class="text-3xl font-bold text-purple-600 dark:text-purple-300">{{ stats['Psychological Support'] }}</h3>
+      <p class="text-sm text-purple-500 dark:text-purple-400 mt-1">Support sessions</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-xl p-5 shadow-md transition-all duration-300 hover:shadow-lg">
+      <div class="flex items-center justify-between mb-3">
+        <i class="fas fa-lightbulb text-blue-500 text-2xl"></i>
+        <span class="text-xs font-medium px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-700 text-blue-700 dark:text-blue-100">Self Awareness</span>
+      </div>
+      <h3 class="text-3xl font-bold text-blue-600 dark:text-blue-300">{{ stats['Self Awareness'] }}</h3>
+      <p class="text-sm text-blue-500 dark:text-blue-400 mt-1">Program participants</p>
+    </div>
+
+    <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-xl p-5 shadow-md transition-all duration-300 hover:shadow-lg">
+      <div class="flex items-center justify-between mb-3">
+        <i class="fas fa-heartbeat text-green-500 text-2xl"></i>
+        <span class="text-xs font-medium px-2 py-1 rounded-full bg-green-100 dark:bg-green-700 text-green-700 dark:text-green-100">Health Awareness</span>
+      </div>
+      <h3 class="text-3xl font-bold text-green-600 dark:text-green-300">{{ stats['Health Awareness'] }}</h3>
+      <p class="text-sm text-green-500 dark:text-green-400 mt-1">Awareness sessions</p>
+    </div>
+  </div>
+</div>
+
+<!-- Pie Chart Container -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8">
+  <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Dashboard Summary</h2>
+  <div id="chart-container" class="w-full h-96"></div>
+</div>
+
+<!-- Highcharts Scripts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/boost.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    Highcharts.chart('chart-container', {
+      chart: {
+        type: 'pie',
+        backgroundColor: 'transparent',
+        animation: {
+          duration: 1500,
+          easing: 'easeOutBounce'
+        }
+      },
+      title: {
+        text: 'Dashboard Summary Chart',
+        style: {
+          color: '#333',
+          fontSize: '20px'
+        }
+      },
+      tooltip: {
+        pointFormat: '<b>{point.name}:</b> {point.y} ({point.percentage:.1f}%)'
+      },
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          borderWidth: 1,
+          borderColor: '#fff',
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontWeight: 'bold',
+              color: '#333',
+              textOutline: 'none'
+            },
+            format: '{point.name}: {point.percentage:.1f}%'
+          },
+          showInLegend: true
+        }
+      },
+      series: [{
+        name: 'Count',
+        colorByPoint: true,
+        data: [
+          { name: 'Approved Users', y: {{ approved|default(0) }}, sliced: true, selected: true },
+          { name: 'Rejected Users', y: {{ rejected|default(0) }} },
+          { name: 'Pending Approval', y: {{ unapproved|default(0) }} },
+          { name: 'Total Rooms', y: {{ total_rooms|default(0) }} },
+          { name: 'Total Beds', y: {{ total_beds|default(0) }} }
+        ]
+      }],
+      credits: {
+        enabled: false
+      }
+    });
+  });
+</script>
+{% endblock %}

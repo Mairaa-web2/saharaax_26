@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF Electronotics — Modern Corporate Animations</title>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#0f172a; --ink:#e5e7eb; --muted:#94a3b8;
+    --brand:#38bdf8; --brand2:#22d3ee;
+    --radius:20px; --shadow:0 18px 50px rgba(0,0,0,.35);
+    --dur:800ms; --ease:cubic-bezier(.2,.8,.2,1);
+  }
+  *{box-sizing:border-box} html,body{margin:0; height:100%;}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif; background:linear-gradient(180deg,#0a1020,#0f162a);}
+  a{color:inherit; text-decoration:none}
+
+  /* Container */
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px}
+
+  /* Hero */
+  .hero{
+    position:relative; overflow:hidden; color:var(--ink);
+    padding:120px 0 80px; background:
+      radial-gradient(1200px 600px at 80% -20%, rgba(56,189,248,.18), transparent 60%),
+      radial-gradient(1000px 500px at 10% 110%, rgba(34,211,238,.18), transparent 60%);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:18px 0 0}
+  .brand{display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.3px}
+  .brand-badge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand2)); box-shadow:0 6px 20px rgba(34,211,238,.35)}
+  .cta{display:flex; gap:10px}
+  .btn{
+    padding:10px 16px; border:1px solid rgba(255,255,255,.12); border-radius:999px; color:var(--ink);
+    background:rgba(255,255,255,.04); transition:transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.25); background:rgba(255,255,255,.06)}
+  .hero-grid{display:grid; gap:28px; grid-template-columns:1.05fr .95fr; align-items:center; margin-top:32px}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr} }
+  .h-title{font-size:clamp(28px,4.5vw,46px); line-height:1.1; margin:0 0 12px; font-weight:900}
+  .h-sub{color:var(--muted); font-size:clamp(14px,2vw,18px); margin:0 0 22px}
+  .hero-cards{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+  @media (max-width:520px){ .hero-cards{grid-template-columns:1fr} }
+  .mini{
+    padding:14px; border-radius:16px; background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08); box-shadow: var(--shadow);
+  }
+  .tag{display:inline-flex; gap:8px; align-items:center; font-size:12px; padding:6px 10px; border-radius:999px;
+       color:#0b1220; background:linear-gradient(135deg,#a5f3fc,#7dd3fc); font-weight:700}
+  .hero-ill{
+    position:relative; height:440px; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+    background:#0b1022; box-shadow: var(--shadow);
+  }
+  .parallax{
+    position:absolute; inset:0; background:
+      url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+    transform:scale(1.15) translateY(0);
+    transition:transform .25s ease-out;
+  }
+  .glass{
+    position:absolute; left:16px; bottom:16px; padding:10px 14px; border-radius:12px;
+    backdrop-filter: blur(8px); background:rgba(15,23,42,.55); color:var(--ink); font-size:13px;
+    border:1px solid rgba(255,255,255,.12)
+  }
+
+  /* Stats */
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:28px}
+  @media (max-width:750px){ .stats{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .stats{grid-template-columns:1fr} }
+  .stat{
+    padding:18px; border-radius:16px; background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08)
+  }
+  .stat .num{font-size:28px; font-weight:900}
+  .stat .lbl{color:var(--muted); font-size:13px}
+
+  /* Section */
+  section{color:var(--ink); padding:72px 0; border-bottom:1px solid rgba(255,255,255,.06)}
+  .sec-head{display:flex; align-items:end; justify-content:space-between; margin-bottom:22px}
+  .sec-title{font-size:clamp(22px,3vw,28px); font-weight:800; margin:0}
+  .sec-note{color:var(--muted); font-size:14px}
+
+  /* Cards */
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+  @media (max-width:950px){ .grid3{grid-template-columns:1fr 1fr} }
+  @media (max-width:600px){ .grid3{grid-template-columns:1fr} }
+
+  .card{
+    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08); border-radius:20px; overflow:hidden; box-shadow:var(--shadow);
+    transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{transform:translateY(-6px); border-color:rgba(255,255,255,.16); box-shadow:0 28px 60px rgba(0,0,0,.45)}
+  .thumb{aspect-ratio: 4/3; background:#0b1020; position:relative; overflow:hidden}
+  .thumb img{width:100%; height:100%; object-fit:cover; display:block; transform-origin:center}
+  .card-body{padding:16px}
+  .kicker{font-size:12px; color:var(--brand2); letter-spacing:.2px; font-weight:700}
+  .h5{margin:6px 0 6px; font-size:18px; font-weight:800}
+  .p{margin:0; color:var(--muted); font-size:14px}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+  .chip{font-size:11px; padding:6px 10px; border-radius:999px; background:rgba(148,163,184,.15); color:var(--ink); border:1px solid rgba(148,163,184,.25)}
+
+  /* Reveal Animations (IO-triggered) */
+  .reveal{opacity:0; transform:translateY(18px) scale(.96); transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease)}
+  .reveal.zoom{transform:scale(.9) rotateX(8deg)}
+  .reveal.slideL{transform:translateX(-26px)}
+  .reveal.slideR{transform:translateX(26px)}
+  .reveal.visible{opacity:1; transform:none}
+
+  /* Footer */
+  footer{color:var(--muted); text-align:center; padding:60px 0 80px}
+</style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <nav class="nav">
+        <div class="brand">
+          <div class="brand-badge"></div>
+          <span>HF Electronotics</span>
+        </div>
+        <div class="cta">
+          <a class="btn" href="#services">Our Services</a>
+          <a class="btn" href="#work">Portfolio</a>
+        </div>
+      </nav>
+
+      <div class="hero-grid">
+        <div class="copy reveal slideL">
+          <span class="tag">AI • IoT • Clean Tech</span>
+          <h1 class="h-title">Building smart solutions that scale — with delightful motion.</h1>
+          <p class="h-sub">We blend engineering with design. Smooth scroll animations guide users, while cards showcase work without clutter.</p>
+
+          <div class="hero-cards">
+            <div class="mini"><strong>Faster UX</strong><br><span style="color:var(--muted)">Lightweight, no libs.</span></div>
+            <div class="mini"><strong>Accessible</strong><br><span style="color:var(--muted)">Respects reduced-motion.</span></div>
+            <div class="mini"><strong>Reusable</strong><br><span style="color:var(--muted)">Drop-in components.</span></div>
+            <div class="mini"><strong>Branded</strong><br><span style="color:var(--muted)">Corporate polish.</span></div>
+          </div>
+
+          <div class="stats">
+            <div class="stat reveal"><div class="num" data-counter="450">0</div><div class="lbl">M+ data points/day</div></div>
+            <div class="stat reveal"><div class="num" data-counter="40">0</div><div class="lbl">MWh energy portfolio</div></div>
+            <div class="stat reveal"><div class="num" data-counter="12">0</div><div class="lbl">Years building products</div></div>
+          </div>
+        </div>
+
+        <div class="hero-ill reveal zoom">
+          <div class="parallax" id="parallax"></div>
+          <div class="glass">Subtle parallax image • scroll to see</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SERVICES (3 cards, zoom-in on reveal) -->
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">What we do</h2>
+        <div class="sec-note">Scroll down—cards zoom/fade in.</div>
+      </div>
+      <div class="grid3">
+        <article class="card reveal zoom">
+          <div class="thumb"><img alt="Telecom Networks" loading="lazy"
+            src="https://images.unsplash.com/photo-1499084732479-de2c02d45fc4?q=80&w=1400&auto=format&fit=crop"></div>
+          <div class="card-body">
+            <div class="kicker">Telecom</div>
+            <div class="h5">Infra & OSS</div>
+            <p class="p">Planning, rollout, and monitoring dashboards with clean motion cues.</p>
+            <div class="chips"><span class="chip">5G</span><span class="chip">NOC</span><span class="chip">Analytics</span></div>
+          </div>
+        </article>
+
+        <article class="card reveal zoom">
+          <div class="thumb"><img alt="Energy" loading="lazy"
+            src="https://images.unsplash.com/photo-1509390981263-4d52b37f09b0?q=80&w=1400&auto=format&fit=crop"></div>
+          <div class="card-body">
+            <div class="kicker">Energy</div>
+            <div class="h5">Storage & Renewables</div>
+            <p class="p">Portfolio control, live KPIs, and predictive maintenance.</p>
+            <div class="chips"><span class="chip">BESS</span><span class="chip">Inverters</span><span class="chip">Forecasting</span></div>
+          </div>
+        </article>
+
+        <article class="card reveal zoom">
+          <div class="thumb"><img alt="Software" loading="lazy"
+            src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1400&auto=format&fit=crop"></div>
+          <div class="card-body">
+            <div class="kicker">Software</div>
+            <div class="h5">Platforms & Apps</div>
+            <p class="p">Human-centred interfaces with fast, accessible animations.</p>
+            <div class="chips"><span class="chip">SaaS</span><span class="chip">IoT</span><span class="chip">ML</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="sec-title">Selected Work</h2>
+        <div class="sec-note">Staggered slide-in + zoom.</div>
+      </div>
+
+      <div class="grid3">
+        <article class="card reveal slideL">
+          <div class="thumb"><img alt="NOC Dashboard" loading="lazy"
+            src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1600&auto=format&fit=crop"></div>
+          <div class="card-body">
+            <div class="kicker">Analytics</div>
+            <div class="h5">NOC Observability Suite</div>
+            <p class="p">Multi-tenant live monitoring with animated deltas and alerts.</p>
+          </div>
+        </article>
+
+        <article class="card reveal zoom">
+          <div class="thumb"><img alt="Energy Portal" loading="lazy"
+            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&auto=format&fit=crop"></div>
+          <div class="card-body">
+            <div class="kicker">Energy</div>
+            <div class="h5">Storage Control Portal</div>
+            <p class="p">KPIs, forecasts, and asset tuning with motion feedback.</p>
+          </div>
+        </article>
+
+        <article class="card reveal slideR">
+          <div class="thumb"><img alt="SaaS" loading="lazy"
+            src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop"></div>
+          <div class="card-body">
+            <div class="kicker">SaaS</div>
+            <div class="h5">Operations Platform</div>
+            <p class="p">Team workflows with smooth section reveals & counters.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 HF Electronotics — Lightweight scroll animations using Intersection Observer.
+  </footer>
+
+<script>
+  // ===== Intersection Observer: Reveal on scroll =====
+  const els = document.querySelectorAll('.reveal');
+  const io = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries, obs)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        })
+      }, {root:null, rootMargin:'0px 0px -10% 0px', threshold:.18})
+    : null;
+
+  els.forEach(el=>{
+    if(io) io.observe(el); else el.classList.add('visible');
+  });
+
+  // ===== Parallax for hero image (subtle) =====
+  const par = document.getElementById('parallax');
+  window.addEventListener('scroll',()=>{
+    const y = window.scrollY;
+    // dampened translate to keep it subtle
+    par.style.transform = `scale(1.15) translateY(${Math.min(y*0.08, 40)}px)`;
+  }, {passive:true});
+
+  // ===== Count-up on stats when visible =====
+  const counters = document.querySelectorAll('[data-counter]');
+  const animateCount = (el, to)=>{
+    const dur = 1400, start = performance.now(), from = 0;
+    const suffix = el.dataset.counterSuffix || '';
+    const step = (t)=>{
+      const p = Math.min((t - start) / dur, 1);
+      const eased = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(eased * to) + (suffix || '');
+      if(p<1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const statsObserver = new IntersectionObserver((entries, obs)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const n = parseInt(e.target.dataset.counter,10);
+        animateCount(e.target, n);
+        obs.unobserve(e.target);
+      }
+    });
+  }, {threshold:.6});
+  counters.forEach(c=>statsObserver.observe(c));
+
+  // ===== Respect reduced motion =====
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(media.matches){
+    document.querySelectorAll('.reveal').forEach(el=>{el.classList.add('visible')});
+    window.removeEventListener('scroll', ()=>{});
+  }
+</script>
+</body>
+</html>

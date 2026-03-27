@@ -1,0 +1,12 @@
+{% extends "base_counseling.html" %}
+{% block title %}Test Result{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-6">Counseling Test Result</h2>
+
+<div class="p-6 bg-white dark:bg-gray-700 rounded-lg shadow">
+  <pre class="whitespace-pre-wrap">{{ evaluation }}</pre>
+</div>
+
+<a href="{{ url_for('attendance', user_id=user_id) }}"
+   class="mt-6 inline-block px-6 py-2 bg-pink-600 text-white rounded-lg">Back to Attendance</a>
+{% endblock %}

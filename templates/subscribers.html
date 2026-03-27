@@ -1,0 +1,66 @@
+{% extends "base_admin.html" %}
+{% block title %}Subscribers{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-10 px-6">
+
+  <!-- Subscriber Count Card -->
+  <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-2xl shadow-lg flex items-center gap-6 mb-10">
+    <div class="bg-white/20 rounded-full w-16 h-16 flex items-center justify-center">
+      <i class="fas fa-users text-3xl"></i>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold">{{ total_subscribers }}</h2>
+      <p class="text-sm opacity-80">Total Subscribers</p>
+    </div>
+  </div>
+
+  <!-- Newsletter Form -->
+  <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-envelope text-blue-500"></i> Send Newsletter
+    </h2>
+    <form method="POST" class="space-y-4">
+      <input type="text" name="subject" placeholder="Enter Subject"
+             class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-500" required>
+      <textarea name="message" rows="5" placeholder="Enter Message"
+                class="w-full p-3 rounded-lg border focus:ring-2 focus:ring-blue-500" required></textarea>
+      <button type="submit"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+        <i class="fas fa-paper-plane mr-2"></i> Send Newsletter
+      </button>
+    </form>
+  </div>
+
+  <!-- Subscribers List -->
+  <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <i class="fas fa-list text-green-500"></i> Subscribers List
+    </h2>
+    <table class="w-full text-left border">
+      <thead>
+        <tr class="bg-gray-200 dark:bg-gray-700">
+          <th class="p-3">#</th>
+          <th class="p-3">Email</th>
+          <th class="p-3">Subscribed At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sid, sub in subscribers.items() %}
+        <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+          <td class="p-3">{{ loop.index }}</td>
+          <td class="p-3 flex items-center gap-2">
+            <i class="fas fa-envelope text-blue-500"></i> {{ sub.email }}
+          </td>
+          <td class="p-3">{{ sub.subscribed_at }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-center p-3 text-gray-500">No subscribers yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pink: {
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #ec4899;
+            border-radius: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-4 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-pink-600 dark:text-pink-500 mb-2">Class Management</h1>
+            <p class="text-gray-600 dark:text-gray-400">Schedule and manage your counseling sessions</p>
+        </div>
+
+        <!-- Schedule New Class Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8 card-hover">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+                    <i class="fas fa-calendar-plus text-pink-500 text-xl"></i>
+                    Schedule New Class
+                </h3>
+                <span class="text-xs text-pink-600 dark:text-pink-400 bg-pink-100 dark:bg-pink-900/30 px-2 py-1 rounded-full">
+                    <i class="fas fa-info-circle mr-1"></i> All fields are required
+                </span>
+            </div>
+
+            <form method="POST" action="{{ url_for('counselor_class', user_id=user_id) }}" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm mb-2 font-medium text-gray-700 dark:text-gray-300">
+                            <i class="fas fa-calendar-day mr-2 text-pink-500"></i>Select Date
+                        </label>
+                        <input type="date" name="date"
+                               class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 dark:bg-gray-700 dark:text-white transition"
+                               required>
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-2 font-medium text-gray-700 dark:text-gray-300">
+                            <i class="fas fa-clock mr-2 text-pink-500"></i>Select Time
+                        </label>
+                        <input type="time" name="time"
+                               class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-pink-400 focus:border-pink-400 dark:bg-gray-700 dark:text-white transition"
+                               required>
+                    </div>
+                </div>
+                <button type="submit"
+                        class="w-full bg-gradient-to-r from-pink-600 to-pink-700 text-white py-3 rounded-lg hover:from-pink-700 hover:to-pink-800 shadow-md transition-all duration-300 flex items-center justify-center font-medium">
+                    <i class="fas fa-paper-plane mr-2"></i> Send Invitation
+                </button>
+            </form>
+        </div>
+
+        <!-- Class History Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 card-hover">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+                    <i class="fas fa-history text-pink-500 text-xl"></i>
+                    Class History
+                </h3>
+                <span class="text-xs text-gray-500 dark:text-gray-400">
+                    {{ classes|length }} class{{ '' if classes|length == 1 else 'es' }}
+                </span>
+            </div>
+
+            {% if classes %}
+                <div class="space-y-5 max-h-[450px] overflow-y-auto pr-2 custom-scroll pb-2">
+                    {% for cid, c in classes.items() %}
+                        <div class="p-5 rounded-xl shadow-sm transition-all duration-300 border-l-4
+                                    {% if c.status == 'Completed' %} border-green-500 bg-green-50 dark:bg-green-900/30
+                                    {% elif c.status == 'Ongoing' %} border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30
+                                    {% else %} border-pink-500 bg-gray-50 dark:bg-gray-700 {% endif %}">
+
+                            <!-- Header Row -->
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                                <div class="flex-1">
+                                    <p class="text-lg font-semibold text-gray-800 dark:text-white mb-1">
+                                        {{ c.date }} <span class="text-sm text-gray-500">at</span> {{ c.time }}
+                                    </p>
+                                    <div class="flex items-center gap-3 flex-wrap">
+                                        <span class="status-badge
+                                            {% if c.status == 'Completed' %} bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100
+                                            {% elif c.status == 'Ongoing' %} bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100
+                                            {% else %} bg-pink-100 text-pink-800 dark:bg-pink-800 dark:text-pink-100 {% endif %}">
+                                            <i class="fas
+                                                {% if c.status == 'Completed' %} fa-check-circle
+                                                {% elif c.status == 'Ongoing' %} fa-play-circle
+                                                {% else %} fa-clock {% endif %} mr-1"></i>
+                                            {{ c.status }}
+                                        </span>
+
+                                        <!-- Attendance Badge -->
+                                        <span class="bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-100 text-xs font-medium px-3 py-1 rounded-full flex items-center">
+                                            <i class="fas fa-user-check mr-1"></i> {{ c.attendance_count }} Attendance
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Times Info -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-gray-600 dark:text-gray-300 mb-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                                    <span>Created: <span class="font-medium ml-1">{{ c.created_at }}</span></span>
+                                </div>
+                                {% if c.start_time %}
+                                    <div class="flex items-center">
+                                        <i class="fas fa-play mr-2 text-green-500"></i>
+                                        <span>Started: <span class="font-medium ml-1">{{ c.start_time }}</span></span>
+                                    </div>
+                                {% endif %}
+                                {% if c.end_time %}
+                                    <div class="flex items-center">
+                                        <i class="fas fa-stop mr-2 text-red-500"></i>
+                                        <span>Ended: <span class="font-medium ml-1">{{ c.end_time }}</span></span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="mt-4 flex flex-col sm:flex-row gap-2">
+                                {% if not c.start_time %}
+                                    <a href="{{ url_for('start_class', counselor_id=c.counselor_id, user_id=user_id, class_id=cid) }}"
+                                       class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-center font-medium shadow-sm transition-all flex items-center justify-center gap-2">
+                                        <i class="fas fa-play"></i> Start Class
+                                    </a>
+                                {% elif not c.end_time %}
+                                    <a href="{{ url_for('end_class', counselor_id=c.counselor_id, user_id=user_id, class_id=cid) }}"
+                                       class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-center font-medium shadow-sm transition-all flex items-center justify-center gap-2">
+                                        <i class="fas fa-stop"></i> End Class
+                                    </a>
+                                {% else %}
+                                    <span class="flex-1 px-4 py-2 bg-gray-400 text-white rounded-lg text-center font-medium shadow-sm flex items-center justify-center gap-2 cursor-not-allowed">
+                                        <i class="fas fa-check"></i> Completed
+                                    </span>
+                                    <a href="/counseling_dashboard"
+                                       class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-center font-medium shadow-sm transition-all flex items-center justify-center gap-2">
+                                        <i class="fas fa-eye"></i> Dashboard
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="p-8 rounded-xl text-center bg-gray-50 dark:bg-gray-700 text-gray-500 shadow-sm">
+                    <i class="fas fa-calendar-times text-pink-400 text-4xl mb-3"></i>
+                    <p class="text-lg font-medium">No classes scheduled yet</p>
+                    <p class="text-sm mt-1">Schedule your first class using the form above</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer Note -->
+    <div class="max-w-4xl mx-auto mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
+        <p>© 2023 Class Management System | Designed with <i class="fas fa-heart text-pink-500"></i> for educators</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,310 @@
+{% extends "base_admin.html" %}
+{% block title %}Attendance Report{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="mb-10 text-center">
+      <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-3 flex items-center justify-center gap-3">
+        <i class="fas fa-clipboard-check text-indigo-600"></i> Attendance Report
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+        Comprehensive overview of attendance records and participation metrics across all sessions.
+      </p>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 border-indigo-500">
+        <div class="flex items-center">
+          <div class="p-3 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 mr-4">
+            <i class="fas fa-users text-indigo-600 dark:text-indigo-400 text-xl"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ users|length }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 border-green-500">
+        <div class="flex items-center">
+          <div class="p-3 rounded-lg bg-green-100 dark:bg-green-900/30 mr-4">
+            <i class="fas fa-calendar-check text-green-600 dark:text-green-400 text-xl"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Present</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ chart_data.present }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 border-red-500">
+        <div class="flex items-center">
+          <div class="p-3 rounded-lg bg-red-100 dark:bg-red-900/30 mr-4">
+            <i class="fas fa-calendar-times text-red-600 dark:text-red-400 text-xl"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Absent</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ chart_data.absent }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+        <div class="flex items-center">
+          <div class="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/30 mr-4">
+            <i class="fas fa-chart-pie text-purple-600 dark:text-purple-400 text-xl"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Attendance Rate</p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white">
+              {% if chart_data.present + chart_data.absent > 0 %}
+                {{ ((chart_data.present / (chart_data.present + chart_data.absent)) * 100) | round(1) }}%
+              {% else %}
+                0%
+              {% endif %}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Highcharts Section -->
+    <div class="mb-12 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+      <div id="attendanceChart" class="w-full" style="height: 400px;"></div>
+    </div>
+
+    {% if users and users|length > 0 %}
+      <!-- Filters and Controls -->
+      <div class="mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">User Attendance Details</h2>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative">
+              <input type="text" placeholder="Search users..." class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-full">
+              <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+            <select class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+              <option>Sort by Name</option>
+              <option>Sort by Attendance</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {% for user in users %}
+          <!-- User Card -->
+          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700">
+            <!-- Card Header -->
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white">
+              <div class="flex items-center gap-4">
+                <div class="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center text-xl">
+                  {{ user.name[0] | upper }}
+                </div>
+                <div>
+                  <h2 class="text-xl font-bold">{{ user.name }}</h2>
+                  <p class="text-indigo-100 text-sm">{{ user.email }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="p-6 border-b border-gray-100 dark:border-gray-700">
+              <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Total</p>
+                  <p class="text-lg font-bold text-gray-800 dark:text-white">{{ user.total_sessions }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-green-600">Present</p>
+                  <p class="text-lg font-bold text-green-600">{{ user.present_count }}</p>
+                </div>
+                <div>
+                  <p class="text-sm text-red-600">Absent</p>
+                  <p class="text-lg font-bold text-red-600">{{ user.absent_count }}</p>
+                </div>
+              </div>
+
+              <!-- Attendance Progress Bar -->
+              <div class="mt-4">
+                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
+                  <span>Attendance Rate</span>
+                  <span>
+                    {% if user.total_sessions > 0 %}
+                      {{ ((user.present_count / user.total_sessions) * 100) | round(1) }}%
+                    {% else %}
+                      0%
+                    {% endif %}
+                  </span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                  <div class="bg-green-600 h-2.5 rounded-full"
+                       style="width: {% if user.total_sessions > 0 %}{{ (user.present_count / user.total_sessions) * 100 }}%{% else %}0%{% endif %}">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sessions List -->
+            <div class="p-6">
+              <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                <i class="fas fa-history text-indigo-500"></i> Session History
+              </h3>
+              <div class="space-y-4 max-h-64 overflow-y-auto pr-2 session-scroll">
+                {% for s in user.sessions %}
+                  <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-600">
+                    <div class="flex justify-between items-start mb-2">
+                      <h4 class="font-medium text-gray-800 dark:text-white">{{ s.title }}</h4>
+                      <span class="px-2 py-1 rounded-full text-xs font-semibold {% if s.status == 'Present' %}bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400{% else %}bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400{% endif %}">
+                        {{ s.status }}
+                      </span>
+                    </div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                      <p class="flex items-center gap-1">
+                        <i class="fas fa-tag text-indigo-500"></i> Category: {{ s.category }}
+                      </p>
+                      <p class="flex items-center gap-1">
+                        <i class="far fa-clock text-indigo-500"></i> {{ s.created_at }}
+                      </p>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <!-- Empty State -->
+      <div class="bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-lg text-center">
+        <div class="mx-auto w-24 h-24 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mb-6">
+          <i class="fas fa-info-circle text-indigo-500 text-3xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">No attendance records found</h3>
+        <p class="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+          There are no attendance records to display at this time. Attendance data will appear here once sessions are created and tracked.
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Highcharts JS -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    Highcharts.chart('attendanceChart', {
+      chart: {
+        type: 'column',
+        backgroundColor: 'transparent',
+        borderRadius: 12,
+        style: {
+          fontFamily: 'Inter, sans-serif'
+        }
+      },
+      title: {
+        text: 'Overall Attendance Summary',
+        style: {
+          color: '#1f2937',
+          fontWeight: 'bold',
+          fontSize: '1.5rem'
+        }
+      },
+      xAxis: {
+        categories: ['Attendance Overview'],
+        crosshair: true,
+        labels: {
+          style: {
+            color: '#6b7280'
+          }
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Number of Sessions',
+          style: {
+            color: '#6b7280'
+          }
+        },
+        gridLineColor: '#f3f4f6',
+        labels: {
+          style: {
+            color: '#6b7280'
+          }
+        }
+      },
+      tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+          '<td style="padding:0"><b>{point.y}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        borderColor: '#e5e7eb',
+        borderRadius: 8,
+        shadow: true
+      },
+      plotOptions: {
+        column: {
+          borderRadius: 5,
+          pointPadding: 0.2,
+          borderWidth: 0
+        }
+      },
+      legend: {
+        itemStyle: {
+          color: '#4b5563',
+          fontWeight: 'normal'
+        },
+        itemHoverStyle: {
+          color: '#1f2937'
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Present',
+        data: [{{ chart_data.present }}],
+        color: '#10b981'
+      }, {
+        name: 'Absent',
+        data: [{{ chart_data.absent }}],
+        color: '#ef4444'
+      }]
+    });
+  });
+</script>
+
+<style>
+  .session-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .session-scroll::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+  .session-scroll::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 10px;
+  }
+  .session-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a5b4fc;
+  }
+  .dark .session-scroll::-webkit-scrollbar-track {
+    background: #374151;
+  }
+  .dark .session-scroll::-webkit-scrollbar-thumb {
+    background: #4b5563;
+  }
+  .dark .session-scroll::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+</style>
+{% endblock %}

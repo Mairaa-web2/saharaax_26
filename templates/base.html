@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}SahaaraX - Empowering Women & Children{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
+    .heading-font {
+      font-family: 'Playfair Display', serif;
+    }
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    .hero-overlay {
+      background: linear-gradient(135deg, rgba(30, 66, 148, 0.85) 0%, rgba(8, 28, 78, 0.9) 100%);
+    }
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #1e4294 0%, #081c4e 100%);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(30, 66, 148, 0.3);
+    }
+    .btn-outline-white {
+      transition: all 0.3s ease;
+    }
+    .btn-outline-white:hover {
+      background: white;
+      color: #1e4294 !important;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+    }
+    .stat-card {
+      transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-10px);
+    }
+    .testimonial-card {
+      transition: all 0.3s ease;
+    }
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #1e4294;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover:after {
+      width: 100%;
+    }
+    .section-title:after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(135deg, #1e4294 0%, #081c4e 100%);
+      margin: 15px auto 30px;
+      border-radius: 2px;
+    }
+    #back-to-top {
+      display: none;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+    #back-to-top.show {
+      display: flex;
+    }
+
+    /* Mobile Menu Styles */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+    }
+    .mobile-menu.active {
+      max-height: 600px;
+    }
+
+    /* Navbar Improvements */
+    .navbar-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Logo Container */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-img-wrapper {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 3px solid white;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .logo-img-wrapper:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Responsive Navbar */
+    @media (max-width: 1024px) {
+      .desktop-nav {
+        display: none;
+      }
+    }
+
+    /* Footer Responsive */
+    @media (max-width: 768px) {
+      .footer-columns {
+        grid-template-columns: 1fr !important;
+        gap: 2.5rem;
+      }
+
+      .footer-about {
+        text-align: center;
+      }
+
+      .footer-social {
+        justify-content: center;
+      }
+
+      .footer-links-section {
+        text-align: center;
+      }
+
+      .footer-links-section ul li a {
+        justify-content: center;
+      }
+
+      .newsletter-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .newsletter-form {
+        width: 100%;
+      }
+
+      .newsletter-input {
+        width: 100%;
+        margin-bottom: 0.75rem;
+      }
+
+      .newsletter-button {
+        width: 100%;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+
+      .footer-bottom-links {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+    }
+
+    /* Mobile Optimizations */
+    @media (max-width: 640px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .mobile-menu-button {
+        padding: 0.5rem;
+      }
+
+      .mobile-menu a {
+        padding: 1rem;
+        font-size: 0.95rem;
+      }
+
+      .logo-text {
+        font-size: 1.5rem;
+      }
+
+      /* Hero Section Mobile */
+      .hero-content {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
+
+      .hero-title {
+        font-size: 1.75rem !important;
+        line-height: 1.3;
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+      }
+
+      .hero-button {
+        width: 100%;
+        text-align: center;
+        padding: 0.875rem 1.5rem;
+      }
+    }
+
+    /* Extra Small Devices */
+    @media (max-width: 480px) {
+      .logo-img-wrapper {
+        width: 40px;
+        height: 40px;
+      }
+
+      .logo-text {
+        font-size: 1.25rem;
+      }
+
+      .navbar-container {
+        padding: 0.75rem 1rem;
+      }
+    }
+
+    /* Touch Device Optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .flip-card:hover .flip-card-inner {
+        transform: none;
+      }
+
+      .flip-card.touch-active .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+    }
+
+    /* Prevent Horizontal Scroll */
+    html, body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    /* Smooth Transitions */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Desktop Nav Buttons */
+    .desktop-nav-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1280px) {
+      .desktop-nav-buttons {
+        gap: 0.5rem;
+      }
+
+      .desktop-nav-buttons a {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .desktop-nav-buttons {
+        display: none;
+      }
+    }
+
+    /* Newsletter Responsive */
+    .newsletter-section {
+      padding: 2rem 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .newsletter-section {
+        padding: 2.5rem 2rem;
+      }
+    }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+  <!-- Navbar -->
+  <header class="bg-blue-900 shadow-lg sticky top-0 z-50">
+    <div class="navbar-container px-4 sm:px-6 py-3">
+      <div class="flex justify-between items-center">
+
+        <!-- Logo + Brand -->
+        <a href="/" class="logo-container group animate__animated animate__fadeIn">
+          <div class="logo-img-wrapper">
+            <img
+              src="{{ url_for('static', filename='logo.jpg') }}"
+              alt="SahaaraX Logo"
+              class="logo-img"
+              onerror="this.src='https://via.placeholder.com/48x48?text=Logo';"
+            >
+          </div>
+          <span class="logo-text font-bold text-white heading-font tracking-wide transition-all duration-300 group-hover:text-yellow-300">
+            Sahaara<span class="text-yellow-300 group-hover:text-white transition">X</span>
+          </span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="desktop-nav hidden lg:flex space-x-6 items-center">
+          <a href="/" class="text-white hover:text-blue-200 transition nav-link flex items-center gap-1.5 py-2">
+            <i class="fas fa-home"></i><span>Home</span>
+          </a>
+          <a href="/about" class="text-white hover:text-blue-200 transition nav-link flex items-center gap-1.5 py-2">
+            <i class="fas fa-info-circle"></i><span>About</span>
+          </a>
+          <a href="/services" class="text-white hover:text-blue-200 transition nav-link flex items-center gap-1.5 py-2">
+            <i class="fas fa-hands-holding-child"></i><span>Services</span>
+          </a>
+          <a href="/success-stories" class="text-white hover:text-blue-200 transition nav-link flex items-center gap-1.5 py-2">
+            <i class="fas fa-star"></i><span>Success Stories</span>
+          </a>
+          <a href="/contact" class="text-white hover:text-blue-200 transition nav-link flex items-center gap-1.5 py-2">
+            <i class="fas fa-envelope"></i><span>Contact</span>
+          </a>
+        </nav>
+
+        <!-- Desktop Buttons -->
+        <div class="desktop-nav-buttons hidden lg:flex">
+          <a href="/counseling_signin" class="text-white hover:text-blue-200 transition flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-800">
+            <i class="fas fa-sign-in-alt"></i>
+            <span class="hidden xl:inline">Counselor Login</span>
+            <span class="xl:hidden">Counselor</span>
+          </a>
+          <a href="/child_awareness_signin" class="text-white hover:text-blue-200 transition flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-800">
+            <i class="fas fa-sign-in-alt"></i>
+            <span class="hidden xl:inline">Child Counselor</span>
+            <span class="xl:hidden">Child</span>
+          </a>
+          <a href="/user_signup" class="bg-white text-blue-800 hover:bg-blue-100 px-4 py-2 rounded-lg transition flex items-center gap-2 font-medium shadow-md">
+            <i class="fas fa-user-plus"></i>
+            <span>Register</span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="lg:hidden text-white focus:outline-none mobile-menu-button p-2 hover:bg-blue-800 rounded-lg transition">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="mobile-menu lg:hidden bg-blue-800 rounded-lg mt-3 overflow-hidden">
+        <div class="py-2">
+          <a href="/" class="block py-3 px-4 text-white hover:bg-blue-700 transition flex items-center gap-3 border-b border-blue-700">
+            <i class="fas fa-home w-5 text-center"></i>
+            <span>Home</span>
+          </a>
+          <a href="/about" class="block py-3 px-4 text-white hover:bg-blue-700 transition flex items-center gap-3 border-b border-blue-700">
+            <i class="fas fa-info-circle w-5 text-center"></i>
+            <span>About</span>
+          </a>
+          <a href="/services" class="block py-3 px-4 text-white hover:bg-blue-700 transition flex items-center gap-3 border-b border-blue-700">
+            <i class="fas fa-hands-holding-child w-5 text-center"></i>
+            <span>Services</span>
+          </a>
+          <a href="/success-stories" class="block py-3 px-4 text-white hover:bg-blue-700 transition flex items-center gap-3 border-b border-blue-700">
+            <i class="fas fa-star w-5 text-center"></i>
+            <span>Success Stories</span>
+          </a>
+          <a href="/contact" class="block py-3 px-4 text-white hover:bg-blue-700 transition flex items-center gap-3 border-b border-blue-700">
+            <i class="fas fa-envelope w-5 text-center"></i>
+            <span>Contact</span>
+          </a>
+
+          <!-- Mobile Auth Buttons -->
+          <div class="px-4 pt-4 pb-3 space-y-2 border-t border-blue-700 mt-2">
+            <a href="/counseling_signin" class="block py-2.5 px-4 text-white hover:bg-blue-700 transition flex items-center justify-center gap-2 border border-blue-600 rounded-lg">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Counselor Login</span>
+            </a>
+            <a href="/child_awareness_signin" class="block py-2.5 px-4 text-white hover:bg-blue-700 transition flex items-center justify-center gap-2 border border-blue-600 rounded-lg">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Child Counselor Login</span>
+            </a>
+            <a href="/user_signup" class="block py-2.5 px-4 bg-white text-blue-800 hover:bg-blue-100 rounded-lg transition flex items-center justify-center gap-2 font-medium shadow-md">
+              <i class="fas fa-user-plus"></i>
+              <span>Register</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-12 sm:pt-16">
+    <div class="container mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 footer-columns">
+
+        <!-- About Column -->
+        <div class="lg:col-span-2 footer-about">
+          <div class="flex items-center gap-3 mb-4 logo-container">
+            <div class="logo-img-wrapper" style="width: 48px; height: 48px;">
+              <img src="{{ url_for('static', filename='logo.jpg') }}" alt="SahaaraX Logo" class="logo-img">
+            </div>
+            <span class="text-2xl font-bold heading-font">
+              Sahaara<span class="text-yellow-300">X</span>
+            </span>
+          </div>
+          <p class="text-gray-400 mb-4 max-w-md">
+            A compassionate platform dedicated to empowering and rehabilitating women and children through comprehensive care, shelter, and emotional healing programs.
+          </p>
+          <div class="flex space-x-4 footer-social">
+            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer"
+               class="text-gray-400 hover:text-white text-xl transition transform hover:scale-110">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer"
+               class="text-gray-400 hover:text-white text-xl transition transform hover:scale-110">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"
+               class="text-gray-400 hover:text-white text-xl transition transform hover:scale-110">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer"
+               class="text-gray-400 hover:text-white text-xl transition transform hover:scale-110">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"
+               class="text-gray-400 hover:text-white text-xl transition transform hover:scale-110">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links Column -->
+        <div class="footer-links-section">
+          <h4 class="text-lg font-semibold mb-4 flex items-center gap-2 heading-font">
+            <i class="fas fa-link text-blue-400"></i> Quick Links
+          </h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="/" class="text-gray-400 hover:text-white transition flex items-center gap-2 py-1">
+                <i class="fas fa-chevron-right text-xs text-blue-400"></i> Home
+              </a>
+            </li>
+            <li>
+              <a href="/about" class="text-gray-400 hover:text-white transition flex items-center gap-2 py-1">
+                <i class="fas fa-chevron-right text-xs text-blue-400"></i> About Us
+              </a>
+            </li>
+            <li>
+              <a href="/services" class="text-gray-400 hover:text-white transition flex items-center gap-2 py-1">
+                <i class="fas fa-chevron-right text-xs text-blue-400"></i> Our Services
+              </a>
+            </li>
+            <li>
+              <a href="/success-stories" class="text-gray-400 hover:text-white transition flex items-center gap-2 py-1">
+                <i class="fas fa-chevron-right text-xs text-blue-400"></i> Success Stories
+              </a>
+            </li>
+            <li>
+              <a href="/contact" class="text-gray-400 hover:text-white transition flex items-center gap-2 py-1">
+                <i class="fas fa-chevron-right text-xs text-blue-400"></i> Contact Us
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Contact Column -->
+        <div class="footer-links-section">
+          <h4 class="text-lg font-semibold mb-4 flex items-center gap-2 heading-font">
+            <i class="fas fa-envelope text-blue-400"></i> Contact Us
+          </h4>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3">
+              <i class="fas fa-map-marker-alt text-blue-400 mt-1 flex-shrink-0"></i>
+              <span class="text-gray-400">i-11, Hope City, Pakistan</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-phone-alt text-blue-400 flex-shrink-0"></i>
+              <span class="text-gray-400">+92-319-4567890</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-envelope text-blue-400 flex-shrink-0"></i>
+              <span class="text-gray-400 break-all">support@sahaarax.org</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-clock text-blue-400 flex-shrink-0"></i>
+              <span class="text-gray-400">24/7 Emergency Support</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="mt-10 sm:mt-12">
+        <div class="bg-gray-800 rounded-lg newsletter-section">
+          <div class="newsletter-container md:flex items-center justify-between gap-6">
+            <div class="mb-4 md:mb-0">
+              <h4 class="text-xl font-bold mb-2 heading-font text-white">Subscribe to Our Newsletter</h4>
+              <p class="text-gray-400 text-sm">Stay updated with our latest programs and success stories</p>
+            </div>
+            <form action="{{ url_for('subscribe') }}" method="POST" class="newsletter-form flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+              <input type="email"
+                     name="email"
+                     placeholder="Your email address"
+                     required
+                     class="newsletter-input px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow">
+              <button type="submit"
+                      class="newsletter-button bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition shadow-md hover:shadow-lg">
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="border-t border-gray-800 mt-10 sm:mt-12">
+        <div class="py-6 flex flex-col md:flex-row justify-between items-center footer-bottom gap-4">
+          <p class="text-gray-500 text-sm text-center md:text-left">
+            &copy; 2025 SahaaraX. All rights reserved.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4 sm:gap-6 footer-bottom-links">
+            <a href="/privacy" class="text-gray-500 hover:text-white text-sm transition">Privacy Policy</a>
+            <a href="/terms" class="text-gray-500 hover:text-white text-sm transition">Terms of Service</a>
+            <a href="/sitemap" class="text-gray-500 hover:text-white text-sm transition">Sitemap</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="fixed bottom-6 right-6 bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition transform hover:scale-110" id="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS Animation -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Custom JS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize AOS animation
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+      });
+
+      // Mobile menu toggle
+      const mobileMenuButton = document.querySelector('.mobile-menu-button');
+      const mobileMenu = document.querySelector('.mobile-menu');
+
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          mobileMenu.classList.toggle('active');
+
+          // Change icon
+          const icon = this.querySelector('i');
+          if (mobileMenu.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+            mobileMenu.classList.remove('active');
+            const icon = mobileMenuButton.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          }
+        });
+
+        // Close mobile menu when clicking on a link
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            const icon = mobileMenuButton.querySelector('i');
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+          });
+        });
+      }
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href === '#') {
+            e.preventDefault();
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          } else {
+            const target = document.querySelector(href);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          }
+        });
+      });
+
+      // Back to top button
+      const backToTopButton = document.getElementById('back-to-top');
+      if (backToTopButton) {
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            backToTopButton.classList.add('show');
+          } else {
+            backToTopButton.classList.remove('show');
+          }
+        });
+
+        backToTopButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+
+      // Touch device flip card support
+      if ('ontouchstart' in window) {
+        const flipCards = document.querySelectorAll('.flip-card');
+        flipCards.forEach(card => {
+          card.addEventListener('click', function() {
+            this.classList.toggle('touch-active');
+          });
+        });
+      }
+
+      // Prevent body scroll when mobile menu is open
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'class') {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+              document.body.style.overflow = 'hidden';
+            } else {
+              document.body.style.overflow = '';
+            }
+          }
+        });
+      });
+
+      const mobileMenuElement = document.querySelector('.mobile-menu');
+      if (mobileMenuElement) {
+        observer.observe(mobileMenuElement, { attributes: true });
+      }
+    });
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,119 @@
+{% extends "base_admin.html" %}
+{% block title %}Admin Report{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-pink-50 to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-6">
+
+  <!-- Dashboard Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg border-t-4 border-blue-500 text-center">
+      <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-300">Total Users</h3>
+      <p class="text-3xl font-bold text-blue-600">{{ dashboard_counts.total_users }}</p>
+    </div>
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg border-t-4 border-pink-500 text-center">
+      <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-300">Counselors</h3>
+      <p class="text-3xl font-bold text-pink-600">{{ dashboard_counts.total_counselors }}</p>
+    </div>
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg border-t-4 border-green-500 text-center">
+      <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-300">Beds</h3>
+      <p class="text-3xl font-bold text-green-600">{{ dashboard_counts.total_beds }}</p>
+      <p class="text-xs text-gray-500">Available: {{ dashboard_counts.available_beds }} | Occupied: {{ dashboard_counts.occupied_beds }}</p>
+    </div>
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg border-t-4 border-purple-500 text-center">
+      <h3 class="text-sm font-semibold text-gray-600 dark:text-gray-300">Awareness Sessions</h3>
+      <p class="text-3xl font-bold text-purple-600">{{ dashboard_counts.total_awareness_sessions }}</p>
+      <p class="text-xs text-gray-500">Present: {{ dashboard_counts.total_awareness_present }} | Absent: {{ dashboard_counts.total_awareness_absent }}</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Awareness Attendance</h3>
+      <div id="awarenessChart" class="h-64"></div>
+    </div>
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg">
+      <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-white">Beds Availability</h3>
+      <div id="bedsChart" class="h-64"></div>
+    </div>
+  </div>
+
+  <!-- Awareness Attendance Table -->
+  <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Awareness Attendance</h2>
+  <div class="overflow-x-auto bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-lg mb-12">
+    <table class="min-w-full text-sm text-left">
+      <thead class="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+        <tr>
+          <th class="p-3">Name</th>
+          <th class="p-3">Email</th>
+          <th class="p-3">Sessions</th>
+          <th class="p-3">Present</th>
+          <th class="p-3">Absent</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in awareness_summary.values() %}
+        <tr class="border-b hover:bg-blue-50 dark:hover:bg-gray-700 transition">
+          <td class="p-3">{{ user.name }}</td>
+          <td class="p-3">{{ user.email }}</td>
+          <td class="p-3 font-semibold">{{ user.sessions }}</td>
+          <td class="p-3 text-green-600 font-bold">{{ user.present }}</td>
+          <td class="p-3 text-red-600 font-bold">{{ user.absent }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Counseling Classes Table -->
+  <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Counseling Classes</h2>
+  <div class="overflow-x-auto bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-lg">
+    <table class="min-w-full text-sm text-left">
+      <thead class="bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+        <tr>
+          <th class="p-3">Name</th>
+          <th class="p-3">Email</th>
+          <th class="p-3">Classes Taken</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in counseling_summary.values() %}
+        <tr class="border-b hover:bg-pink-50 dark:hover:bg-gray-700 transition">
+          <td class="p-3">{{ user.name }}</td>
+          <td class="p-3">{{ user.email }}</td>
+          <td class="p-3 font-semibold">{{ user.classes }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Highcharts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+Highcharts.chart('awarenessChart', {
+  chart: { type: 'pie', backgroundColor: 'transparent' },
+  title: { text: 'Awareness Attendance' },
+  series: [{
+    name: 'Users',
+    data: [
+      { name: 'Present', y: {{ chart_data.awareness.present }}, color: '#10B981' },
+      { name: 'Absent', y: {{ chart_data.awareness.absent }}, color: '#EF4444' }
+    ]
+  }]
+});
+
+Highcharts.chart('bedsChart', {
+  chart: { type: 'bar', backgroundColor: 'transparent' },
+  title: { text: 'Beds Availability' },
+  xAxis: { categories: ['Beds'] },
+  yAxis: { min: 0, title: { text: 'Count' } },
+  series: [
+    { name: 'Available', data: [{{ chart_data.beds.available }}], color: '#3B82F6' },
+    { name: 'Occupied', data: [{{ chart_data.beds.occupied }}], color: '#F59E0B' }
+  ]
+});
+</script>
+
+{% endblock %}

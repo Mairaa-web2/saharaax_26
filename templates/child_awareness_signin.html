@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Child Awareness Counselor Login</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    @keyframes fade-in-up {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fade-in-up 0.6s ease-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-800 to-cyan-900 flex items-center justify-center px-4 py-8">
+
+  <div class="w-full max-w-md animate-fade-in-up">
+
+    <!-- Login Card -->
+    <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-emerald-200/50 dark:border-emerald-700/50">
+
+      <!-- Header with gradient -->
+      <div class="bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-10 text-center relative overflow-hidden">
+        <!-- Decorative circles -->
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
+        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full"></div>
+
+        <div class="relative">
+          <!-- Logo -->
+          <div class="w-20 h-20 mx-auto rounded-2xl bg-white/20 backdrop-blur-sm shadow-2xl flex items-center justify-center mb-4 border border-white/30">
+            <i class="fas fa-children text-white text-4xl"></i>
+          </div>
+
+          <h1 class="text-3xl font-bold text-white mb-2">Child Awareness</h1>
+          <p class="text-emerald-100 text-sm">Counselor Login Portal</p>
+        </div>
+      </div>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="px-8 pt-6 space-y-2">
+            {% for category, message in messages %}
+              <div class="px-4 py-3 rounded-xl text-sm font-medium border-l-4
+                          {% if category == 'success' %}
+                            bg-emerald-50 text-emerald-800 border-emerald-500
+                          {% elif category == 'danger' %}
+                            bg-red-50 text-red-800 border-red-500
+                          {% else %}
+                            bg-blue-50 text-blue-800 border-blue-500
+                          {% endif %}">
+                <i class="fas
+                  {% if category == 'success' %}fa-check-circle
+                  {% elif category == 'danger' %}fa-exclamation-circle
+                  {% else %}fa-info-circle
+                  {% endif %} mr-2"></i>
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <!-- Login Form -->
+      <form method="POST" class="px-8 py-8 space-y-5">
+
+        <!-- Email Field -->
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i class="fas fa-envelope text-emerald-500"></i>
+            Email Address
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-at text-gray-400"></i>
+            </div>
+            <input type="email"
+                   name="email"
+                   required
+                   placeholder="counselor@example.com"
+                   class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+            <i class="fas fa-lock text-teal-500"></i>
+            Password
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-key text-gray-400"></i>
+            </div>
+            <input type="password"
+                   name="password"
+                   required
+                   placeholder="Enter your password"
+                   class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+          </div>
+        </div>
+
+        <!-- Links Row -->
+        <div class="flex items-center justify-between text-sm pt-1">
+          <a href="{{ url_for('counselor_forget') }}"
+             class="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium flex items-center gap-1 transition-colors">
+            <i class="fas fa-question-circle"></i>
+            Forgot password?
+          </a>
+          <a href="{{ url_for('conseling_signup') }}"
+             class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 font-medium flex items-center gap-1 transition-colors">
+            <i class="fas fa-arrow-left"></i>
+            Main Counseling
+          </a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+                class="w-full mt-4 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold shadow-lg transform hover:scale-105 transition-all">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Login to Child Awareness Panel</span>
+        </button>
+      </form>
+
+      <!-- Footer Links -->
+      <div class="px-8 pb-8 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <p class="text-center text-sm text-gray-600 dark:text-gray-400">
+          Need regular counseling access?
+          <a href="{{ url_for('counseling_signin') }}"
+             class="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-semibold ml-1">
+            Counseling Login
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="mt-6 text-center">
+      <p class="text-emerald-100 text-sm flex items-center justify-center gap-2">
+        <i class="fas fa-shield-alt"></i>
+        Secure login for authorized counselors only
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+{% extends "base_admin.html" %}
+{% block title %}Room Assigned{% endblock %}
+{% block header %}Room Cannot Be Deleted{% endblock %}
+
+{% block content %}
+<div class="max-w-lg mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-center">
+  <h2 class="text-xl font-bold text-red-600 mb-4">
+    🚨 This Room is Currently Assigned
+  </h2>
+
+  <!-- User Info -->
+  <div class="flex flex-col items-center space-y-3">
+    {% if user.profile_image %}
+      {% set profile_path = user.profile_image.replace("\\", "/").split("static/")[-1] %}
+      <img src="{{ url_for('static', filename=profile_path) }}"
+           class="w-20 h-20 rounded-full border-2 border-red-500 object-cover shadow">
+    {% else %}
+      <div class="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center">
+        <i class="fas fa-user text-gray-600 text-2xl"></i>
+      </div>
+    {% endif %}
+
+    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ user.name }}</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400">{{ user.email }}</p>
+  </div>
+
+  <!-- Shelter Assignment Info -->
+  <div class="mt-6 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg text-sm text-left">
+    <p><strong>Floor:</strong> {{ room.floor }}</p>
+    <p><strong>Room Number:</strong> {{ room.room_number }}</p>
+    <p><i class="fas fa-calendar-alt text-green-500"></i> <strong>Start Date:</strong> {{ user.shelter_start_date }}</p>
+    <p><i class="fas fa-hourglass-end text-red-500"></i> <strong>Expiry Date:</strong> {{ user.shelter_expiry_date }}</p>
+    <p>
+      <i class="fas fa-info-circle"></i> <strong>Status:</strong>
+      {% if user.shelter_status == "active" %}
+        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Active</span>
+      {% elif user.shelter_status == "expired" %}
+        <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">Expired</span>
+      {% else %}
+        <span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">Not Assigned</span>
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- Action -->
+  <div class="mt-6 flex justify-center gap-4">
+    <a href="{{ url_for('view_rooms') }}"
+       class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+      Back to Rooms
+    </a>
+  </div>
+</div>
+{% endblock %}

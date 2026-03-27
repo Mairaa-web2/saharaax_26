@@ -1,0 +1,29 @@
+{% extends "base_counseling.html" %}
+{% block title %}Counseling Test{% endblock %}
+{% block header %}{{ category }} Test{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+  <form method="POST" action="{{ url_for('submit_test', user_id=user_id, test_id=test_id) }}">
+    {% for q in questions %}
+      {% set q_index = loop.index %}   {# ✅ Save outer loop index #}
+      <div class="mb-6">
+        <h3 class="font-bold text-gray-800 dark:text-white mb-2">{{ q_index }}. {{ q.question }}</h3>
+        <div class="space-y-2">
+          {% for opt in q.options %}
+            <label class="flex items-center gap-2">
+              <input type="radio" name="q{{ q_index }}" value="{{ opt[0] }}" required>
+              <span>{{ opt }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+
+    <button type="submit"
+            class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+      Submit Test
+    </button>
+  </form>
+</div>
+{% endblock %}

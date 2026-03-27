@@ -1,0 +1,71 @@
+{% extends "base_admin.html" %}
+{% block title %}All Counselors{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-pink-50 to-blue-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-6">
+
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <h1 class="text-4xl font-extrabold text-gray-800 dark:text-white flex items-center gap-3">
+      <i class="fas fa-users text-blue-600"></i> All Counselors
+    </h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">Browse and filter all registered counselors.</p>
+  </div>
+
+  <!-- Filter Form -->
+  <form method="GET" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-10 grid grid-cols-1 md:grid-cols-4 gap-4">
+    <select name="type" class="border rounded-lg px-3 py-2">
+      <option value="">All Types</option>
+      <option value="Domestic Violence" {% if filter_type=="Domestic Violence" %}selected{% endif %}>Domestic Violence</option>
+      <option value="Sexual Abuse Support" {% if filter_type=="Sexual Abuse Support" %}selected{% endif %}>Sexual Abuse Support</option>
+      <option value="Psychological Support" {% if filter_type=="Psychological Support" %}selected{% endif %}>Psychological Support</option>
+      <option value="Self Awareness" {% if filter_type=="Self Awareness" %}selected{% endif %}>Self Awareness</option>
+      <option value="Health Awareness" {% if filter_type=="Health Awareness" %}selected{% endif %}>Health Awareness</option>
+    </select>
+    <select name="gender" class="border rounded-lg px-3 py-2">
+      <option value="">All Genders</option>
+      <option value="Male" {% if filter_gender=="Male" %}selected{% endif %}>Male</option>
+      <option value="Female" {% if filter_gender=="Female" %}selected{% endif %}>Female</option>
+    </select>
+    <input type="text" name="location" placeholder="Search Location"
+           value="{{ filter_location }}" class="border rounded-lg px-3 py-2">
+    <button type="submit" class="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700">
+      <i class="fas fa-search"></i> Filter
+    </button>
+  </form>
+
+  <!-- Counselors List -->
+  {% if counselors %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for cid, c in counselors.items() %}
+        <div class="bg-white/90 dark:bg-gray-800/90 rounded-2xl shadow-xl p-6 hover:shadow-2xl transition transform hover:-translate-y-2 border-t-4 border-blue-500">
+          <div class="flex items-center gap-4 mb-4">
+            {% if c.profile_image %}
+              <img src="{{ url_for('static', filename=c.profile_image) }}" class="w-16 h-16 rounded-full object-cover shadow-lg border">
+            {% else %}
+              <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
+                <i class="fas fa-user text-blue-600 text-xl"></i>
+              </div>
+            {% endif %}
+            <div>
+              <h2 class="text-xl font-bold text-gray-800 dark:text-white">{{ c.name }}</h2>
+              <p class="text-sm text-gray-500">{{ c.email }}</p>
+            </div>
+          </div>
+          <p class="text-gray-700 dark:text-gray-300"><b>Type:</b> {{ c.counseling }}</p>
+          <p class="text-gray-700 dark:text-gray-300"><b>Gender:</b> {{ c.gender }}</p>
+          <p class="text-gray-700 dark:text-gray-300"><b>Location:</b> {{ c.location }}</p>
+          <p class="text-gray-700 dark:text-gray-300"><b>Phone:</b> {{ c.phone }}</p>
+          <p class="text-gray-700 dark:text-gray-300"><b>Availability:</b> {{ c.availability }}</p>
+          <p class="text-xs text-gray-500 mt-2">ID: {{ cid }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center text-gray-500 bg-white dark:bg-gray-700 p-6 rounded-xl shadow">
+      <i class="fas fa-info-circle text-blue-500 text-2xl"></i>
+      <p class="mt-2">No counselors found matching your criteria.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

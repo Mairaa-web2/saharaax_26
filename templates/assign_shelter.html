@@ -1,0 +1,289 @@
+{% extends "base_admin.html" %}
+{% block title %}Assign Shelter{% endblock %}
+{% block header %}Assign Shelter{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden">
+
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white p-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-wide opacity-80">Shelter Assignment</p>
+        <h1 class="text-3xl font-bold mt-1 flex items-center gap-2">
+          <span>Assign Shelter</span>
+        </h1>
+        <p class="mt-2 text-sm md:text-base opacity-90">
+          Assign a room and stay dates for
+          <span class="font-semibold">{{ user.name }}</span>.
+        </p>
+
+        <!-- User info chips -->
+        <div class="mt-4 flex flex-wrap gap-3 text-xs md:text-sm">
+          <span class="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
+            <i class="fas fa-user"></i>
+            <span>{{ user.name }}</span>
+          </span>
+          {% if user.email %}
+          <span class="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
+            <i class="fas fa-envelope"></i>
+            <span>{{ user.email }}</span>
+          </span>
+          {% endif %}
+          {% if user.assigned_room %}
+          <span class="inline-flex items-center gap-2 bg-amber-400/90 text-slate-900 px-3 py-1 rounded-full">
+            <i class="fas fa-bed"></i>
+            <span>Already assigned (Room ID: {{ user.assigned_room }})</span>
+          </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="flex flex-col items-end gap-4">
+        <div class="text-5xl md:text-6xl opacity-90">
+          🛏️
+        </div>
+      </div>
+    </div>
+
+    <!-- Overall stats -->
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white/10 rounded-lg p-4">
+        <p class="text-xs uppercase tracking-wide opacity-80">Total Rooms</p>
+        <p class="text-2xl font-semibold mt-1">{{ stats.total_rooms }}</p>
+      </div>
+      <div class="bg-white/10 rounded-lg p-4">
+        <p class="text-xs uppercase tracking-wide opacity-80">Total Beds</p>
+        <p class="text-2xl font-semibold mt-1">{{ stats.total_beds }}</p>
+      </div>
+      <div class="bg-white/10 rounded-lg p-4">
+        <p class="text-xs uppercase tracking-wide opacity-80">Available Beds</p>
+        <p class="text-2xl font-semibold mt-1">{{ stats.total_available_beds }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flash Messages -->
+  <div class="px-6 pt-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="mb-4 px-4 py-3 rounded-lg text-sm animate-fade-in
+            {% if category == 'success' %} bg-green-100 text-green-700 border border-green-300 {% endif %}
+            {% if category == 'danger' %} bg-red-100 text-red-700 border border-red-300 {% endif %}
+            {% if category == 'warning' %} bg-yellow-100 text-yellow-700 border border-yellow-300 {% endif %}
+            {% if category == 'info' %} bg-blue-100 text-blue-700 border border-blue-300 {% endif %}">
+            <div class="flex items-center gap-2">
+              {% if category == 'success' %} ✅
+              {% elif category == 'danger' %} ❌
+              {% elif category == 'warning' %} ⚠️
+              {% elif category == 'info' %} ℹ️
+              {% endif %}
+              <span>{{ message }}</span>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Content -->
+  <div class="px-6 pb-8 space-y-8">
+
+    <!-- Floor-wise availability -->
+    {% if floors_summary %}
+      <div class="bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl p-5">
+        <h3 class="text-lg font-semibold mb-3 flex items-center gap-2 text-gray-800 dark:text-gray-100">
+          <i class="fas fa-layer-group text-sky-500"></i>
+          Floor availability
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {% for floor in floors_summary %}
+            <div class="rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 flex flex-col gap-2">
+              <div class="flex items-center justify-between">
+                <p class="font-semibold text-gray-800 dark:text-gray-100">
+                  Floor {{ floor.floor }}
+                </p>
+                {% if floor.available_beds > 0 %}
+                  <span class="px-2 py-1 text-xs rounded-full bg-emerald-100 text-emerald-700">
+                    Beds available
+                  </span>
+                {% else %}
+                  <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-700">
+                    Full
+                  </span>
+                {% endif %}
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-300">
+                Rooms: <span class="font-medium">{{ floor.rooms }}</span>
+              </p>
+              <p class="text-sm text-gray-600 dark:text-gray-300">
+                Beds: <span class="font-medium">{{ floor.available_beds }}</span> /
+                <span class="font-medium">{{ floor.total_beds }}</span> available
+              </p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- No-beds case -->
+    {% if no_beds %}
+      <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-200 px-4 py-3 rounded-lg mb-4">
+        <div class="font-semibold mb-1">No beds available in this room.</div>
+        <p class="text-sm">
+          You can send an email to let the user know that their request is pending.
+        </p>
+      </div>
+
+      <form method="POST" class="space-y-4">
+        <input type="hidden" name="notify" value="yes">
+        <button type="submit"
+                class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-6 py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+          <i class="fas fa-envelope"></i>
+          <span>Notify user by email</span>
+        </button>
+      </form>
+
+    {% else %}
+
+      <!-- Assign shelter form -->
+      <div class="bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl p-5">
+        <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100 flex items-center gap-2">
+          <i class="fas fa-bed text-sky-500"></i>
+          Assign shelter details
+        </h3>
+
+        <form method="POST" class="space-y-5" id="assignShelterForm">
+          <!-- Room Selection -->
+          <div>
+            <label class="block mb-1 font-semibold text-gray-700 dark:text-gray-200">Select room</label>
+            <select name="room_id"
+                    class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                    required>
+              <option value="">-- Choose a room --</option>
+              {% for rid, room in rooms.items() %}
+                <option value="{{ rid }}" {% if room.available_beds|int <= 0 %} disabled{% endif %}>
+                  Floor {{ room.floor }} - Room {{ room.room_number }}
+                  ({{ room.available_beds }}/{{ room.bed_count }} beds{% if room.available_beds|int <= 0 %} - FULL{% endif %})
+                </option>
+              {% endfor %}
+            </select>
+            <p class="text-xs text-gray-500 mt-1">
+              Rooms that are full are disabled in the list.
+            </p>
+          </div>
+
+          <!-- Start Date -->
+          <div>
+            <label class="block mb-1 font-semibold text-gray-700 dark:text-gray-200">Start date</label>
+            <input type="date"
+                   name="start_date"
+                   id="start_date"
+                   class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                   required>
+            <p class="text-xs text-gray-500 mt-1">Start date must be today or later.</p>
+          </div>
+
+          <!-- Expiry Date -->
+          <div>
+            <label class="block mb-1 font-semibold text-gray-700 dark:text-gray-200">Expiry date</label>
+            <input type="date"
+                   name="expiry_date"
+                   id="expiry_date"
+                   class="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 p-2.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+                   required>
+            <p class="text-xs text-gray-500 mt-1">Expiry date must be after the start date.</p>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit"
+                  class="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium px-6 py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2">
+            <i class="fas fa-bed"></i>
+            <span>Assign shelter</span>
+          </button>
+        </form>
+      </div>
+
+    {% endif %}
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const startDateInput = document.getElementById('start_date');
+    const expiryDateInput = document.getElementById('expiry_date');
+    const form = document.getElementById('assignShelterForm');
+
+    // If we are on "no_beds" view, form won't exist → exit
+    if (!startDateInput || !expiryDateInput || !form) {
+        return;
+    }
+
+    // Today in YYYY-MM-DD
+    const today = new Date().toISOString().split('T')[0];
+
+    // Min dates
+    startDateInput.setAttribute('min', today);
+    expiryDateInput.setAttribute('min', today);
+
+    // When start date changes, push expiry min to +1 day
+    startDateInput.addEventListener('change', function() {
+        const selectedStartDate = this.value;
+        if (selectedStartDate) {
+            const startDate = new Date(selectedStartDate);
+            startDate.setDate(startDate.getDate() + 1);
+            const minExpiryDate = startDate.toISOString().split('T')[0];
+            expiryDateInput.setAttribute('min', minExpiryDate);
+
+            if (expiryDateInput.value && expiryDateInput.value <= selectedStartDate) {
+                expiryDateInput.value = '';
+            }
+        }
+    });
+
+    // Extra validation on submit
+    form.addEventListener('submit', function(e) {
+        const startValue = startDateInput.value;
+        const expiryValue = expiryDateInput.value;
+        if (!startValue || !expiryValue) {
+            return;
+        }
+
+        const todayDate = new Date(today);
+        const startDate = new Date(startValue);
+        const expiryDate = new Date(expiryValue);
+
+        if (startDate < todayDate) {
+            e.preventDefault();
+            alert('Start date cannot be in the past.');
+            return false;
+        }
+
+        if (expiryDate <= startDate) {
+            e.preventDefault();
+            alert('Expiry date must be after the start date.');
+            return false;
+        }
+
+        return true;
+    });
+});
+</script>
+
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+input[type="date"]:invalid {
+  border-color: #ef4444;
+}
+input[type="date"]:valid {
+  border-color: #10b981;
+}
+</style>
+{% endblock %}

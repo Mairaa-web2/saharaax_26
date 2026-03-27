@@ -1,0 +1,112 @@
+{% extends "base_admin.html" %}
+{% block title %}View Courses{% endblock %}
+{% block header %}Technical Training Courses{% endblock %}
+
+{% block content %}
+
+<div class="mb-8">
+  <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2 flex items-center gap-3">
+    <i class="fas fa-graduation-cap text-blue-600"></i> Available Courses
+  </h2>
+  <p class="text-gray-600 dark:text-gray-300">Browse through our technical training curriculum</p>
+</div>
+
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {% for id, course in courses.items() %}
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden group">
+    <!-- Course Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-5 text-white">
+      <div class="flex items-center justify-between mb-3">
+        <i class="fas fa-laptop-code text-2xl opacity-90"></i>
+        <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-medium">{{ course.category }}</span>
+      </div>
+      <h3 class="text-xl font-bold leading-tight">{{ course.title }}</h3>
+    </div>
+
+    <!-- Course Content -->
+    <div class="p-5">
+      {% if course.lectures %}
+      <div class="space-y-4">
+        <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
+          <i class="fas fa-play-circle mr-2 text-blue-500"></i>
+          <span>{{ course.lectures|length }} lecture{% if course.lectures|length != 1 %}s{% endif %}</span>
+        </div>
+
+        {% for link in course.lectures %}
+          {% if 'youtu.be/' in link %}
+            {% set youtube_id = link.split('youtu.be/')[-1].split('?')[0] %}
+          {% elif 'youtube.com/watch?v=' in link %}
+            {% set youtube_id = link.split('watch?v=')[-1].split('&')[0] %}
+          {% else %}
+            {% set youtube_id = None %}
+          {% endif %}
+
+          <div class="group/item bg-gray-50 dark:bg-gray-700 rounded-xl p-4 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors border border-gray-100 dark:border-gray-600">
+            <a href="{{ link }}" target="_blank" class="flex items-start gap-4">
+              {% if youtube_id %}
+                <div class="relative flex-shrink-0">
+                  <img src="https://img.youtube.com/vi/{{ youtube_id }}/hqdefault.jpg"
+                       alt="Lecture Thumbnail"
+                       class="w-20 h-14 object-cover rounded-lg border border-gray-300 shadow-sm">
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="bg-black/60 rounded-full w-8 h-8 flex items-center justify-center">
+                      <i class="fas fa-play text-white text-xs"></i>
+                    </div>
+                  </div>
+                </div>
+              {% else %}
+                <div class="w-20 h-14 flex items-center justify-center bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 rounded-lg">
+                  <i class="fas fa-video text-white text-xl"></i>
+                </div>
+              {% endif %}
+              <div class="flex-1 min-w-0">
+                <p class="font-semibold text-gray-800 dark:text-white group-hover/item:text-blue-600 dark:group-hover/item:text-blue-400 transition-colors truncate">
+                  Lecture {{ loop.index }}
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">{{ link[:40] }}...</p>
+                <div class="flex items-center mt-2 text-xs text-blue-600 dark:text-blue-400">
+                  <span>Watch now</span>
+                  <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="text-center py-8">
+        <i class="fas fa-film text-4xl text-gray-300 dark:text-gray-600 mb-3"></i>
+        <p class="text-gray-500 dark:text-gray-400 text-sm">No lectures added yet</p>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Check back later for content</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if not courses %}
+<div class="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+  <div class="max-w-md mx-auto">
+    <i class="fas fa-book-open text-6xl text-gray-300 dark:text-gray-600 mb-4"></i>
+    <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">No Courses Available</h3>
+    <p class="text-gray-500 dark:text-gray-400">Training courses will appear here once they are added to the system.</p>
+  </div>
+</div>
+{% endif %}
+
+<style>
+  .group:hover .transform {
+    transform: translateY(-2px);
+  }
+
+  .shadow-hover {
+    transition: all 0.3s ease;
+  }
+
+  .shadow-hover:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+{% endblock %}

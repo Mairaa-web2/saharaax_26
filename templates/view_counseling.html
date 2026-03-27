@@ -1,0 +1,96 @@
+{% extends "base_admin.html" %}
+{% block title %}View Counseling{% endblock %}
+{% block header %}Counseling Users{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-extrabold mb-6 flex items-center gap-2 text-gray-800 dark:text-white">
+  <i class="fas fa-users text-pink-600"></i>
+  Counseling Users
+</h2>
+
+<!-- Filters -->
+<form method="get" action="{{ url_for('view_counseling') }}" class="mb-8 bg-white dark:bg-gray-800 p-4 rounded-lg shadow flex flex-wrap gap-4">
+  <select name="counseling" class="border px-4 py-2 rounded-lg">
+    <option value="All" {% if filter_counseling == "All" %}selected{% endif %}>All Counseling</option>
+    <option value="Domestic Violence" {% if filter_counseling == "Domestic Violence" %}selected{% endif %}>Domestic Violence</option>
+    <option value="Sexual Abuse Support" {% if filter_counseling == "Sexual Abuse Support" %}selected{% endif %}>Sexual Abuse Support</option>
+    <option value="Psychological Support" {% if filter_counseling == "Psychological Support" %}selected{% endif %}>Psychological Support</option>
+    <option value="Self Awareness" {% if filter_counseling == "Self Awareness" %}selected{% endif %}>Self Awareness</option>
+    <option value="Health Awareness" {% if filter_counseling == "Health Awareness" %}selected{% endif %}>Health Awareness</option>
+  </select>
+
+  <select name="gender" class="border px-4 py-2 rounded-lg">
+    <option value="All" {% if filter_gender == "All" %}selected{% endif %}>All Genders</option>
+    <option value="Male" {% if filter_gender == "Male" %}selected{% endif %}>Male</option>
+    <option value="Female" {% if filter_gender == "Female" %}selected{% endif %}>Female</option>
+  </select>
+
+  <select name="availability" class="border px-4 py-2 rounded-lg">
+    <option value="All" {% if filter_availability == "All" %}selected{% endif %}>All Availability</option>
+    <option value="Day" {% if filter_availability == "Day" %}selected{% endif %}>Day</option>
+    <option value="Evening" {% if filter_availability == "Evening" %}selected{% endif %}>Evening</option>
+    <option value="Night" {% if filter_availability == "Night" %}selected{% endif %}>Night</option>
+  </select>
+
+  <input type="text" name="location" value="{{ filter_location }}" placeholder="Search by location" class="border px-4 py-2 rounded-lg flex-1">
+
+  <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
+    <i class="fas fa-filter mr-1"></i> Apply
+  </button>
+</form>
+
+<!-- Users Grid -->
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for uid, user in users.items() %}
+  <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+
+    <!-- Profile -->
+    <div class="flex items-center gap-4 mb-4">
+      {% if user.profile_image %}
+        <img src="{{ url_for('static', filename=user.profile_image) }}"
+             class="w-16 h-16 rounded-full border shadow object-cover">
+      {% else %}
+        <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
+          <i class="fas fa-user text-gray-500"></i>
+        </div>
+      {% endif %}
+      <div>
+        <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ user.name }}</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400">{{ user.email }}</p>
+      </div>
+    </div>
+
+    <!-- Counseling Info -->
+    <div class="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+      <p><i class="fas fa-user-tie mr-2 text-pink-500"></i><b>Father Name:</b> {{ user.father_name }}</p>
+      <p><i class="fas fa-venus-mars mr-2 text-pink-500"></i><b>Gender:</b> {{ user.gender }}</p>
+      <p><i class="fas fa-phone mr-2 text-pink-500"></i><b>Phone:</b> {{ user.phone }}</p>
+      <p><i class="fas fa-calendar mr-2 text-pink-500"></i><b>DOB:</b> {{ user.dob }}</p>
+      <p><i class="fas fa-map-marker-alt mr-2 text-pink-500"></i><b>Location:</b> {{ user.location }}</p>
+      <p><i class="fas fa-clock mr-2 text-pink-500"></i><b>Availability:</b> {{ user.availability }}</p>
+      <p><i class="fas fa-hand-holding-heart mr-2 text-pink-500"></i><b>Counseling:</b> {{ user.counseling }}</p>
+    </div>
+
+    <!-- Document -->
+    {% if user.document %}
+    <div class="mt-4">
+      <a href="{{ url_for('static', filename=user.document) }}" target="_blank"
+         class="inline-block px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-xs rounded shadow transition">
+        <i class="fas fa-file-download mr-1"></i> View Document
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+{% if not users %}
+<div class="text-center py-12">
+  <div class="inline-block p-6 bg-gray-100 dark:bg-gray-700 rounded-full mb-4 shadow">
+    <i class="fas fa-users text-4xl text-gray-500 dark:text-gray-400"></i>
+  </div>
+  <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">No Users Found</h3>
+  <p class="text-gray-500 dark:text-gray-400">No users match the selected filters.</p>
+</div>
+{% endif %}
+{% endblock %}

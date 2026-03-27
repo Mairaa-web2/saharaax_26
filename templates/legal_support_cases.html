@@ -1,0 +1,50 @@
+{% extends "base_admin.html" %}
+{% block title %}Legal Support Cases{% endblock %}
+{% block header %}Legal Support Requests{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+  <h2 class="text-2xl font-extrabold mb-6 flex items-center gap-2 text-gray-800 dark:text-white">
+    <i class="fas fa-gavel text-red-600"></i> Legal Support Requests
+  </h2>
+
+  {% if users %}
+  <div class="overflow-x-auto shadow-lg rounded-lg">
+    <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+      <thead class="bg-gray-100 dark:bg-gray-700">
+        <tr>
+          <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Name</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Email</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">CNIC</th>
+          <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Case Description</th>
+          <th class="px-6 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-200">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for uid, u in users.items() %}
+        <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+          <td class="px-6 py-4 text-gray-900 dark:text-white">{{ u.name }}</td>
+          <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ u.email }}</td>
+          <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ u.cnic }}</td>
+          <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ u.description }}</td>
+          <td class="px-6 py-4 text-center">
+            <a href="{{ url_for('assign_lawyer', user_id=uid) }}"
+               class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition">
+              <i class="fas fa-user-tie mr-1"></i> Assign Lawyer
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="text-center py-12">
+    <i class="fas fa-ban text-4xl text-gray-400 mb-3"></i>
+    <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">
+      No approved users with Legal Support selected.
+    </p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

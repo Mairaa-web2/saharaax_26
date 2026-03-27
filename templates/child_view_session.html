@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Child Awareness Session</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+<div class="max-w-5xl mx-auto py-8 px-4 space-y-6">
+
+    <header class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                <i class="fas fa-children text-emerald-400"></i>
+                {{ session.title }}
+            </h1>
+            <p class="text-xs text-slate-400 mt-1">
+                Topic: {{ session.topic }} • {{ session.date }} {{ session.time }} • Created {{ session.created_at }}
+            </p>
+        </div>
+        <a href="{{ url_for('child_awareness_dashboard') }}"
+           class="text-sm text-sky-300 hover:text-sky-200">
+            ← Back to Dashboard
+        </a>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2">
+          {% for category, msg in messages %}
+            <div class="px-4 py-3 rounded text-sm
+                        {% if category == 'success' %}
+                          bg-emerald-500/10 text-emerald-200 border border-emerald-500/40
+                        {% elif category == 'danger' %}
+                          bg-red-500/10 text-red-200 border border-red-500/40
+                        {% else %}
+                          bg-sky-500/10 text-sky-200 border border-sky-500/40
+                        {% endif %}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <section class="bg-slate-800 rounded-xl p-5 border border-slate-700 space-y-3">
+        <p class="text-sm text-slate-200">{{ session.details }}</p>
+        <p class="text-sm">
+            <span class="font-semibold text-emerald-300">Meeting Link:</span>
+            <a href="{{ session.zoom_link }}" target="_blank" class="text-sky-300 underline break-all">
+                {{ session.zoom_link }}
+            </a>
+        </p>
+    </section>
+
+    <!-- Attendance -->
+    <section class="bg-slate-800 rounded-xl p-5 border border-slate-700">
+        <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold flex items-center gap-2">
+                <i class="fas fa-users"></i> Attendance
+            </h2>
+            <p class="text-xs text-slate-400">
+                Total invited: {{ attendance|length }}
+            </p>
+        </div>
+
+        {% if attendance %}
+            <form method="POST" action="{{ url_for('child_mark_child_attendance', session_id=session.session_id) }}">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-slate-900/80">
+                            <tr>
+                                <th class="px-3 py-2 text-left">User</th>
+                                <th class="px-3 py-2 text-left">Email</th>
+                                <th class="px-3 py-2 text-center">Present?</th>
+                                <th class="px-3 py-2 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for uid, att in attendance.items() %}
+                            <tr class="border-t border-slate-700">
+                                <td class="px-3 py-2">{{ att.user_name }}</td>
+                                <td class="px-3 py-2 text-slate-300">{{ att.user_email }}</td>
+                                <td class="px-3 py-2 text-center">
+                                    <input type="checkbox" name="present"
+                                           value="{{ uid }}"
+                                           {% if att.status == 'Present' %}checked{% endif %}
+                                           class="rounded border-slate-500 bg-slate-900">
+                                </td>
+                                <td class="px-3 py-2 text-center">
+                                    {% if att.status == 'Present' %}
+                                        <span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-200 text-xs">
+                                            Present
+                                        </span>
+                                    {% else %}
+                                        <span class="px-2 py-1 rounded bg-red-500/20 text-red-200 text-xs">
+                                            Not Present
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-sm font-semibold">
+                        <i class="fas fa-save"></i>
+                        Save Attendance
+                    </button>
+                </div>
+            </form>
+        {% else %}
+            <p class="text-sm text-slate-300">No attendees found.</p>
+        {% endif %}
+    </section>
+</div>
+
+</body>
+</html>

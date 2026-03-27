@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Dataset Assessment Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .download-card {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-card:hover::before {
+            left: 100%;
+        }
+
+        .download-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .download-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .download-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .download-button:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .response-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .response-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .response-option.selected {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-item {
+            transition: all 0.3s ease;
+        }
+
+        .outcome-danger { border-left: 5px solid #ef4444; }
+        .outcome-success { border-left: 5px solid #10b981; }
+        .outcome-warning { border-left: 5px solid #f59e0b; }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        /* Loading Animation */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Download Icons Animation */
+        .download-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .download-card:hover .download-icon {
+            transform: translateY(5px);
+        }
+
+        /* Success Checkmark Animation */
+        @keyframes checkmark {
+            0% {
+                height: 0;
+                width: 0;
+                opacity: 1;
+            }
+            20% {
+                height: 0;
+                width: 10px;
+                opacity: 1;
+            }
+            40% {
+                height: 20px;
+                width: 10px;
+                opacity: 1;
+            }
+            100% {
+                height: 20px;
+                width: 10px;
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg">
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        <!-- Header -->
+        <header class="glass-effect rounded-2xl shadow-2xl p-8 mb-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-600 mb-3">
+                <i class="fas fa-shield-alt mr-3"></i>
+               SaharaX Ai Detection
+            </h1>
+            <p class="text-gray-600 text-xl">Professional Risk Assessment & Reporting Tool</p>
+        </header>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard">
+            <!-- Dataset Selection Section -->
+            <div id="datasetSelection" class="fade-in">
+                <div class="glass-effect rounded-2xl shadow-2xl p-8 mb-8">
+                    <h2 class="text-3xl font-bold text-indigo-600 mb-6 text-center">
+                        <i class="fas fa-database mr-3"></i>
+                        Select Assessment Type
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="datasetsContainer">
+                        <!-- Datasets will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Dataset Info -->
+            <div id="currentDatasetInfo" class="fade-in" style="display: none;">
+                <div class="glass-effect rounded-2xl shadow-2xl p-6 mb-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="flex items-center mb-4 md:mb-0">
+                            <div id="datasetIcon" class="text-5xl mr-4"></div>
+                            <div>
+                                <h3 id="currentDatasetName" class="text-2xl font-bold text-gray-800"></h3>
+                                <p id="currentDatasetDescription" class="text-gray-600 text-lg"></p>
+                            </div>
+                        </div>
+                        <button id="changeDatasetBtn"
+                                class="px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all transform hover:scale-105">
+                            <i class="fas fa-exchange-alt mr-2"></i> Change Dataset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessment Interface -->
+            <div id="assessmentInterface" style="display: none;">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Sidebar -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <!-- Category Selection -->
+                        <div class="glass-effect rounded-2xl shadow-2xl p-6">
+                            <h3 class="text-xl font-bold text-indigo-600 mb-4">
+                                <i class="fas fa-folder mr-2"></i> Categories
+                            </h3>
+                            <div class="space-y-4">
+                                <select id="categorySelect"
+                                        class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                                    <option value="">Choose category...</option>
+                                </select>
+
+                                <select id="questionCount"
+                                        class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                                    <option value="5">5 Questions</option>
+                                    <option value="10" selected>10 Questions</option>
+                                    <option value="15">15 Questions</option>
+                                    <option value="20">20 Questions</option>
+                                    <option value="all">All Questions</option>
+                                </select>
+
+                                <button onclick="loadQuestions()"
+                                        class="w-full px-4 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all transform hover:scale-105 font-semibold">
+                                    <i class="fas fa-sync mr-2"></i> Load Questions
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Progress -->
+                        <div class="glass-effect rounded-2xl shadow-2xl p-6">
+                            <h3 class="text-xl font-bold text-indigo-600 mb-4">
+                                <i class="fas fa-tasks mr-2"></i> Progress
+                            </h3>
+                            <div class="text-center mb-6">
+                                <div id="answeredCount" class="text-4xl font-bold text-gray-800 mb-2">0/0</div>
+                                <div class="text-sm text-gray-600">Questions Answered</div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <button onclick="clearAllResponses()"
+                                        class="w-full px-4 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all transform hover:scale-105">
+                                    <i class="fas fa-eraser mr-2"></i> Clear All
+                                </button>
+                                <button onclick="submitAssessment()" id="submitAssessmentBtn"
+                                        class="w-full px-4 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all transform hover:scale-105 font-semibold"
+                                        disabled>
+                                    <i class="fas fa-chart-bar mr-2"></i> Get Assessment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="lg:col-span-3">
+                        <div class="glass-effect rounded-2xl shadow-2xl overflow-hidden">
+                            <div class="p-6 border-b-2 border-gray-200">
+                                <h2 class="text-2xl font-bold text-indigo-600">
+                                    <i class="fas fa-question-circle mr-2"></i> Assessment Questions
+                                    <span id="questionsCount" class="text-lg font-normal text-gray-500 ml-2"></span>
+                                </h2>
+                                <div id="currentCategory" class="text-gray-600 font-medium mt-2"></div>
+                            </div>
+                            <div class="p-6">
+                                <div id="questionsContainer" class="space-y-6">
+                                    <div class="text-center py-16 text-gray-500">
+                                        <i class="fas fa-clipboard-list text-6xl mb-4"></i>
+                                        <h3 class="text-2xl font-medium">No Questions Loaded</h3>
+                                        <p class="text-lg">Select a category and click "Load Questions"</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" style="display: none;">
+                <div class="glass-effect rounded-2xl shadow-2xl overflow-hidden">
+                    <div class="p-6 border-b-2 border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <h2 class="text-2xl font-bold text-indigo-600">
+                            <i class="fas fa-chart-line mr-2"></i> Assessment Results
+                        </h2>
+                        <button onclick="backToAssessment()"
+                                class="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all transform hover:scale-105">
+                            <i class="fas fa-arrow-left mr-2"></i> Back to Assessment
+                        </button>
+                    </div>
+
+                    <div class="p-6">
+                        <div id="resultsContainer"></div>
+
+                        <!-- Download Section -->
+                        <div id="downloadSection" class="mt-12 fade-in" style="display: none;">
+                            <div class="glass-effect rounded-2xl shadow-2xl p-8">
+                                <div class="text-center mb-8">
+                                    <h3 class="text-3xl font-bold text-gray-800 mb-3">
+                                        <i class="fas fa-download mr-3 text-indigo-600"></i>
+                                        Download Assessment Report
+                                    </h3>
+                                    <p class="text-gray-600 text-lg">Choose your preferred format</p>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                                    <!-- PDF Download -->
+                                    <div class="download-card bg-gradient-to-br from-red-500 to-red-700 rounded-2xl p-8 text-white"
+                                         onclick="downloadReport('pdf')">
+                                        <div class="text-center">
+                                            <div class="download-icon text-7xl mb-6">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </div>
+                                            <h4 class="text-2xl font-bold mb-3">PDF Report</h4>
+                                            <p class="text-red-100 mb-6 text-base">
+                                                Professional formatted document<br>
+                                                Perfect for printing & sharing
+                                            </p>
+                                            <div class="download-button bg-white text-red-600 px-8 py-4 rounded-xl font-bold text-lg inline-block hover:shadow-2xl">
+                                                <i class="fas fa-download mr-2"></i>
+                                                Download PDF
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- JSON Download -->
+                                    <div class="download-card bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl p-8 text-white"
+                                         onclick="downloadReport('json')">
+                                        <div class="text-center">
+                                            <div class="download-icon text-7xl mb-6">
+                                                <i class="fas fa-code"></i>
+                                            </div>
+                                            <h4 class="text-2xl font-bold mb-3">JSON Data</h4>
+                                            <p class="text-blue-100 mb-6 text-base">
+                                                Machine-readable format<br>
+                                                For developers & integration
+                                            </p>
+                                            <div class="download-button bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg inline-block hover:shadow-2xl">
+                                                <i class="fas fa-download mr-2"></i>
+                                                Download JSON
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- CSV Download -->
+                                    <div class="download-card bg-gradient-to-br from-green-500 to-green-700 rounded-2xl p-8 text-white"
+                                         onclick="downloadReport('csv')">
+                                        <div class="text-center">
+                                            <div class="download-icon text-7xl mb-6">
+                                                <i class="fas fa-table"></i>
+                                            </div>
+                                            <h4 class="text-2xl font-bold mb-3">CSV Spreadsheet</h4>
+                                            <p class="text-green-100 mb-6 text-base">
+                                                Excel compatible format<br>
+                                                For data analysis
+                                            </p>
+                                            <div class="download-button bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg inline-block hover:shadow-2xl">
+                                                <i class="fas fa-download mr-2"></i>
+                                                Download CSV
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Download Info -->
+                                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 p-6 rounded-xl">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-info-circle text-blue-600 text-2xl mt-1 mr-4"></i>
+                                        <div class="text-sm text-blue-900">
+                                            <p class="font-bold text-lg mb-3">Download Information:</p>
+                                            <ul class="space-y-2 text-base">
+                                                <li><strong>📄 PDF:</strong> Complete report with professional formatting, tables, and analysis</li>
+                                                <li><strong>💻 JSON:</strong> Structured data format for programming and system integration</li>
+                                                <li><strong>📊 CSV:</strong> Spreadsheet format compatible with Excel, Google Sheets, and data tools</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50" style="display: none;">
+        <div class="bg-white p-10 rounded-2xl shadow-2xl text-center max-w-md">
+            <div class="spinner mx-auto mb-6"></div>
+            <p class="text-2xl font-bold text-gray-800 mb-2">Processing...</p>
+            <p id="loadingMessage" class="text-gray-600 text-lg">Please wait</p>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentDataset = null;
+        let selectedQuestions = [];
+        let userResponses = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("🚀 Initializing Assessment System...");
+            loadDatasets();
+            document.getElementById('changeDatasetBtn').addEventListener('click', showDatasetSelection);
+        });
+
+        function loadDatasets() {
+            showLoading('Loading datasets...');
+            fetch('/api/datasets')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderDatasets(data.datasets);
+                        showStatus('Datasets loaded!', 'success');
+                    }
+                })
+                .catch(error => showStatus('Error: ' + error, 'error'))
+                .finally(() => hideLoading());
+        }
+
+        function renderDatasets(datasets) {
+            const container = document.getElementById('datasetsContainer');
+            container.innerHTML = datasets.map(dataset => `
+                <div class="glass-effect rounded-2xl p-8 text-center cursor-pointer hover:shadow-2xl transition-all transform hover:scale-105"
+                     onclick="selectDataset('${dataset.key}')">
+                    <div class="text-6xl mb-4">${dataset.icon}</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">${dataset.name}</h3>
+                    <p class="text-gray-600">${dataset.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function selectDataset(key) {
+            showLoading('Loading dataset...');
+            fetch('/api/select-dataset', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({dataset_key: key})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    currentDataset = key;
+                    document.getElementById('datasetIcon').textContent = data.dataset.icon;
+                    document.getElementById('currentDatasetName').textContent = data.dataset.name;
+                    document.getElementById('currentDatasetDescription').textContent = data.dataset.description;
+                    document.getElementById('currentDatasetInfo').style.display = 'block';
+                    document.getElementById('datasetSelection').style.display = 'none';
+                    document.getElementById('assessmentInterface').style.display = 'block';
+                    loadCategories();
+                    showStatus('Dataset loaded!', 'success');
+                }
+            })
+            .catch(error => showStatus('Error: ' + error, 'error'))
+            .finally(() => hideLoading());
+        }
+
+        function showDatasetSelection() {
+            document.getElementById('currentDatasetInfo').style.display = 'none';
+            document.getElementById('assessmentInterface').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('datasetSelection').style.display = 'block';
+            currentDataset = null;
+            userResponses = {};
+        }
+
+        function loadCategories() {
+            fetch('/api/categories')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const select = document.getElementById('categorySelect');
+                        select.innerHTML = '<option value="">Choose category...</option>' +
+                            data.categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+                    }
+                });
+        }
+
+        function loadQuestions() {
+            const category = document.getElementById('categorySelect').value;
+            if (!category) {
+                showStatus('Please select a category', 'error');
+                return;
+            }
+
+            showLoading('Loading questions...');
+            fetch(`/api/questions?category=${encodeURIComponent(category)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayQuestions(data.questions);
+                        document.getElementById('currentCategory').innerHTML = `<strong>Category:</strong> ${category}`;
+                        showStatus('Questions loaded!', 'success');
+                    }
+                })
+                .catch(error => showStatus('Error: ' + error, 'error'))
+                .finally(() => hideLoading());
+        }
+
+        function displayQuestions(questions) {
+            const container = document.getElementById('questionsContainer');
+            selectedQuestions = [];
+            userResponses = {};
+
+            const count = document.getElementById('questionCount').value;
+            const questionsToShow = count === 'all' ? questions : questions.slice(0, parseInt(count));
+
+            container.innerHTML = questionsToShow.map((q, i) => {
+                selectedQuestions.push(q.question_id);
+                return `
+                    <div class="question-item bg-white border-2 border-gray-200 rounded-xl p-6 shadow-lg"
+                         data-question-id="${q.question_id}">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">${i+1}. ${q.question}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="response-option border-2 border-green-300 bg-green-50 text-green-700 p-4 rounded-xl"
+                                 data-value="0">
+                                <div class="font-semibold text-center">✗ No</div>
+                            </div>
+                            <div class="response-option border-2 border-red-300 bg-red-50 text-red-700 p-4 rounded-xl"
+                                 data-value="1">
+                                <div class="font-semibold text-center">✓ Yes</div>
+                            </div>
+                        </div>
+                        <div class="border-t-2 border-gray-200 pt-4">
+                            <div class="response-option border-2 border-yellow-300 bg-yellow-50 text-yellow-700 px-6 py-3 rounded-xl text-center"
+                                 data-value="2">
+                                <i class="fas fa-question-circle mr-2"></i>Uncertain
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('questionsCount').textContent = `(${questionsToShow.length} questions)`;
+            updateAnsweredCount();
+            setupResponseHandlers();
+        }
+
+        function setupResponseHandlers() {
+            document.querySelectorAll('.response-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const questionItem = this.closest('.question-item');
+                    const questionId = questionItem.dataset.questionId;
+                    const value = parseInt(this.dataset.value);
+
+                    questionItem.querySelectorAll('.response-option').forEach(opt => {
+                        opt.classList.remove('selected', 'ring-4', 'ring-offset-2');
+                    });
+
+                    this.classList.add('selected', 'ring-4', 'ring-offset-2');
+                    userResponses[questionId] = value;
+
+                    questionItem.classList.remove('outcome-danger', 'outcome-success', 'outcome-warning');
+                    if (value === 0) questionItem.classList.add('outcome-success');
+                    else if (value === 1) questionItem.classList.add('outcome-danger');
+                    else questionItem.classList.add('outcome-warning');
+
+                    updateAnsweredCount();
+                });
+            });
+        }
+
+        function updateAnsweredCount() {
+            const answered = Object.keys(userResponses).length;
+            const total = selectedQuestions.length;
+            document.getElementById('answeredCount').textContent = `${answered}/${total}`;
+            document.getElementById('submitAssessmentBtn').disabled = answered === 0;
+        }
+
+        function clearAllResponses() {
+            userResponses = {};
+            document.querySelectorAll('.response-option').forEach(opt => {
+                opt.classList.remove('selected', 'ring-4', 'ring-offset-2');
+            });
+            document.querySelectorAll('.question-item').forEach(item => {
+                item.classList.remove('outcome-danger', 'outcome-success', 'outcome-warning');
+            });
+            updateAnsweredCount();
+            showStatus('Responses cleared', 'info');
+        }
+
+        function submitAssessment() {
+            if (Object.keys(userResponses).length === 0) {
+                showStatus('Please answer questions', 'error');
+                return;
+            }
+
+            showLoading('Generating assessment...');
+            fetch('/api/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({responses: userResponses})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayResults(data.result);
+                    showStatus('Assessment complete!', 'success');
+                } else {
+                    showStatus('Error: ' + data.message, 'error');
+                }
+            })
+            .catch(error => showStatus('Error: ' + error, 'error'))
+            .finally(() => hideLoading());
+        }
+
+        function displayResults(result) {
+            document.getElementById('assessmentInterface').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('downloadSection').style.display = 'block';
+
+            const container = document.getElementById('resultsContainer');
+            const breakdown = result.outcome_breakdown || [0, 0, 0];
+
+            container.innerHTML = `
+                <div class="space-y-8 fade-in">
+                    <div class="outcome-${result.outcome_color} bg-white rounded-2xl p-8 shadow-lg">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center">
+                                <div class="text-6xl mr-6">${result.outcome_icon}</div>
+                                <div>
+                                    <h3 class="text-3xl font-bold text-gray-800">${result.outcome_name}</h3>
+                                    <p class="text-gray-600 text-lg">${result.dataset_name}</p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-5xl font-bold text-${result.outcome_color}-500">${(result.confidence * 100).toFixed(1)}%</div>
+                                <div class="text-gray-500">Confidence</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 text-lg mb-4">${result.outcome_description}</p>
+                        <div class="text-gray-600">
+                            <i class="fas fa-calendar mr-2"></i>${result.assessment_date} |
+                            <i class="fas fa-clipboard-check ml-4 mr-2"></i>${result.total_questions} questions
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-center">
+                            <div class="text-4xl font-bold text-red-500 mb-2">${breakdown[0]}</div>
+                            <div class="text-red-600 font-semibold">High Risk</div>
+                        </div>
+                        <div class="bg-green-50 border-2 border-green-200 rounded-2xl p-6 text-center">
+                            <div class="text-4xl font-bold text-green-500 mb-2">${breakdown[1]}</div>
+                            <div class="text-green-600 font-semibold">Low Risk</div>
+                        </div>
+                        <div class="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6 text-center">
+                            <div class="text-4xl font-bold text-yellow-500 mb-2">${breakdown[2]}</div>
+                            <div class="text-yellow-600 font-semibold">Uncertain</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-xl p-6">
+                        <h4 class="text-xl font-bold text-blue-800 mb-3">
+                            <i class="fas fa-lightbulb mr-2"></i>Recommendations
+                        </h4>
+                        <p class="text-blue-700 text-lg">${result.recommendation}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function downloadReport(format) {
+            showLoading(`Generating ${format.toUpperCase()} report...`);
+
+            // Trigger download
+            window.location.href = `/api/download-report/${format}`;
+
+            setTimeout(() => {
+                hideLoading();
+                showStatus(`${format.toUpperCase()} report downloaded!`, 'success');
+            }, 2000);
+        }
+
+        function backToAssessment() {
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('assessmentInterface').style.display = 'block';
+            document.getElementById('downloadSection').style.display = 'none';
+        }
+
+        function showLoading(msg) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            document.getElementById('loadingMessage').textContent = msg;
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+
+        function showStatus(message, type) {
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                info: 'bg-blue-500'
+            };
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `fixed top-6 right-6 ${colors[type]} text-white px-6 py-4 rounded-xl shadow-2xl z-50 fade-in text-lg`;
+            statusDiv.innerHTML = `<i class="fas ${icons[type]} mr-2"></i>${message}`;
+            document.body.appendChild(statusDiv);
+
+            setTimeout(() => {
+                statusDiv.style.opacity = '0';
+                statusDiv.style.transition = 'opacity 0.5s';
+                setTimeout(() => statusDiv.remove(), 500);
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

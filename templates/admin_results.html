@@ -1,0 +1,251 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Counseling Results Feed{% endblock %}
+
+{% block content %}
+<div class="animate-fade-in">
+    <!-- Stats Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- Total Manual Tests -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm p-6 border-l-4 border-primary-500 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Ai Tests</p>
+                    <h3 class="text-3xl font-bold text-primary-600 dark:text-primary-400">{{ total_tests }}</h3>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                    <i class="fas fa-clipboard-list text-primary-600 dark:text-primary-400 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Finalized -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm p-6 border-l-4 border-green-500 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Finalized</p>
+                    <h3 class="text-3xl font-bold text-green-600 dark:text-green-400">{{ finalized_count }}</h3>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                    <i class="fas fa-check-circle text-green-600 dark:text-green-400 text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending -->
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm p-6 border-l-4 border-yellow-500 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Pending</p>
+                    <h3 class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{{ pending_count }}</h3>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center">
+                    <i class="fas fa-clock text-yellow-600 dark:text-yellow-400 text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Row -->
+    <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm p-4 mb-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                    <i class="fas fa-stream text-primary-600 dark:text-primary-400"></i>
+                </div>
+                <h5 class="text-xl font-semibold text-gray-900 dark:text-white">Counseling Results Feed</h5>
+            </div>
+            <div class="text-left md:text-right">
+                <p class="text-xs text-gray-500 dark:text-gray-400">Admin</p>
+                <p class="text-sm font-semibold text-primary-600 dark:text-primary-400">{{ admin_email }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed List -->
+    {% if feed %}
+        <div class="space-y-4">
+            {% for t in feed %}
+            <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-dark-700">
+                <div class="p-6">
+                    <!-- Top: user + counselor + status -->
+                    <div class="flex flex-col lg:flex-row justify-between items-start gap-4 mb-4">
+                        <!-- User Info -->
+                        <div class="flex items-start gap-4 flex-1">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white shadow-md">
+                                    <i class="fas fa-user text-lg"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h6 class="font-semibold text-gray-900 dark:text-white text-lg mb-1">
+                                    {{ t.user_name or 'Unknown User' }}
+                                </h6>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate mb-2">
+                                    {{ t.user_email or t.user_id }}
+                                </p>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <i class="fas fa-user-md text-green-500"></i>
+                                    <span>Counselor: <span class="font-medium">{{ t.counselor_name or 'Unknown Counselor' }}</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Badges -->
+                        <div class="flex flex-col gap-2 items-start lg:items-end">
+                            {% if t.created_at %}
+                            <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-dark-700 rounded-full text-xs text-gray-600 dark:text-gray-300">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>{{ t.created_at }}</span>
+                            </div>
+                            {% endif %}
+
+                            <div class="flex flex-wrap gap-2">
+                                {# Counselor status badge #}
+                                {% set st = (t.status or 'continue') | lower %}
+                                {% if st == 'clear' %}
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
+                                        <i class="fas fa-check-circle"></i>
+                                        Counselor: Cleared
+                                    </span>
+                                {% elif st == 'not_clear' %}
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-full text-xs font-medium">
+                                        <i class="fas fa-times-circle"></i>
+                                        Counselor: Not Cleared
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 rounded-full text-xs font-medium">
+                                        <i class="fas fa-arrow-right"></i>
+                                        Counselor: Continue
+                                    </span>
+                                {% endif %}
+
+                                {# Admin final badge #}
+                                {% if t.is_finalized %}
+                                    {% set fs = (t.final_status or '') | lower %}
+                                    {% if fs == 'approve' %}
+                                        <span class="inline-flex items-center gap-1 px-3 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">
+                                            <i class="fas fa-check-double"></i>
+                                            Admin: Approved
+                                        </span>
+                                    {% elif fs == 'flag' %}
+                                        <span class="inline-flex items-center gap-1 px-3 py-1 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-full text-xs font-medium">
+                                            <i class="fas fa-flag"></i>
+                                            Admin: Flagged
+                                        </span>
+                                    {% elif fs == 'followup' %}
+                                        <span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">
+                                            <i class="fas fa-redo"></i>
+                                            Admin: Follow-up
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Counselor comment -->
+                    {% if t.comment %}
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">Counselor comment:</p>
+                        <div class="bg-gray-50 dark:bg-dark-700 border border-gray-200 dark:border-dark-600 rounded-lg p-3 text-sm text-gray-700 dark:text-gray-300">
+                            {{ t.comment }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- File -->
+                    {% if t.file_path %}
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">Attached file:</p>
+                        {% set att = t.file_path %}
+                        {% set att_lower = att|lower %}
+                        <a href="{{ url_for('static', filename=att) }}" target="_blank"
+                           class="inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium transition-colors">
+                            <i class="fas fa-paperclip"></i>
+                            <span>{{ t.file_original_name or 'Open file' }}</span>
+                        </a>
+
+                        {# simple preview for image/pdf #}
+                        {% if att_lower.endswith('.png') or att_lower.endswith('.jpg') or att_lower.endswith('.jpeg') or att_lower.endswith('.gif') or att_lower.endswith('.webp') %}
+                            <div class="mt-3">
+                                <img src="{{ url_for('static', filename=att) }}"
+                                     alt="Preview"
+                                     class="rounded-lg border border-gray-200 dark:border-dark-600 shadow-sm max-h-48 object-contain">
+                            </div>
+                        {% elif att_lower.endswith('.pdf') %}
+                            <div class="mt-3 border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
+                                <embed src="{{ url_for('static', filename=att) }}"
+                                       type="application/pdf"
+                                       class="w-full h-56" />
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <hr class="my-4 border-gray-200 dark:border-dark-700">
+
+                    <!-- Admin section -->
+                    {% if t.is_finalized %}
+                        <!-- Already finalized: read-only info -->
+                        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                            <div class="flex items-center gap-2 text-sm text-green-700 dark:text-green-300 font-medium mb-2">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Finalized by admin</span>
+                            </div>
+                            {% if t.admin_comment %}
+                            <div class="bg-white dark:bg-dark-800 rounded-lg p-3 mb-2 text-sm text-gray-700 dark:text-gray-300">
+                                {{ t.admin_comment }}
+                            </div>
+                            {% endif %}
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                {{ t.finalized_at or '' }} – {{ t.admin_email or '' }}
+                            </p>
+                        </div>
+                    {% else %}
+                        <!-- Pending: show finalization form -->
+                        <form action="{{ url_for('admin_results') }}" method="post" class="bg-gray-50 dark:bg-dark-700 rounded-lg p-4 border border-gray-200 dark:border-dark-600">
+                            <input type="hidden" name="counselor_id" value="{{ t.counselor_id }}">
+                            <input type="hidden" name="user_id" value="{{ t.user_id }}">
+                            <input type="hidden" name="test_id" value="{{ t.test_id }}">
+
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                                <div class="lg:col-span-3">
+                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Final status
+                                    </label>
+                                    <select name="final_status" class="w-full px-3 py-2 bg-white dark:bg-dark-800 border border-gray-300 dark:border-dark-600 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
+                                        <option value="approve">✅ Approve / Confirm</option>
+                                        <option value="flag">🚩 Flag for review</option>
+                                        <option value="followup">🔁 Need follow-up</option>
+                                    </select>
+                                </div>
+                                <div class="lg:col-span-7">
+                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Admin comment
+                                    </label>
+                                    <textarea name="admin_comment" rows="2"
+                                              class="w-full px-3 py-2 bg-white dark:bg-dark-800 border border-gray-300 dark:border-dark-600 rounded-lg text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none"
+                                              placeholder="Write your final note for this test..."></textarea>
+                                </div>
+                                <div class="lg:col-span-2 flex items-end">
+                                    <button type="submit" class="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 shadow-sm">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Save</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-8 text-center">
+            <i class="fas fa-info-circle text-blue-500 dark:text-blue-400 text-4xl mb-4"></i>
+            <p class="text-gray-700 dark:text-gray-300 text-lg">No manual test results submitted by counselors yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

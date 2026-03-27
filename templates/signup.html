@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SahaaraX - Community Support Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            sahaara: {
+              primary: '#4f46e5',
+              secondary: '#7c73d9',
+              accent: '#f97316',
+              light: '#eef2ff',
+              dark: '#1e1b4b'
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+            'slide-up': 'slideUp 0.5s ease-out forwards',
+            'pulse-soft': 'pulseSoft 2s infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            pulseSoft: {
+              '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+              '50%': { transform: 'scale(1.05)', opacity: '0.8' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer base {
+      body {
+    background: url("{{ url_for('static', filename='signup.jpg') }}") no-repeat center center fixed;
+    background-size: cover;
+  }
+
+      .form-section {
+        @apply transition-all duration-500 ease-in-out;
+      }
+
+      .sahaara-card {
+        @apply bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300;
+      }
+
+      .sahaara-btn {
+        @apply bg-sahaara-primary hover:bg-sahaara-secondary text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg flex items-center;
+      }
+
+      .sahaara-input {
+        @apply pl-12 w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-sahaara-primary focus:border-sahaara-primary outline-none transition duration-300;
+      }
+
+      .sahaara-section-title {
+        @apply text-xl font-semibold text-sahaara-dark mb-4 flex items-center;
+      }
+
+      input:focus, select:focus, textarea:focus {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 py-8 font-sans">
+  <div class="max-w-5xl w-full">
+    <!-- Header Section -->
+    <div class="text-center mb-10 animate-slide-up">
+      <div class="flex items-center justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-sahaara-primary flex items-center justify-center mr-3 shadow-lg animate-pulse-soft">
+          <i class="fas fa-hands-helping text-white text-2xl"></i>
+        </div>
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-sahaara-primary to-sahaara-accent bg-clip-text text-transparent">SahaaraX</h1>
+      </div>
+      <p class="text-lg text-white-600 max-w-2xl mx-auto">Join our community to access support services and resources</p>
+      <div class="w-32 h-1 bg-gradient-to-r from-sahaara-primary to-sahaara-accent mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <form action="/signup" method="POST" enctype="multipart/form-data" class="sahaara-card hover:shadow-xl">
+      <!-- Form Progress Bar -->
+      <div class="h-1.5 bg-gray-200">
+        <div class="h-full bg-gradient-to-r from-sahaara-primary to-sahaara-accent transition-all duration-500" style="width: 0%"></div>
+      </div>
+
+      <div class="p-8 space-y-8">
+        <!-- Alert Messages -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-xl animate-fade-in" role="alert">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <i class="fas fa-exclamation-circle text-yellow-400 mt-1"></i>
+                </div>
+                <div class="ml-3">
+                  <ul class="list-disc list-inside text-yellow-700">
+                    {% for message in messages %}
+                      <li>{{ message }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Personal Information Section -->
+          <div class="md:col-span-2">
+            <h2 class="sahaara-section-title">
+              <div class="w-10 h-10 rounded-full bg-sahaara-light flex items-center justify-center mr-3">
+                <i class="fas fa-user text-sahaara-primary"></i>
+              </div>
+              Personal Information
+            </h2>
+          </div>
+
+          <!-- Name -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-user text-gray-400"></i>
+              </div>
+              <input type="text" name="name" required class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Father Name -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Father's Name</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-user-tie text-gray-400"></i>
+              </div>
+              <input type="text" name="father_name" required class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Marital Status -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Marital Status</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-ring text-gray-400"></i>
+              </div>
+              <select name="marital_status" id="maritalStatus" onchange="toggleHusbandFields()" required class="sahaara-input appearance-none">
+                <option value="no">Single</option>
+                <option value="yes">Married</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <i class="fas fa-chevron-down text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gender -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-venus-mars text-gray-400"></i>
+              </div>
+              <select name="gender" required class="sahaara-input appearance-none">
+                <option value="female">Female</option>
+
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <i class="fas fa-chevron-down text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Husband Section (Initially Hidden) -->
+          <div id="husbandSection" class="hidden md:col-span-2 form-section">
+            <div class="p-5 bg-sahaara-light rounded-xl border border-sahaara-secondary/20">
+              <h3 class="text-lg font-medium text-sahaara-dark mb-4 flex items-center">
+                <i class="fas fa-user-friends mr-2 text-sahaara-primary"></i>
+                Spouse Information
+              </h3>
+
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Husband Name</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fas fa-user-friends text-gray-400"></i>
+                  </div>
+                  <input type="text" name="husband_name" class="sahaara-input"/>
+                </div>
+              </div>
+
+              <div>
+  <label class="block text-sm font-medium text-gray-700 mb-2">
+    Legal Documents (Marriage Certificate, etc.)
+  </label>
+
+  <div class="mt-2 flex flex-col sm:flex-row sm:items-center gap-3">
+    <label class="relative cursor-pointer sahaara-btn bg-white text-sahaara-primary border border-sahaara-primary hover:bg-sahaara-light hover:text-sahaara-secondary hover:border-sahaara-secondary py-2 px-4 rounded-md">
+      <span class="flex items-center">
+        <i class="fas fa-file-upload mr-2"></i>
+        Upload files
+      </span>
+      <input id="legal-docs-input" type="file" name="legal_docs" accept="application/pdf,image/*" class="sr-only"/>
+    </label>
+    <p class="text-sm text-gray-500">PDF, JPG, PNG up to 10MB</p>
+  </div>
+
+  <!-- Preview Section -->
+  <div id="legal-docs-preview" class="mt-4"></div>
+</div>
+
+            </div>
+          </div>
+
+          <!-- Contact Information Section -->
+          <div class="md:col-span-2 mt-8">
+            <h2 class="sahaara-section-title">
+              <div class="w-10 h-10 rounded-full bg-sahaara-light flex items-center justify-center mr-3">
+                <i class="fas fa-address-card text-sahaara-primary"></i>
+              </div>
+              Contact Information
+            </h2>
+          </div>
+
+          <!-- CNIC -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">CNIC (13 digits)</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-id-card text-gray-400"></i>
+              </div>
+              <input type="text" name="cnic" pattern="\d{13}" required placeholder="1234512345671" class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Age -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-birthday-cake text-gray-400"></i>
+              </div>
+              <input type="number" name="age" required min="10" class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Contact Number -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Contact Number</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-phone text-gray-400"></i>
+              </div>
+              <input type="tel" name="contact_number" required class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-envelope text-gray-400"></i>
+              </div>
+              <input type="email" name="email" required class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Current Location -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Current city</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-map-marker-alt text-gray-400"></i>
+              </div>
+              <input type="text" name="current_location" required class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="md:col-span-2 form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Full Address</label>
+            <textarea name="address" rows="2" class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-sahaara-primary focus:border-sahaara-primary outline-none transition duration-300" required></textarea>
+          </div>
+
+          <!-- Children Information -->
+          <div class="md:col-span-2 mt-8">
+            <h2 class="sahaara-section-title">
+              <div class="w-10 h-10 rounded-full bg-sahaara-light flex items-center justify-center mr-3">
+                <i class="fas fa-child text-sahaara-primary"></i>
+              </div>
+              Children Information
+            </h2>
+          </div>
+
+          <!-- Children -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Do you have children?</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-child text-gray-400"></i>
+              </div>
+              <select name="children" id="childrenStatus" onchange="toggleChildrenFields()" required class="sahaara-input appearance-none">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <i class="fas fa-chevron-down text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Children Count Section (Initially Hidden) -->
+          <div id="childrenCountSection" class="hidden md:col-span-2 form-section">
+            <div class="p-5 bg-sahaara-light rounded-xl border border-sahaara-secondary/20">
+              <h3 class="text-lg font-medium text-sahaara-dark mb-4 flex items-center">
+                <i class="fas fa-users mr-2 text-sahaara-primary"></i>
+                Children Details
+              </h3>
+
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Number of Children</label>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div class="relative flex-1">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <i class="fas fa-list-ol text-gray-400"></i>
+                    </div>
+                    <input type="number" name="children_count" min="1" id="childCount" onchange="prepareChildrenModal()" class="sahaara-input"/>
+                  </div>
+                  <button type="button" id="openModalBtn" onclick="openChildrenModal()" class="hidden sahaara-btn animate-float bg-sahaara-accent hover:bg-orange-500 mt-2 sm:mt-0">
+                    <i class="fas fa-plus-circle mr-2"></i>Add Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Information Section -->
+          <div class="md:col-span-2 mt-8">
+            <h2 class="sahaara-section-title">
+              <div class="w-10 h-10 rounded-full bg-sahaara-light flex items-center justify-center mr-3">
+                <i class="fas fa-user-circle text-sahaara-primary"></i>
+              </div>
+              Account Information
+            </h2>
+          </div>
+
+          <!-- Username -->
+          <div class="form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-user text-gray-400"></i>
+              </div>
+              <input type="text" name="username" required class="sahaara-input"/>
+            </div>
+          </div>
+
+          <!-- Profile Image -->
+          <div class="form-section">
+  <label class="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
+  <div class="mt-2 flex flex-col sm:flex-row sm:items-center gap-3">
+    <label class="relative cursor-pointer sahaara-btn bg-white text-sahaara-primary border border-sahaara-primary hover:bg-sahaara-light hover:text-sahaara-secondary hover:border-sahaara-secondary py-2">
+      <span class="flex items-center">
+        <i class="fas fa-camera mr-2"></i>
+        Upload photo
+      </span>
+      <input
+        type="file"
+        name="profile_image"
+        accept="image/*"
+        required
+        class="sr-only"
+        onchange="previewImage(event)"
+      />
+    </label>
+    <p class="text-sm text-gray-500">JPG, PNG up to 5MB</p>
+  </div>
+
+  <!-- Image Preview -->
+  <div class="mt-4">
+    <img id="profileImagePreview" src="#" alt="Image Preview" class="hidden w-32 h-32 object-cover rounded-full border border-gray-300 shadow" />
+  </div>
+</div>
+
+          <!-- Description -->
+          <div class="md:col-span-2 form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Short Description About Yourself</label>
+            <textarea name="description" rows="2" class="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-sahaara-primary focus:border-sahaara-primary outline-none transition duration-300" required></textarea>
+          </div>
+
+          <!-- Categories -->
+          <div class="md:col-span-2 form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-3">What type of support are you seeking?</label>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-sahaara-primary transition duration-300 bg-white hover:shadow-md">
+                <input type="checkbox" name="categories" value="shelter" class="h-5 w-5 text-sahaara-primary focus:ring-sahaara-primary border-gray-300 rounded"/>
+                <span class="ml-3 text-gray-700">
+                  <span class="block font-medium">Shelter</span>
+                  <span class="block text-sm text-gray-500 mt-1">Temporary housing support</span>
+                </span>
+              </label>
+
+              <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-sahaara-primary transition duration-300 bg-white hover:shadow-md">
+                <input type="checkbox" name="categories" value="legal" class="h-5 w-5 text-sahaara-primary focus:ring-sahaara-primary border-gray-300 rounded"/>
+                <span class="ml-3 text-gray-700">
+                  <span class="block font-medium">Legal Help</span>
+                  <span class="block text-sm text-gray-500 mt-1">Legal advice and support</span>
+                </span>
+              </label>
+
+
+            </div>
+          </div>
+<!-- Counseling Section -->
+<div class="md:col-span-2 form-section">
+  <label class="block text-sm font-medium text-gray-700 mb-3">What type of Counseling you need?</label>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <!-- Domestic Violence -->
+    <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-sahaara-primary transition duration-300 bg-white hover:shadow-md">
+      <input type="checkbox" name="counseling" value="Domestic Violence" class="h-5 w-5 text-sahaara-primary focus:ring-sahaara-primary border-gray-300 rounded"/>
+      <span class="ml-3 text-gray-700">
+        <span class="block font-medium">Domestic Violence</span>
+        <span class="block text-sm text-gray-500 mt-1">Support for domestic abuse victims</span>
+      </span>
+    </label>
+
+    <!-- Sexual Abuse Support -->
+    <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-sahaara-primary transition duration-300 bg-white hover:shadow-md">
+      <input type="checkbox" name="counseling" value="Sexual Abuse Support" class="h-5 w-5 text-sahaara-primary focus:ring-sahaara-primary border-gray-300 rounded"/>
+      <span class="ml-3 text-gray-700">
+        <span class="block font-medium">Sexual Abuse Support</span>
+        <span class="block text-sm text-gray-500 mt-1">Help for survivors of sexual abuse</span>
+      </span>
+    </label>
+
+    <!-- Psychological Support -->
+    <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-sahaara-primary transition duration-300 bg-white hover:shadow-md">
+      <input type="checkbox" name="counseling" value="Psychological Support" class="h-5 w-5 text-sahaara-primary focus:ring-sahaara-primary border-gray-300 rounded"/>
+      <span class="ml-3 text-gray-700">
+        <span class="block font-medium">Psychological Support</span>
+        <span class="block text-sm text-gray-500 mt-1">Mental health and therapy support</span>
+      </span>
+    </label>
+
+
+
+
+
+  </div>
+            <!-- National ID Front & Back -->
+          <div class="md:col-span-2 form-section">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Drop your National ID (Front & Back)
+            </label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              <!-- Front Side -->
+              <div>
+                <p class="text-xs font-semibold text-gray-600 mb-1">Front side</p>
+                <div class="mt-1 flex flex-col sm:flex-row sm:items-center gap-3">
+                  <label class="relative cursor-pointer sahaara-btn bg-white text-sahaara-primary border border-sahaara-primary hover:bg-sahaara-light hover:text-sahaara-secondary hover:border-sahaara-secondary py-2">
+                    <span class="flex items-center">
+                      <i class="fas fa-id-card mr-2"></i>
+                      Upload front
+                    </span>
+                    <input
+                      id="cnic-front-input"
+                      type="file"
+                      name="cnic_front"
+                      accept="image/*,application/pdf"
+                      class="sr-only"
+                    />
+                  </label>
+                  <p class="text-xs text-gray-500">Image or PDF, max 5MB</p>
+                </div>
+                <!-- Front Preview -->
+                <div id="cnic-front-preview" class="mt-3"></div>
+              </div>
+
+              <!-- Back Side -->
+              <div>
+                <p class="text-xs font-semibold text-gray-600 mb-1">Back side</p>
+                <div class="mt-1 flex flex-col sm:flex-row sm:items-center gap-3">
+                  <label class="relative cursor-pointer sahaara-btn bg-white text-sahaara-primary border border-sahaara-primary hover:bg-sahaara-light hover:text-sahaara-secondary hover:border-sahaara-secondary py-2">
+                    <span class="flex items-center">
+                      <i class="fas fa-id-card mr-2"></i>
+                      Upload back
+                    </span>
+                    <input
+                      id="cnic-back-input"
+                      type="file"
+                      name="cnic_back"
+                      accept="image/*,application/pdf"
+                      class="sr-only"
+                    />
+                  </label>
+                  <p class="text-xs text-gray-500">Image or PDF, max 5MB</p>
+                </div>
+                <!-- Back Preview -->
+                <div id="cnic-back-preview" class="mt-3"></div>
+              </div>
+
+            </div>
+          </div>
+
+</div>
+
+
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-10">
+          <button type="submit" class="sahaara-btn bg-gradient-to-r from-sahaara-primary to-sahaara-accent hover:from-sahaara-secondary hover:to-orange-500 text-lg px-8 py-4 mx-auto">
+            <i class="fas fa-user-plus mr-2"></i>Create Account
+          </button>
+        </div>
+      </div>
+
+      <!-- Children Details Modal -->
+      <div id="childrenModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-50 p-4 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden transform transition-transform duration-300 scale-95 opacity-0" id="modalContent">
+          <div class="p-6 border-b border-gray-200 bg-sahaara-primary text-white">
+            <div class="flex items-center justify-between">
+              <h3 class="text-2xl font-semibold flex items-center">
+                <i class="fas fa-child mr-3"></i>
+                Children Details
+              </h3>
+              <button type="button" onclick="closeChildrenModal()" class="text-white hover:text-gray-200 transition duration-300">
+                <i class="fas fa-times text-xl"></i>
+              </button>
+            </div>
+            <p class="text-sahaara-light mt-1">Please provide details for each child</p>
+          </div>
+
+          <div class="p-6 max-h-96 overflow-y-auto">
+            <div id="modalChildInputs" class="space-y-6"></div>
+          </div>
+
+          <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+            <button type="button" onclick="closeChildrenModal()" class="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition duration-300">Close</button>
+            <button type="button" onclick="closeChildrenModal()" class="sahaara-btn">Save Information</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const modal = document.getElementById('childrenModal');
+    const modalContent = document.getElementById('modalContent');
+    const openBtn = document.getElementById('openModalBtn');
+
+    function toggleHusbandFields() {
+      const status = document.getElementById('maritalStatus').value;
+      const husbandSection = document.getElementById('husbandSection');
+
+      if (status === 'yes') {
+        husbandSection.classList.remove('hidden');
+        setTimeout(() => {
+          husbandSection.classList.add('animate-fade-in');
+        }, 10);
+      } else {
+        husbandSection.classList.remove('animate-fade-in');
+        setTimeout(() => {
+          husbandSection.classList.add('hidden');
+        }, 300);
+      }
+    }
+
+    function toggleChildrenFields() {
+      const children = document.getElementById('childrenStatus').value;
+      const countSection = document.getElementById('childrenCountSection');
+
+      if (children === 'yes') {
+        countSection.classList.remove('hidden');
+        setTimeout(() => {
+          countSection.classList.add('animate-fade-in');
+        }, 10);
+      } else {
+        countSection.classList.remove('animate-fade-in');
+        setTimeout(() => {
+          countSection.classList.add('hidden');
+        }, 300);
+
+        closeChildrenModal();
+        const cc = document.getElementById('childCount');
+        if (cc) cc.value = '';
+        document.getElementById('modalChildInputs').innerHTML = '';
+        if (openBtn) openBtn.classList.add('hidden');
+      }
+    }
+
+    function prepareChildrenModal() {
+      const count = parseInt(document.getElementById('childCount').value);
+      if (!isNaN(count) && count > 0) {
+        if (openBtn) openBtn.classList.remove('hidden');
+        buildChildrenInputs(count);
+      } else {
+        if (openBtn) openBtn.classList.add('hidden');
+        document.getElementById('modalChildInputs').innerHTML = '';
+      }
+    }
+
+    function buildChildrenInputs(count) {
+      const container = document.getElementById('modalChildInputs');
+      container.innerHTML = '';
+
+      for (let i = 0; i < count; i++) {
+        const idx = i + 1;
+        container.innerHTML += `
+          <div class="bg-sahaara-light p-5 rounded-xl">
+            <h4 class="text-lg font-medium text-sahaara-dark mb-4 flex items-center">
+              <i class="fas fa-child mr-2 text-sahaara-primary"></i>
+              Child ${idx} Details
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <input type="text" name="child_name[]" required class="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-sahaara-primary focus:border-sahaara-primary outline-none transition duration-300"/>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Relationship</label>
+                <select name="child_relation[]" required class="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-sahaara-primary focus:border-sahaara-primary outline-none transition duration-300">
+                  <option value="son">Son</option>
+                  <option value="daughter">Daughter</option>
+                  <option value="sibling">Sibling</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                <input type="number" name="child_age[]" min="0" required class="w-full rounded-xl border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-sahaara-primary focus:border-sahaara-primary outline-none transition duration-300"/>
+              </div>
+            </div>
+          </div>`;
+      }
+    }
+
+    function openChildrenModal() {
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.add('flex');
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function closeChildrenModal() {
+      modalContent.classList.remove('scale-100', 'opacity-100');
+      modalContent.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
+    }
+
+    // Initialize form animations
+    document.addEventListener('DOMContentLoaded', function() {
+      const formSections = document.querySelectorAll('.form-section');
+      formSections.forEach((section, index) => {
+        section.style.animationDelay = `${index * 0.05}s`;
+        section.classList.add('animate-slide-up');
+      });
+    });
+  </script>
+<script>
+  function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('profileImagePreview');
+
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.classList.remove('hidden');
+      }
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
+<script>
+  const input = document.getElementById('legal-docs-input');
+  const preview = document.getElementById('legal-docs-preview');
+
+  input.addEventListener('change', () => {
+    preview.innerHTML = ''; // clear previous preview
+    const file = input.files[0];
+    if (!file) return;
+
+    const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.innerHTML = `
+          <div class="flex items-center gap-3 p-3 bg-gray-100 rounded-md shadow-sm">
+            <img src="${e.target.result}" alt="Preview" class="w-20 h-20 object-cover rounded border border-gray-300"/>
+            <div>
+              <p class="font-medium text-sm text-gray-800">${file.name}</p>
+              <p class="text-xs text-gray-500">${fileSizeMB} MB</p>
+            </div>
+          </div>
+        `;
+      };
+      reader.readAsDataURL(file);
+    } else if (file.type === 'application/pdf') {
+      preview.innerHTML = `
+        <div class="flex items-center gap-3 p-3 bg-gray-100 rounded-md shadow-sm">
+          <i class="fas fa-file-pdf text-red-500 text-4xl"></i>
+          <div>
+            <p class="font-medium text-sm text-gray-800">${file.name}</p>
+            <p class="text-xs text-gray-500">${fileSizeMB} MB</p>
+          </div>
+        </div>
+      `;
+    } else {
+      preview.innerHTML = `<p class="text-red-500 text-sm mt-2">Unsupported file format.</p>`;
+    }
+  });
+</script>
+<script>
+  const cnicFrontInput = document.getElementById('cnic-front-input');
+  const cnicBackInput = document.getElementById('cnic-back-input');
+  const cnicFrontPreview = document.getElementById('cnic-front-preview');
+  const cnicBackPreview = document.getElementById('cnic-back-preview');
+
+  function renderCnicPreview(file, container) {
+    container.innerHTML = "";
+    if (!file) return;
+
+    const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        container.innerHTML = `
+          <div class="flex items-center gap-3 p-3 bg-gray-100 rounded-md shadow-sm">
+            <img src="${e.target.result}" alt="Preview" class="w-24 h-16 object-cover rounded border border-gray-300"/>
+            <div>
+              <p class="font-medium text-sm text-gray-800 truncate">${file.name}</p>
+              <p class="text-xs text-gray-500">${sizeMB} MB</p>
+            </div>
+          </div>
+        `;
+      };
+      reader.readAsDataURL(file);
+    } else if (file.type === 'application/pdf') {
+      container.innerHTML = `
+        <div class="flex items-center gap-3 p-3 bg-gray-100 rounded-md shadow-sm">
+          <i class="fas fa-file-pdf text-red-500 text-3xl"></i>
+          <div>
+            <p class="font-medium text-sm text-gray-800 truncate">${file.name}</p>
+            <p class="text-xs text-gray-500">${sizeMB} MB</p>
+          </div>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `<p class="text-red-500 text-xs mt-1">Unsupported file format.</p>`;
+    }
+  }
+
+  if (cnicFrontInput) {
+    cnicFrontInput.addEventListener('change', () => {
+      const file = cnicFrontInput.files[0];
+      renderCnicPreview(file, cnicFrontPreview);
+    });
+  }
+
+  if (cnicBackInput) {
+    cnicBackInput.addEventListener('change', () => {
+      const file = cnicBackInput.files[0];
+      renderCnicPreview(file, cnicBackPreview);
+    });
+  }
+</script>
+
+</body>
+</html>

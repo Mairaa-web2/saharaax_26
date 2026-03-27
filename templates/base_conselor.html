@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Awareness Panel{% endblock %}</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            dark: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+            }
+          },
+          boxShadow: {
+            'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+            'medium': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            'large': '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+    }
+
+    body.dark {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    }
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fade-in 0.6s ease-out;
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dark .glass-effect {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .dark .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-gradient {
+      background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
+    }
+
+    .footer-gradient {
+      background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #6366f1 100%);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- Theme Toggle -->
+  <div class="fixed top-4 right-4 z-50">
+
+  </div>
+
+  <!-- Navbar -->
+  <nav class="mx-4 mt-4 rounded-2xl nav-gradient shadow-large px-6 py-4 flex justify-between items-center animate-fade-in">
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl glass-effect shadow-inner flex items-center justify-center overflow-hidden ring-2 ring-white/30">
+        <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" class="w-full h-full object-cover rounded-2xl">
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold text-white drop-shadow-lg">Sahaara<span class="text-amber-300">X</span></h1>
+        <p class="text-sm text-blue-100 font-medium">Awareness & Counseling Platform</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <!-- User Info -->
+      <div class="hidden md:flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-xl px-4 py-2">
+
+         <button id="theme-toggle" class="p-3 rounded-full bg-white dark:bg-dark-700 shadow-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-600 transition-all">
+      <i class="fas fa-moon" id="theme-icon"></i>
+    </button>
+      </div>
+
+
+
+      <!-- Logout -->
+      <a href="/logout" class="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-semibold px-4 py-2 rounded-xl flex items-center gap-2 transition-all">
+        <i class="fas fa-sign-out-alt"></i>
+        <span class="hidden sm:inline">Logout</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 animate-fade-in">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-gradient text-center py-5 shadow-inner mt-4 rounded-t-2xl mx-4 animate-fade-in">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <p class="text-sm text-blue-100 font-medium">&copy; {{ year }} SahaaraX. All rights reserved.</p>
+        </div>
+
+
+
+        <div class="mt-4 md:mt-0">
+          <p class="text-xs text-blue-200">Empowering through awareness and support</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+    const html = document.documentElement;
+    const body = document.body;
+
+    // Check for saved theme preference or respect OS preference
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.setAttribute("data-theme", "dark");
+      html.classList.add("dark");
+      body.classList.add("dark");
+      themeIcon.classList.remove("fa-moon");
+      themeIcon.classList.add("fa-sun");
+    } else {
+      html.setAttribute("data-theme", "light");
+      html.classList.remove("dark");
+      body.classList.remove("dark");
+      themeIcon.classList.remove("fa-sun");
+      themeIcon.classList.add("fa-moon");
+    }
+
+    themeToggle.addEventListener("click", () => {
+      if (html.getAttribute("data-theme") === "light") {
+        html.setAttribute("data-theme", "dark");
+        html.classList.add("dark");
+        body.classList.add("dark");
+        localStorage.theme = 'dark';
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
+      } else {
+        html.setAttribute("data-theme", "light");
+        html.classList.remove("dark");
+        body.classList.remove("dark");
+        localStorage.theme = 'light';
+        themeIcon.classList.remove("fa-sun");
+        themeIcon.classList.add("fa-moon");
+      }
+    });
+  </script>
+</body>
+</html>

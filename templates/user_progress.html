@@ -1,0 +1,118 @@
+{% extends "base_admin.html" %}
+{% block title %}User Progress{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-pink-50 to-blue-100
+            dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-10 px-6">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-10">
+    <h1 class="text-3xl font-extrabold text-gray-800 dark:text-white flex items-center gap-3">
+      <i class="fas fa-chart-line text-blue-600"></i> User Progress Report
+    </h1>
+    <span class="px-4 py-2 rounded-full text-sm font-semibold bg-pink-100 text-pink-700
+                 dark:bg-pink-900 dark:text-pink-200 shadow">
+      <i class="fas fa-users mr-1"></i> {{ users|length }} Users
+    </span>
+  </div>
+
+  <!-- User Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for user in users.values() %}
+      <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl
+                  border-t-4 border-blue-500 hover:shadow-2xl hover:-translate-y-1 transform transition p-6">
+
+        <!-- User Profile Header -->
+        <div class="flex items-center gap-4 mb-5">
+          {% if user.profile_image %}
+            <img src="{{ url_for('static', filename=user.profile_image) }}"
+                 class="w-16 h-16 rounded-full border-4 border-blue-400 object-cover shadow-lg">
+          {% else %}
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-200 to-blue-400
+                        dark:from-blue-700 dark:to-blue-900 flex items-center justify-center shadow-lg">
+              <i class="fas fa-user text-white text-2xl"></i>
+            </div>
+          {% endif %}
+          <div>
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white">{{ user.name }}</h2>
+            <p class="text-sm text-gray-500">{{ user.email }}</p>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mt-2">
+          <div class="flex justify-between text-xs font-semibold mb-1">
+            <span><i class="fas fa-bullseye text-blue-500 mr-1"></i> Progress</span>
+            <span>{{ user.progress_percent }}%</span>
+          </div>
+          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+            <div class="h-3 rounded-full bg-gradient-to-r from-blue-500 to-pink-500 transition-all duration-700"
+                 style="width: {{ user.progress_percent }}%"></div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 text-center mt-6">
+          <div>
+            <p class="text-lg font-bold text-blue-600 flex items-center justify-center gap-1">
+              <i class="fas fa-calendar-check"></i> {{ user.sessions }}
+            </p>
+            <p class="text-xs text-gray-500">Sessions</p>
+          </div>
+          <div>
+            <p class="text-lg font-bold text-green-600 flex items-center justify-center gap-1">
+              <i class="fas fa-user-check"></i> {{ user.present }}
+            </p>
+            <p class="text-xs text-gray-500">Present</p>
+          </div>
+          <div>
+            <p class="text-lg font-bold text-red-600 flex items-center justify-center gap-1">
+              <i class="fas fa-user-times"></i> {{ user.absent }}
+            </p>
+            <p class="text-xs text-gray-500">Absent</p>
+          </div>
+        </div>
+
+        <!-- Expandable Session Details -->
+        <button onclick="toggleDetails('{{ loop.index }}')"
+                class="mt-6 w-full text-sm bg-gradient-to-r from-blue-600 to-blue-700
+                       hover:from-pink-500 hover:to-pink-600 text-white py-2 rounded-lg shadow-md transition">
+          <i class="fas fa-list mr-2"></i> View Session Details
+        </button>
+
+        <div id="details-{{ loop.index }}" class="hidden mt-4 space-y-2">
+          {% for d in user.details %}
+            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-sm flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                  <i class="fas fa-book-open text-blue-500"></i> {{ d.session }}
+                </p>
+                <p class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="fas fa-tag"></i> {{ d.category }} |
+                  <i class="fas fa-clock"></i> {{ d.created_at }}
+                </p>
+              </div>
+              <span class="px-3 py-1 text-xs rounded-full font-bold shadow
+                          {% if d.status == 'Present' %}
+                            bg-green-200 text-green-700
+                          {% else %}
+                            bg-red-200 text-red-700
+                          {% endif %}">
+                <i class="fas {% if d.status == 'Present' %}fa-check-circle{% else %}fa-times-circle{% endif %} mr-1"></i>
+                {{ d.status }}
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+function toggleDetails(id) {
+  const el = document.getElementById("details-" + id);
+  el.classList.toggle("hidden");
+}
+</script>
+{% endblock %}

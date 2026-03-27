@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+{% block title %}Our Services - SahaaraX{% endblock %}
+
+{% block content %}
+
+<!-- Enhanced Video Hero Section -->
+<section class="relative bg-gradient-to-r from-blue-900 to-indigo-900 text-white overflow-hidden">
+  <!-- Video Background -->
+  <div class="absolute inset-0 z-0">
+    <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-10">
+      <source src="{{ url_for('static', filename='uploads/2.mp4') }}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="container mx-auto px-4 py-20 md:py-28 relative z-10">
+    <div class="max-w-4xl mx-auto text-center"  data-aos-duration="1000">
+      <!-- Animated Icon -->
+      <div class="w-24 h-24 mx-auto mb-6 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center border border-white/20 shadow-2xl floating">
+        <i class="fas fa-concierge-bell text-3xl text-yellow-300"></i>
+      </div>
+
+      <h1 class="text-5xl md:text-6xl font-bold mb-6 heading-font bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+        Our Services
+      </h1>
+
+      <p class="text-xl md:text-2xl mb-8 text-blue-100 leading-relaxed max-w-3xl mx-auto">
+        At <span class="font-bold text-yellow-300 animate-pulse">SahaaraX</span>, we provide comprehensive support including shelter, counseling, and legal aid to ensure dignity, safety, and empowerment for all.
+      </p>
+
+      <!-- Enhanced Tagline -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <i class="fas fa-shield-heart text-blue-300 mr-3"></i>
+          <span class="font-semibold">Safe & Secure Environment</span>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl px-6 py-3 border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+          <i class="fas fa-users text-green-300 mr-3"></i>
+          <span class="font-semibold">Professional Support Team</span>
+        </div>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#services-grid" class="bg-yellow-400 hover:bg-yellow-300 text-blue-900 font-bold px-8 py-4 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
+          <i class="fas fa-arrow-down"></i>
+          Explore Our Services
+        </a>
+        <a href="{{ url_for('contact') }}" class="bg-transparent hover:bg-white/20 text-white font-bold px-8 py-4 rounded-2xl border-2 border-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
+          <i class="fas fa-phone-alt"></i>
+          Immediate Help
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+    <div class="flex flex-col items-center text-white/70">
+      <span class="text-sm mb-2">Scroll to explore</span>
+      <div class="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+        <div class="w-1 h-3 bg-white/70 rounded-full mt-2 animate-bounce"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services Content -->
+<div class="container mx-auto px-4 py-12" id="services-grid">
+  <!-- Services Grid -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+
+    <!-- Shelter -->
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4" data-aos="zoom-in">
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transform group-hover:scale-110 transition-transform duration-1000" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-blue-900/90 to-blue-900/95 group-hover:via-blue-900/80 transition-all duration-500"></div>
+      <div class="relative p-8 text-white z-10 h-96 flex flex-col justify-end">
+        <div class="w-20 h-20 bg-white/20 backdrop-blur-lg flex items-center justify-center rounded-3xl mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl">
+          <i class="fas fa-home text-3xl text-white"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-4 heading-font">Shelter Management</h3>
+        <p class="text-blue-100 text-lg mb-6 opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-200">
+          Safe housing services with room & bed tracking, availability updates, and expiry notifications.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-bed mr-2"></i>Room Tracking
+          </span>
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-bell mr-2"></i>Smart Alerts
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Counseling -->
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4" data-aos="zoom-in" data-aos-delay="100">
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transform group-hover:scale-110 transition-transform duration-1000" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/90 to-purple-900/95 group-hover:via-purple-900/80 transition-all duration-500"></div>
+      <div class="relative p-8 text-white z-10 h-96 flex flex-col justify-end">
+        <div class="w-20 h-20 bg-white/20 backdrop-blur-lg flex items-center justify-center rounded-3xl mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl">
+          <i class="fas fa-hand-holding-heart text-3xl text-white"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-4 heading-font">Counseling Support</h3>
+        <p class="text-purple-100 text-lg mb-6 opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-200">
+          Specialized counseling for Domestic Violence, Sexual Abuse, Mental Health, Self Awareness, and Health Awareness.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-heart mr-2"></i>Emotional Care
+          </span>
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-user-shield mr-2"></i>Safe Space
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legal Aid -->
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4" data-aos="zoom-in" data-aos-delay="200">
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transform group-hover:scale-110 transition-transform duration-1000" style="background-image: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-amber-900/90 to-amber-900/95 group-hover:via-amber-900/80 transition-all duration-500"></div>
+      <div class="relative p-8 text-white z-10 h-96 flex flex-col justify-end">
+        <div class="w-20 h-20 bg-white/20 backdrop-blur-lg flex items-center justify-center rounded-3xl mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl">
+          <i class="fas fa-balance-scale text-3xl text-white"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-4 heading-font">Legal Aid</h3>
+        <p class="text-amber-100 text-lg mb-6 opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-200">
+          Connecting you with professionals to provide legal advice and justice support.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-gavel mr-2"></i>Legal Experts
+          </span>
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-scale-balanced mr-2"></i>Justice Support
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Psychological Aid -->
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4" data-aos="zoom-in" data-aos-delay="300">
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transform group-hover:scale-110 transition-transform duration-1000" style="background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-green-900/90 to-green-900/95 group-hover:via-green-900/80 transition-all duration-500"></div>
+      <div class="relative p-8 text-white z-10 h-96 flex flex-col justify-end">
+        <div class="w-20 h-20 bg-white/20 backdrop-blur-lg flex items-center justify-center rounded-3xl mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl">
+          <i class="fas fa-brain text-3xl text-white"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-4 heading-font">Psychological Aid</h3>
+        <p class="text-green-100 text-lg mb-6 opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-200">
+          Mental health support from trained counselors ensuring emotional stability and confidence.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-brain mr-2"></i>Mental Wellness
+          </span>
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-head-side-virus mr-2"></i>Therapy
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Awareness Programs -->
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4" data-aos="zoom-in" data-aos-delay="400">
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transform group-hover:scale-110 transition-transform duration-1000" style="background-image: url('https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-red-900/90 to-red-900/95 group-hover:via-red-900/80 transition-all duration-500"></div>
+      <div class="relative p-8 text-white z-10 h-96 flex flex-col justify-end">
+        <div class="w-20 h-20 bg-white/20 backdrop-blur-lg flex items-center justify-center rounded-3xl mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl">
+          <i class="fas fa-lightbulb text-3xl text-white"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-4 heading-font">Awareness Programs</h3>
+        <p class="text-red-100 text-lg mb-6 opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-200">
+          Empowering individuals through health awareness, self-awareness, and skill-based programs.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-chalkboard-teacher mr-2"></i>Workshops
+          </span>
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-hands-helping mr-2"></i>Empowerment
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-4" data-aos="zoom-in" data-aos-delay="500">
+      <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transform group-hover:scale-110 transition-transform duration-1000" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-900/90 to-indigo-900/95 group-hover:via-indigo-900/80 transition-all duration-500"></div>
+      <div class="relative p-8 text-white z-10 h-96 flex flex-col justify-end">
+        <div class="w-20 h-20 bg-white/20 backdrop-blur-lg flex items-center justify-center rounded-3xl mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl">
+          <i class="fas fa-bell text-3xl text-white"></i>
+        </div>
+        <h3 class="text-3xl font-bold mb-4 heading-font">Smart Notifications</h3>
+        <p class="text-indigo-100 text-lg mb-6 opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-200">
+          Instant notifications via email for room assignments, approvals, and counselor updates.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-envelope mr-2"></i>Email Alerts
+          </span>
+          <span class="inline-block bg-white/30 backdrop-blur-md text-white text-sm px-4 py-2 rounded-full border border-white/40">
+            <i class="fas fa-clock mr-2"></i>Real-time Updates
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rest of the sections remain the same -->
+  <!-- How It Works Section -->
+  <section class="mb-20 bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-blue-900/20 p-12 rounded-3xl shadow-2xl relative overflow-hidden border border-blue-100 dark:border-blue-800" data-aos="fade-up">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-0 w-72 h-72 bg-blue-500 rounded-full -translate-x-1/2 -translate-y-1/2 floating" style="animation-delay: 0s;"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 rounded-full translate-x-1/2 translate-y-1/2 floating" style="animation-delay: 1.5s;"></div>
+    </div>
+
+    <div class="relative z-10">
+      <h2 class="text-4xl font-bold text-center mb-16 text-gray-800 dark:text-white heading-font">
+        <i class="fas fa-cogs mr-4 text-blue-600"></i> How Our Services Work
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-12">
+        <div class="text-center group" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+            <span class="text-3xl font-bold text-white">1</span>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white heading-font group-hover:text-blue-600 transition-colors">Reach Out</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Contact us through our hotline, website, or visit our center for immediate assistance.</p>
+        </div>
+
+        <div class="text-center group" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+            <span class="text-3xl font-bold text-white">2</span>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white heading-font group-hover:text-blue-600 transition-colors">Assessment</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Our team will assess your needs and create a personalized support plan.</p>
+        </div>
+
+        <div class="text-center group" data-aos="fade-up" data-aos-delay="300">
+          <div class="w-24 h-24 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+            <span class="text-3xl font-bold text-white">3</span>
+          </div>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white heading-font group-hover:text-blue-600 transition-colors">Support</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Receive the appropriate services and follow-up care for your situation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="mb-20 bg-gradient-to-r from-blue-800 via-purple-800 to-indigo-900 text-white p-12 rounded-3xl shadow-2xl relative overflow-hidden" data-aos="fade-up">
+    <!-- Animated Background -->
+    <div class="absolute inset-0">
+      <div class="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
+      <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full translate-x-1/2 translate-y-1/2"></div>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-8 text-center relative z-10">
+      <div class="group" data-aos="zoom-in" data-aos-delay="100">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">500+</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">People Helped</div>
+      </div>
+      <div class="group" data-aos="zoom-in" data-aos-delay="200">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">50+</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">Shelter Rooms</div>
+      </div>
+      <div class="group" data-aos="zoom-in" data-aos-delay="300">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">20+</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">Professionals</div>
+      </div>
+      <div class="group" data-aos="zoom-in" data-aos-delay="400">
+        <div class="text-4xl md:text-5xl font-bold mb-3 group-hover:scale-110 transition-transform bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">24/7</div>
+        <div class="text-lg uppercase tracking-wider font-semibold text-blue-200">Support Available</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced CTA Section -->
+  <section class="text-center bg-gradient-to-br from-white via-blue-50 to-indigo-50 dark:from-gray-800 dark:to-blue-900/20 py-16 px-6 rounded-3xl shadow-2xl relative overflow-hidden border border-blue-100 dark:border-blue-800" data-aos="fade-up">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 right-10 w-40 h-40 bg-blue-500 rounded-full floating" style="animation-delay: 0s;"></div>
+      <div class="absolute bottom-10 left-10 w-32 h-32 bg-purple-500 rounded-full floating" style="animation-delay: 1s;"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-indigo-400 rounded-full floating" style="animation-delay: 0.5s;"></div>
+    </div>
+
+    <div class="relative z-10">
+      <h3 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800 dark:text-white heading-font bg-gradient-to-r from-gray-800 to-blue-700 dark:from-white dark:to-blue-300 bg-clip-text text-transparent">
+        Ready to Get Help?
+      </h3>
+      <p class="mb-8 text-gray-600 dark:text-gray-300 text-xl max-w-3xl mx-auto leading-relaxed">
+        Our compassionate team is available 24/7 to assist you. Take the first step toward safety, healing, and empowerment today.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <a href="{{ url_for('signup') }}" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-10 py-5 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 flex items-center gap-3 text-lg">
+          <i class="fas fa-hands-helping"></i>
+          Get Support Now
+        </a>
+        <a href="{{ url_for('donate') }}" class="bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold px-10 py-5 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 flex items-center gap-3 text-lg border-2 border-blue-200 dark:border-blue-700">
+  <i class="fas fa-donate text-blue-600 dark:text-blue-400"></i>
+  For Donation
+</a>
+
+        <a href="{{ url_for('volunteer') }}" class="bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold px-10 py-5 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 flex items-center gap-3 text-lg border-2 border-blue-200 dark:border-blue-700">
+  <i class="fas fa-hands-helping text-blue-600 dark:text-blue-400"></i>
+  Volunteer
+</a>
+
+        <a href="{{ url_for('contact') }}" class="bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-bold px-10 py-5 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 flex items-center gap-3 text-lg border-2 border-blue-200 dark:border-blue-700">
+          <i class="fas fa-phone-alt text-blue-600 dark:text-blue-400"></i>
+          Contact Us
+        </a>
+      </div>
+      <p class="mt-6 text-gray-500 dark:text-gray-400 text-sm">
+        <i class="fas fa-lock mr-2"></i>All communications are confidential and secure
+      </p>
+    </div>
+  </section>
+</div>
+
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-40px) translateX(20px); }
+  50% { transform: translateY(-20px) translateX(-20px); }
+  75% { transform: translateY(-30px) translateX(10px); }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: particleFloat 20s infinite linear;
+}
+
+.particle-1 { width: 8px; height: 8px; top: 20%; left: 10%; animation-delay: 0s; }
+.particle-2 { width: 12px; height: 12px; top: 60%; left: 80%; animation-delay: 5s; }
+.particle-3 { width: 6px; height: 6px; top: 80%; left: 20%; animation-delay: 10s; }
+.particle-4 { width: 10px; height: 10px; top: 40%; left: 60%; animation-delay: 15s; }
+.particle-5 { width: 14px; height: 14px; top: 30%; left: 40%; animation-delay: 20s; }
+
+.heading-font {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+  border-radius: 6px;
+  border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2563eb, #7c3aed);
+}
+
+/* Enhanced hover effects */
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
+
+.group:hover .group-hover\:rotate-12 {
+  transform: rotate(12deg);
+}
+
+/* Backdrop blur support */
+@supports (backdrop-filter: blur(10px)) {
+  .backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+}
+</style>
+
+{% endblock %}

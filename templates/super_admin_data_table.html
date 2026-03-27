@@ -1,0 +1,225 @@
+{% extends "super_admin_base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="bg-white rounded-2xl shadow-md border border-blue-100 p-6">
+  <div class="flex items-center justify-between mb-5">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800">{{ title }}</h2>
+      <p class="text-gray-500 text-sm">Total Records: {{ rows|length }}</p>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full border border-gray-200 rounded-xl overflow-hidden">
+      <thead class="bg-blue-600 text-white">
+        <tr>
+          {% if table_type == 'users' %}
+            <th class="px-4 py-3 text-left">Image</th>
+            <th class="px-4 py-3 text-left">Name</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Phone</th>
+            <th class="px-4 py-3 text-left">CNIC</th>
+            <th class="px-4 py-3 text-left">Status</th>
+            <th class="px-4 py-3 text-left">Gender</th>
+            <th class="px-4 py-3 text-left">Children</th>
+            <th class="px-4 py-3 text-left">Assigned Room</th>
+          {% elif table_type == 'rooms' %}
+            <th class="px-4 py-3 text-left">Floor</th>
+            <th class="px-4 py-3 text-left">Room #</th>
+            <th class="px-4 py-3 text-left">Beds</th>
+            <th class="px-4 py-3 text-left">Available Beds</th>
+            <th class="px-4 py-3 text-left">Images</th>
+          {% elif table_type == 'floors' %}
+            <th class="px-4 py-3 text-left">Floor Name</th>
+          {% elif table_type == 'counselors' %}
+            <th class="px-4 py-3 text-left">Image</th>
+            <th class="px-4 py-3 text-left">Name</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Phone</th>
+            <th class="px-4 py-3 text-left">Gender</th>
+            <th class="px-4 py-3 text-left">Type</th>
+            <th class="px-4 py-3 text-left">Availability</th>
+            <th class="px-4 py-3 text-left">Location</th>
+          {% elif table_type == 'awareness_counselors' %}
+            <th class="px-4 py-3 text-left">Image</th>
+            <th class="px-4 py-3 text-left">Name</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Phone</th>
+            <th class="px-4 py-3 text-left">Gender</th>
+            <th class="px-4 py-3 text-left">Area</th>
+            <th class="px-4 py-3 text-left">Availability</th>
+            <th class="px-4 py-3 text-left">Location</th>
+          {% elif table_type == 'awareness_sessions' %}
+            <th class="px-4 py-3 text-left">Title</th>
+            <th class="px-4 py-3 text-left">Category</th>
+            <th class="px-4 py-3 text-left">Counselor</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Attendance</th>
+            <th class="px-4 py-3 text-left">Present</th>
+            <th class="px-4 py-3 text-left">Created</th>
+          {% elif table_type == 'child_awareness_sessions' %}
+            <th class="px-4 py-3 text-left">Title</th>
+            <th class="px-4 py-3 text-left">Topic</th>
+            <th class="px-4 py-3 text-left">Counselor</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Attendance</th>
+            <th class="px-4 py-3 text-left">Present</th>
+            <th class="px-4 py-3 text-left">Date</th>
+            <th class="px-4 py-3 text-left">Time</th>
+          {% elif table_type == 'medical_appointments' %}
+            <th class="px-4 py-3 text-left">User</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Phone</th>
+            <th class="px-4 py-3 text-left">Hospital</th>
+            <th class="px-4 py-3 text-left">Doctor</th>
+            <th class="px-4 py-3 text-left">Status</th>
+            <th class="px-4 py-3 text-left">Date</th>
+            <th class="px-4 py-3 text-left">Time</th>
+          {% elif table_type == 'prescriptions' %}
+            <th class="px-4 py-3 text-left">User</th>
+            <th class="px-4 py-3 text-left">CNIC</th>
+            <th class="px-4 py-3 text-left">Doctor</th>
+            <th class="px-4 py-3 text-left">Hospital</th>
+            <th class="px-4 py-3 text-left">Uploaded At</th>
+          {% elif table_type == 'subscribers' %}
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Subscribed At</th>
+          {% elif table_type == 'volunteers' %}
+            <th class="px-4 py-3 text-left">Name</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Phone</th>
+            <th class="px-4 py-3 text-left">Skills</th>
+            <th class="px-4 py-3 text-left">Availability</th>
+            <th class="px-4 py-3 text-left">Created At</th>
+          {% elif table_type == 'donations' %}
+            <th class="px-4 py-3 text-left">Name</th>
+            <th class="px-4 py-3 text-left">Email</th>
+            <th class="px-4 py-3 text-left">Phone</th>
+            <th class="px-4 py-3 text-left">Amount</th>
+            <th class="px-4 py-3 text-left">Message</th>
+            <th class="px-4 py-3 text-left">Created At</th>
+          {% endif %}
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-100 bg-white">
+        {% for row in rows %}
+          <tr class="hover:bg-blue-50">
+            {% if table_type == 'users' %}
+              <td class="px-4 py-3">
+                <img src="{% if row.image %}{{ url_for('static', filename=row.image) }}{% else %}https://via.placeholder.com/45x45?text=U{% endif %}"
+                     class="w-11 h-11 rounded-full object-cover border">
+              </td>
+              <td class="px-4 py-3">{{ row.name }}</td>
+              <td class="px-4 py-3">{{ row.email }}</td>
+              <td class="px-4 py-3">{{ row.phone }}</td>
+              <td class="px-4 py-3">{{ row.cnic }}</td>
+              <td class="px-4 py-3">{{ row.status }}</td>
+              <td class="px-4 py-3">{{ row.gender }}</td>
+              <td class="px-4 py-3">{{ row.children }}</td>
+              <td class="px-4 py-3">{{ row.assigned_room or '-' }}</td>
+
+            {% elif table_type == 'rooms' %}
+              <td class="px-4 py-3">{{ row.floor }}</td>
+              <td class="px-4 py-3">{{ row.room_number }}</td>
+              <td class="px-4 py-3">{{ row.bed_count }}</td>
+              <td class="px-4 py-3">{{ row.available_beds }}</td>
+              <td class="px-4 py-3">{{ row.images }}</td>
+
+            {% elif table_type == 'floors' %}
+              <td class="px-4 py-3">{{ row.name }}</td>
+
+            {% elif table_type == 'counselors' %}
+              <td class="px-4 py-3">
+                <img src="{% if row.image %}{{ url_for('static', filename=row.image) }}{% else %}https://via.placeholder.com/45x45?text=C{% endif %}"
+                     class="w-11 h-11 rounded-full object-cover border">
+              </td>
+              <td class="px-4 py-3">{{ row.name }}</td>
+              <td class="px-4 py-3">{{ row.email }}</td>
+              <td class="px-4 py-3">{{ row.phone }}</td>
+              <td class="px-4 py-3">{{ row.gender }}</td>
+              <td class="px-4 py-3">{{ row.type }}</td>
+              <td class="px-4 py-3">{{ row.availability }}</td>
+              <td class="px-4 py-3">{{ row.location }}</td>
+
+            {% elif table_type == 'awareness_counselors' %}
+              <td class="px-4 py-3">
+                <img src="{% if row.image %}{{ url_for('static', filename=row.image) }}{% else %}https://via.placeholder.com/45x45?text=A{% endif %}"
+                     class="w-11 h-11 rounded-full object-cover border">
+              </td>
+              <td class="px-4 py-3">{{ row.name }}</td>
+              <td class="px-4 py-3">{{ row.email }}</td>
+              <td class="px-4 py-3">{{ row.phone }}</td>
+              <td class="px-4 py-3">{{ row.gender }}</td>
+              <td class="px-4 py-3">{{ row.area }}</td>
+              <td class="px-4 py-3">{{ row.availability }}</td>
+              <td class="px-4 py-3">{{ row.location }}</td>
+
+            {% elif table_type == 'awareness_sessions' %}
+              <td class="px-4 py-3">{{ row.title }}</td>
+              <td class="px-4 py-3">{{ row.category }}</td>
+              <td class="px-4 py-3">{{ row.counselor_name }}</td>
+              <td class="px-4 py-3">{{ row.counselor_email }}</td>
+              <td class="px-4 py-3">{{ row.attendance_total }}</td>
+              <td class="px-4 py-3">{{ row.present_count }}</td>
+              <td class="px-4 py-3">{{ row.created_at }}</td>
+
+            {% elif table_type == 'child_awareness_sessions' %}
+              <td class="px-4 py-3">{{ row.title }}</td>
+              <td class="px-4 py-3">{{ row.topic }}</td>
+              <td class="px-4 py-3">{{ row.counselor_name }}</td>
+              <td class="px-4 py-3">{{ row.counselor_email }}</td>
+              <td class="px-4 py-3">{{ row.attendance_total }}</td>
+              <td class="px-4 py-3">{{ row.present_count }}</td>
+              <td class="px-4 py-3">{{ row.date }}</td>
+              <td class="px-4 py-3">{{ row.time }}</td>
+
+            {% elif table_type == 'medical_appointments' %}
+              <td class="px-4 py-3">{{ row.user_name }}</td>
+              <td class="px-4 py-3">{{ row.user_email }}</td>
+              <td class="px-4 py-3">{{ row.user_phone }}</td>
+              <td class="px-4 py-3">{{ row.hospital }}</td>
+              <td class="px-4 py-3">{{ row.doctor }}</td>
+              <td class="px-4 py-3">{{ row.status }}</td>
+              <td class="px-4 py-3">{{ row.date }}</td>
+              <td class="px-4 py-3">{{ row.time }}</td>
+
+            {% elif table_type == 'prescriptions' %}
+              <td class="px-4 py-3">{{ row.user_name }}</td>
+              <td class="px-4 py-3">{{ row.user_cnic }}</td>
+              <td class="px-4 py-3">{{ row.doctor_name }}</td>
+              <td class="px-4 py-3">{{ row.hospital_name }}</td>
+              <td class="px-4 py-3">{{ row.uploaded_at }}</td>
+
+            {% elif table_type == 'subscribers' %}
+              <td class="px-4 py-3">{{ row.email }}</td>
+              <td class="px-4 py-3">{{ row.subscribed_at }}</td>
+
+            {% elif table_type == 'volunteers' %}
+              <td class="px-4 py-3">{{ row.name }}</td>
+              <td class="px-4 py-3">{{ row.email }}</td>
+              <td class="px-4 py-3">{{ row.phone }}</td>
+              <td class="px-4 py-3">{{ row.skills }}</td>
+              <td class="px-4 py-3">{{ row.availability }}</td>
+              <td class="px-4 py-3">{{ row.created_at }}</td>
+
+            {% elif table_type == 'donations' %}
+              <td class="px-4 py-3">{{ row.name }}</td>
+              <td class="px-4 py-3">{{ row.email }}</td>
+              <td class="px-4 py-3">{{ row.phone }}</td>
+              <td class="px-4 py-3">{{ row.amount }}</td>
+              <td class="px-4 py-3">{{ row.message }}</td>
+              <td class="px-4 py-3">{{ row.created_at }}</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,268 @@
+{% extends "base_admin.html" %}
+{% block title %}Shelter Management{% endblock %}
+
+
+{% block header %}<h1 class="text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3 transition-all duration-500 transform hover:scale-105">
+  <p class="text-gray-600 dark:text-gray-300 mt-2 flex items-center gap-2 transition-all duration-500">
+        <i class="fas fa-hand-holding-heart text-green-600 dark:text-green-400"></i>
+        Approved Users
+      </p>
+      </h1>{% endblock %}
+{% block content %}
+
+<div class="container mx-auto px-1 py-1">
+  <!-- Header with Stats -->
+  <div class="mb-10 animate-fade-in">
+  <!-- Top Section -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl shadow-lg border border-blue-200 dark:border-gray-700">
+
+    <!-- Left Text -->
+    <div class="mb-4 md:mb-0">
+      <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white flex items-center gap-3 transition-all duration-500 transform hover:scale-105">
+        <i class="fas fa-people-roof text-blue-600 dark:text-blue-400"></i>
+        Shelter Management
+      </h1>
+    </div>
+
+    <!-- Right Badge -->
+    <div class="mt-4 md:mt-0">
+      <span class="flex items-center gap-2 bg-blue-600 text-white text-sm md:text-base font-semibold px-4 py-2 rounded-full shadow-md transition-all duration-300 hover:bg-blue-700 hover:shadow-xl">
+        <i class="fas fa-user-check"></i>
+        Total Approved Users:
+        <span id="userCount" class="font-bold text-yellow-300">{{ users|length }}</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Category Filters -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 bg-blue-300 p-6 rounded-xl shadow-lg">
+    <!-- All Card -->
+    <a href="{{ url_for('shelter', category='All') }}"
+       class="flex flex-col items-center p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md hover:border-blue-500 hover:scale-[1.02]
+       {% if selected_category == 'All' or not selected_category %} bg-blue-50 border-blue-500 dark:bg-blue-900/20{% else %} bg-white dark:bg-gray-800{% endif %}">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3
+           {% if selected_category == 'All' or not selected_category %} bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-blue-200{% else %} bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200{% endif %}">
+         <i class="fas fa-users text-2xl"></i>
+       </div>
+       <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Users</h3>
+       <p class="text-sm text-gray-500 dark:text-gray-400">View all</p>
+    </a>
+
+    <!-- Shelter Card -->
+    <a href="{{ url_for('shelter', category='Shelter') }}"
+       class="flex flex-col items-center p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md hover:border-green-500 hover:scale-[1.02]
+       {% if selected_category == 'Shelter' %} bg-green-50 border-green-500 dark:bg-green-900/20{% else %} bg-white dark:bg-gray-800{% endif %}">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3
+           {% if selected_category == 'Shelter' %} bg-green-100 text-green-600 dark:bg-green-800 dark:text-green-200{% else %} bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200{% endif %}">
+         <i class="fas fa-home text-2xl"></i>
+       </div>
+       <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Shelter</h3>
+       <p class="text-sm text-gray-500 dark:text-gray-400">Housing services</p>
+    </a>
+
+    <!-- Legal Help Card -->
+    <a href="{{ url_for('shelter', category='Legal') }}"
+       class="flex flex-col items-center p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md hover:border-purple-500 hover:scale-[1.02]
+       {% if selected_category == 'Legal Help' %} bg-purple-50 border-purple-500 dark:bg-purple-900/20{% else %} bg-white dark:bg-gray-800{% endif %}">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3
+           {% if selected_category == 'Legal Help' %} bg-purple-100 text-purple-600 dark:bg-purple-800 dark:text-purple-200{% else %} bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200{% endif %}">
+         <i class="fas fa-balance-scale text-2xl"></i>
+       </div>
+       <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Legal Help</h3>
+       <p class="text-sm text-gray-500 dark:text-gray-400">Legal assistance</p>
+    </a>
+
+    <!-- Psychological Aid Card -->
+    <a href="{{ url_for('shelter', category='Psychological') }}"
+       class="flex flex-col items-center p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-md hover:border-pink-500 hover:scale-[1.02]
+       {% if selected_category == 'Psychological Aid' %} bg-pink-50 border-pink-500 dark:bg-pink-900/20{% else %} bg-white dark:bg-gray-800{% endif %}">
+       <div class="w-14 h-14 rounded-full flex items-center justify-center mb-3
+           {% if selected_category == 'Psychological Aid' %} bg-pink-100 text-pink-600 dark:bg-pink-800 dark:text-pink-200{% else %} bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200{% endif %}">
+         <i class="fas fa-brain text-2xl"></i>
+       </div>
+       <h3 class="font-semibold text-gray-800 dark:text-white mb-1">Psychological Aid</h3>
+       <p class="text-sm text-gray-500 dark:text-gray-400">Mental health support</p>
+    </a>
+  </div>
+
+
+  <!-- Approved Users List -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6
+            bg-blue-300 p-6 rounded-xl shadow-lg">
+    {% for user_id, user in users.items() %}
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <!-- Card Header -->
+      <div class="border-b border-blue-200 dark:border-gray-600
+            p-4 rounded-lg shadow-md
+            bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50
+            dark:bg-gradient-to-r dark:from-gray-800 dark:via-gray-700 dark:to-gray-800
+            flex items-center justify-between transition-all duration-500 hover:shadow-lg">
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            {% if user.profile_image_path %}
+              {% set profile_path = user.profile_image_path.replace("\\", "/").split("static/")[-1] %}
+              <img src="{{ url_for('static', filename=profile_path) }}"
+                   class="w-12 h-12 rounded-full border-2 border-white shadow-sm object-cover" alt="Profile">
+            {% else %}
+              <div class="w-12 h-12 rounded-full border-2 border-white shadow-sm bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+                <i class="fas fa-user text-gray-400"></i>
+              </div>
+            {% endif %}
+            <div>
+              <h3 class="font-bold text-gray-800 dark:text-white">{{ user.name }}</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{ user.email }}</p>
+            </div>
+          </div>
+          <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Approved</span>
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div class="p-4">
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-2 dark:bg-blue-900/40">
+              <i class="fas fa-phone text-blue-600 text-xs dark:text-blue-300"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Contact</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white">{{ user.contact_number }}</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2 dark:bg-purple-900/40">
+              <i class="fas fa-map-marker-alt text-purple-600 text-xs dark:text-purple-300"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Location</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white truncate">{{ user.current_location }}</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 dark:bg-green-900/40">
+              <i class="fas fa-venus-mars text-green-600 text-xs dark:text-green-300"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Gender</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white">{{ user.gender }}</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center mr-2 dark:bg-amber-900/40">
+              <i class="fas fa-id-card text-amber-600 text-xs dark:text-amber-300"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400">CNIC</p>
+              <p class="text-sm font-medium text-gray-800 dark:text-white truncate">{{ user.cnic }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="mb-4">
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 dark:text-gray-400">Additional Information</h4>
+          <div class="space-y-2">
+            <div class="flex">
+              <div class="w-5 text-gray-400 dark:text-gray-500 mr-2">
+                <i class="fas fa-user-tie text-xs"></i>
+              </div>
+              <p class="text-sm text-gray-700 dark:text-gray-300"><span class="font-medium">Father:</span> {{ user.father_name }}</p>
+            </div>
+            {% if user.marital_status == "yes" %}
+            <div class="flex">
+              <div class="w-5 text-gray-400 dark:text-gray-500 mr-2">
+                <i class="fas fa-user-friends text-xs"></i>
+              </div>
+              <p class="text-sm text-gray-700 dark:text-gray-300"><span class="font-medium">Husband:</span> {{ user.husband_name }}</p>
+            </div>
+            {% endif %}
+            <div class="flex">
+              <div class="w-5 text-gray-400 dark:text-gray-500 mr-2">
+                <i class="fas fa-home text-xs"></i>
+              </div>
+              <p class="text-sm text-gray-700 dark:text-gray-300 truncate">{{ user.address }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="mb-4">
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 dark:text-gray-400">Services Needed</h4>
+          <div class="flex flex-wrap gap-2">
+            {% for category in user.categories %}
+            <span class="px-2 py-1 text-xs font-medium rounded-full
+                {% if category == 'Shelter' %} bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                {% elif category == 'Legal Help' %} bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200
+                {% elif category == 'Psychological Aid' %} bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200
+                {% else %} bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 {% endif %}">
+              {{ category }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Children Information -->
+        {% if user.children == "yes" and user.children_details %}
+        <div class="mb-4">
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 dark:text-gray-400">Children</h4>
+          <div class="space-y-2">
+            {% for child in user.children_details %}
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center mr-2 dark:bg-amber-900/40">
+                <i class="fas fa-child text-amber-600 text-xs dark:text-amber-300"></i>
+              </div>
+              <p class="text-sm text-gray-700 dark:text-gray-300">{{ child.name }} ({{ child.relation }}, Age {{ child.age }})</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Description -->
+        {% if user.description %}
+        <div>
+          <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 dark:text-gray-400">Description</h4>
+          <p class="text-sm text-gray-700 dark:text-gray-300">{{ user.description }}</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Card Footer -->
+      <div class="border-t border-gray-200 dark:border-gray-700 p-3
+            bg-blue-50 dark:bg-blue-900/40">
+  <div class="flex items-center justify-between">
+    <!-- Yahan apna content dal sakte ho -->
+  </div>
+</div>
+
+
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Empty State -->
+  {% if not users %}
+  <div class="text-center py-12">
+    <div class="inline-block p-4 bg-gray-100 rounded-full dark:bg-gray-800 mb-4">
+      <i class="fas fa-users text-3xl text-gray-400 dark:text-gray-500"></i>
+    </div>
+    <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">No Users found</h3>
+    <p class="text-gray-500 dark:text-gray-400">There are no approved users in this category.</p>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .card-hover {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+  }
+</style>
+
+{% endblock %}

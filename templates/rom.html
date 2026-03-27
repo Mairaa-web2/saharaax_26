@@ -1,0 +1,78 @@
+{% extends "base_admin.html" %}
+{% block title %}Shelter Management{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-cover bg-center py-12 px-6 flex items-center justify-center"
+     style="background-image: url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80');">
+
+  <div class="max-w-6xl w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+
+    <!-- Add Room -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl 
+                hover:shadow-2xl transition transform hover:-translate-y-2 p-8 border-t-4 border-blue-500">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+          <i class="fas fa-door-open text-white text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Add Room</h2>
+      </div>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">Create and register a new shelter room for users.</p>
+      <a href="{{ url_for('add_room') }}"
+         class="w-full block text-center bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-semibold shadow hover:from-blue-700 hover:to-blue-800 transition">
+        <i class="fas fa-arrow-right mr-2"></i> Go to Add Room
+      </a>
+    </div>
+
+    <!-- View Rooms -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl 
+                hover:shadow-2xl transition transform hover:-translate-y-2 p-8 border-t-4 border-green-500">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center shadow-lg">
+          <i class="fas fa-bed text-white text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">View Rooms</h2>
+      </div>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">Browse and manage available shelter rooms.</p>
+      <a href="{{ url_for('view_rooms') }}"
+         class="w-full block text-center bg-gradient-to-r from-green-600 to-green-700 text-white py-3 rounded-lg font-semibold shadow hover:from-green-700 hover:to-green-800 transition">
+        <i class="fas fa-arrow-right mr-2"></i> View All Rooms
+      </a>
+    </div>
+
+
+
+    <!-- Check Expired Shelters -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl 
+                hover:shadow-2xl transition transform hover:-translate-y-2 p-8 border-t-4 border-red-500">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center shadow-lg">
+          <i class="fas fa-ban text-white text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Expired Shelters</h2>
+      </div>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">Review shelters that are no longer available.</p>
+      <a href="{{ url_for('check_expired_shelters') }}"
+         class="w-full block text-center bg-gradient-to-r from-red-600 to-red-700 text-white py-3 rounded-lg font-semibold shadow hover:from-red-700 hover:to-red-800 transition">
+        <i class="fas fa-arrow-right mr-2"></i> View Expired
+      </a>
+    </div>
+
+    <!-- Assigned Shelters -->
+    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl 
+                hover:shadow-2xl transition transform hover:-translate-y-2 p-8 border-t-4 border-purple-500">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <i class="fas fa-user-check text-white text-2xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Assigned Shelters</h2>
+      </div>
+      <p class="text-gray-600 dark:text-gray-400 mb-6">Check which shelters have been assigned to users.</p>
+      <a href="{{ url_for('assigned_shelters') }}"
+         class="w-full block text-center bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-lg font-semibold shadow hover:from-purple-700 hover:to-purple-800 transition">
+        <i class="fas fa-arrow-right mr-2"></i> View Assigned
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
