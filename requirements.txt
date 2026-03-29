@@ -1,0 +1,10 @@
+flask
+flask-cors
+firebase-admin
+yagmail
+google-generativeai
+reportlab
+pandas
+numpy
+scikit-learn
+openpyxl

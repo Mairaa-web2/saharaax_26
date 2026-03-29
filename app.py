@@ -47,14 +47,21 @@ app = Flask(__name__)
 app.register_blueprint(super_admin_bp)
 app.secret_key = "007219"  # CHANGE THIS
 # Firebase setup
-cred = credentials.Certificate("database.json")  # Put your Firebase service account key file here
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://sahara-app-d97e0-default-rtdb.firebaseio.com/',
-    'storageBucket': 'your-bucket-name.appspot.com'
-})
 
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+firebase_json = os.environ.get("FIREBASE_KEY")
+
+if firebase_json:
+    firebase_dict = json.loads(firebase_json)
+    cred = credentials.Certificate(firebase_dict)
+
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://sahara-app-d97e0-default-rtdb.firebaseio.com/',
+        'storageBucket': 'your-bucket-name.appspot.com'
+    })
+
+UPLOAD_FOLDER = "/tmp/uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)  # Enable CORS for all routes
 app.config['SECRET_KEY'] = 'multi-dataset-assessment-secret-key-2024'
 
@@ -5312,6 +5319,3 @@ def prescription_image(prescription_id):
         mimetype="image/jpeg",   # Agar png store karte ho to yahan change kar sakte ho
         as_attachment=False
     )
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
