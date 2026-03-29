@@ -5,3 +5,4 @@ yagmail
 google-generativeai
 reportlab
 openpyxl
+pandas
