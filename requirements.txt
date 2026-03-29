@@ -4,5 +4,7 @@ firebase-admin
 yagmail
 google-generativeai
 reportlab
-openpyxl
 pandas
+numpy
+scikit-learn
+openpyxl
