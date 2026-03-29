@@ -26,7 +26,6 @@ import warnings
 import sys
 import math
 from datetime import datetime
-from sklearn.preprocessing import LabelEncoder
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
